@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../../db/data.db"
+}
+
+model Setting {
+  name  String @unique
+  value String
+}
+
+model Folder {
+  id   Int    @id @default(autoincrement())
+  icon String
+  name String
+
+  subdirs  Folder[] @relation("subdir")
+  parent   Folder?  @relation("subdir", fields: [parentId], references: [id])
+  parentId Int?
+
+  children Item[] @relation("Children")
+}
+
+model Item {
+  id   Int     @id @default(autoincrement())
+  path String? @unique
+  icon String
+  name String
+
+  parent   Folder? @relation("Children", fields: [category], references: [id])
+  category Int?
+}
