@@ -23,6 +23,10 @@ class Config extends DB {
         return res.value
     }
 
+    all = async () => {
+        return await this.prisma.setting.findMany({})
+    }
+
     set = async ({ name, value }: TSetting ) => {
         return await this.prisma.setting.update({
             where: { name },
