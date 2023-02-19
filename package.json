@@ -1,6 +1,6 @@
 {
   "name": "fastaccess",
-  "version": "0.0.6",
+  "version": "0.0.7-json",
   "description": "Quick access toolbar",
   "main": "index.js",
   "author": "markushev.pro",
@@ -11,7 +11,7 @@
     "productName": "MPRO FastAccess",
     "extends": null,
     "extraFiles": [
-      "db/data.db"
+      "db/data.json"
     ]
   },
   "scripts": {
