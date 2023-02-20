@@ -2,8 +2,8 @@ import { Button, Input, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { useParams }           from 'react-router-dom'
 
-import { TFolder, TItem } from 'models'
-import service            from 'service'
+import { TItem } from 'models'
+import service   from 'service'
 
 import styles from './rename.module.scss'
 
@@ -11,11 +11,11 @@ const
     RenameDialog = () => {
         const
             { id, type } = useParams(),
-            [ item, $item ] = useState<TItem | TFolder | null>( null ),
+            [ item, $item ] = useState<TItem | null>( null ),
             [ value, $value ] = useState( 'hewheh' ),
 
             save = () => {
-                item && service.rename( item, value )
+                item && service.items.rename( item, value )
                 onClose()
             },
 
@@ -27,11 +27,11 @@ const
         useEffect(() => {
             if ( !id || id === 'loader' ) { return }
 
-            service.get( +id, type ?? 'item' ).then(( item: TItem | TFolder ) => {
-                $item( item )
-                $value( item.name )
-                document.title = `Rename "${item.name}"`
-            })
+            const item: TItem = service.get( id )
+
+            $item( item )
+            $value( item.name )
+            document.title = `Rename "${item.name}"`
         }, [])
 
         return (

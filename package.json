@@ -16,17 +16,13 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "desktop": "set NODE_ENV=development && copy \"prisma\\schema.dev.prisma\" \"prisma\\schema.prisma\" && yarn db:build && electron . -r ts-node/register",
-    "desktop:prod": "set NODE_ENV=production && copy \"prisma\\schema.dev.prisma\" \"prisma\\schema.prisma\" && yarn db:build && electron . -r ts-node/register",
+    "desktop": "set NODE_ENV=development && electron . -r ts-node/register",
+    "desktop:prod": "set NODE_ENV=production && yarn db:build && electron . -r ts-node/register",
     "desktop:nodb": "set NODE_ENV=development && electron . -r ts-node/register",
     "run:local": "cd ./frontend/build && ws -p 9101",
     "build": "react-app-rewired build",
     "build:backend": "yarn db:migrate && yarn middleware",
-    "bundle": "set NODE_ENV=production && copy \"prisma\\schema.prod.prisma\" \"prisma\\schema.prisma\" && yarn db:build && electron-builder --dir",
-    "db:format": "prisma format",
-    "db:build": "rmdir /Q /S \"db\\client\" && prisma generate && mkdir \"db\\client\" && copy \"node_modules\\.prisma\\client\\*.*\" \"db\\client\\*.*\"",
-    "db:build:fresh": "prisma generate && mkdir \"db\\client\" && copy \"node_modules\\.prisma\\client\\*.*\" \"db\\client\\*.*\"",
-    "db:migrate": "prisma migrate dev",
+    "bundle": "set NODE_ENV=production && electron-builder --dir",
     "middleware": "cd ./view/modules/middleware && ts-node generate && eslint --fix ./**.*"
   },
   "devDependencies": {

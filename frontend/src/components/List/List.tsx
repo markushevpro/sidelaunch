@@ -1,10 +1,11 @@
 import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons'
 import classnames                          from 'classnames'
+import { useEffect, useState }             from 'react'
 import Scrollbars                          from 'react-custom-scrollbars'
 
 import { TFolder, TItem } from 'models'
 import { useConfig }      from 'service'
-import { isItem }         from 'utils'
+import { isFolder }       from 'utils'
 
 import styles from './list.module.scss'
 
@@ -61,9 +62,9 @@ const List = ({ data, onBack, onItemClick, onMenu, onAdd }: IListProps ) => {
                 {
                     data.map( item => (
                         <ListItem
-                            key={`${isItem( item ) ? 'item' : 'folder'}-${item.id}`}
+                            key={item.id}
                             data={item}
-                            size={+iconSize}
+                            size={+( iconSize ?? 32 )}
                             onClick={onItemClick}
                             onMenu={onMenu}
                         />

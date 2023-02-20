@@ -1,7 +1,5 @@
 import electron, { Tray, Menu, nativeImage } from 'electron'
 
-import Backend from '../../../backend'
-
 class TrayIcon {
 
     ref?: Electron.Tray
@@ -11,11 +9,6 @@ class TrayIcon {
 
         const
             defMenu = Menu.buildFromTemplate([
-                {
-                    label: 'Export',
-                    type:  'normal',
-                    click: () => this.exportData()
-                },
                 {
                     label: 'Exit',
                     type:  'normal',
@@ -28,24 +21,6 @@ class TrayIcon {
 
         this.ref.setToolTip( 'MPRO FastAccess' )
         this.ref.setContextMenu( defMenu )
-    }
-
-    exportData = () => {
-        const res: any = {}
-
-        Backend.Config.all().then( config => {
-            res.config = config
-
-            Backend.Folders.list( void 0 ).then( folders => {
-                res.folders = folders
-
-                Backend.Items.list( void 0 ).then( items => {
-                    res.items = items
-
-                    console.log( JSON.stringify( res, null, '    ' ))
-                })
-            })
-        })
     }
 }
 

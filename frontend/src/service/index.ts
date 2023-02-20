@@ -1,182 +1,63 @@
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useEffect, useState } from 'react'
 
-import { TFolder, TItem } from 'models'
-import { IorF }           from 'utils'
-
-import FolderIcon from '../assets/folder.png'
+import { TConfigValue, TFolder, TItem, TLink } from 'models'
 
 import store from './store'
+import utils from './utils'
 
 class Service {
-    callbacks: { (): void } [] = []
-
-    _set = ( key: string, value: any ) => {
-        ( this as any )[ `_${key}` ] = value
-        this._changed()
-    }
-
-    _changed = () => {
-        this.callbacks.forEach( cb => cb())
-    }
-
-    _check = async ( file: any ) => {
-        if ( !file.size && !file.type ) { return false }
-
-        /*const
-            ext = await window.backend.fs.getExtention( file.path )
-
-        if ( !allowed.includes( ext.toLowerCase())) { return false }*/
-
-        return true
-    }
-
-    reload = () => {
-        this.items.list()
-        this.folders.list()
-    }
 
     constructor () {
-        window.backend.on.reload(() => this.reload())
-        window.backend.on.reloadFolders(() => this.folders.list())
-        window.backend.on.reloadItems(() => this.items.list())
+        store.load.config().then( store.load.library )
+    }
 
-        //window.backend.on.removeItem( preremove.item )
-        //window.backend.on.removeFolder( preremove.folder )
+    config = {
+        get: ( key: string ) => store.config[ key ],
+        set: ( key: string, value: TConfigValue ) => {
+            store.config[ key ] = value
+            store.save.config()
+        }
+    }
+
+    current = {
+        get: () => store.folder,
+        set: ( data: TFolder ) => {
+            store.folder = data
+        }
     }
 
     items = {
-        flush: () => store.items = [],
-        set:   ( items: TItem[]) => {
-            store.items = items
-        },
-        list: async () => {
-            store.items = await window.backend.items.list( store.folder?.id ?? null )
-        }
-    }
+        icon:   store.update.icon,
+        rename: store.update.name,
 
-    folders = {
-        flush: () => store.folders = [],
-        set:   ( folders: TFolder[]) => {
-            store.folders = folders
-        },
-        list: async () => {
-            store.folders = await window.backend.folders.list( store.folder?.id ?? null )
-        }
-    }
-
-    current = ( folder: TFolder | undefined ) => {
-        store.folder = folder
-    }
-
-    addChangeCallback = ( cb: () => void ) => {
-        !this.callbacks.includes( cb ) && this.callbacks.push( cb )
-    }
-
-    config = async ( key: string ) => {
-        return await window.backend.config.get( key )
-    }
-
-    run = ( path: string | null ) => {
-        path && window.backend.fs.run( path )
-    }
-
-    files = {
         add: ( files: File[]) => {
-            console.log( 'add [1]:', files )
             if ( files.length > 1 ) {
-                this.askForMultiple( files.length ).then(( answer: string ) => {
-                    switch ( answer ) {
-                        case 'folder':
-                            this.files.addFolder( files )
-                            break
-                        default:
-                            this.files.separated( files )
-                    }
-                })
+                store.insert.multiple( files )
             } else {
-                this.files.separated( files )
+                store.insert.file( files[ 0 ])
             }
         },
 
-        addFolder: ( files: File[]) => {
-            this.create( `New ${files.length} element${files.length === 1 ? 's' : ''}` ).then( newFolder => {
-                this.folders.flush()
-                this.items.flush()
-                this.current( newFolder )
-                this.files.separated( files )
+        create: ( name: string ) => {
+            store.insert.folder( name ).then(() => {
+                store.save.library()
             })
         },
 
-        separated: ( files: File[]) => {
-            files.forEach(( file ) => {
-                this.files.addFile( store.folder, file )
-            })
-        },
-
-        addFile: async ( parent: TFolder | undefined, file: any ) => {
-            const
-                checked = await this._check( file )
-
-            if ( !checked ) {
-                return
-            }
-
-            const
-                path = await window.backend.fs.getRealPath( file.path ),
-                icon = await window.backend.fs.getIcon( file.path ),
-                name = file.name.split( '.' ).slice( 0, -1 ).join( '.' )
-
-            return await window.backend.items.add({
-                path,
-                icon,
-                category: parent?.id,
-                name
-            })
+        run: ( link: TLink ) => {
+            link.params
+                ? window.backend.fs.run({
+                    path: link.path,
+                    args: link.params,
+                    dir:  link.dir
+                })
+                : window.backend.fs.run( link.path )
         }
     }
 
-    create = async ( name: string ) => {
-        return await window.backend.folders.create({
-            parentId: store.folder?.id,
-            name,
-            icon:     FolderIcon
-        })
-    }
-
-    get = async ( id: number, type: string ) => {
-
-        if ( type ) {
-            return type === 'folder'
-                ? await window.backend.folders.get( id )
-                : await window.backend.items.get( id )
-        }
-    }
-
-    rename = async ( item: TItem | TFolder, name: string ) => {
-        IorF(
-            item,
-            () => window.backend.items.rename( item.id, name ),
-            () => window.backend.folders.rename( item.id, name )
-        )
-    }
-
-    changeIcon = async ( item: TItem | TFolder, path: string ) => {
-        IorF(
-            item,
-            () => window.backend.items.changeIcon( item.id, path ),
-            () => window.backend.folders.changeIcon( item.id, path )
-        )
-    }
-
-    askForMultiple = async ( length: number ) => {
-        return await window.backend.ui.askForMultiple( length )
-    }
-
-    answer = async ( some: string ) => {
-        return await window.backend.ui.answer( some )
+    get = ( id: string | undefined ): TItem => {
+        if ( !id ) { return store.library }
+        return utils.find( id, store.library ) ?? store.library
     }
 }
 
@@ -185,15 +66,12 @@ const
 
 export const useConfig = ( key: string ) => {
     const
-        [ result, $result ] = useState( '' )
+        [ result, $result ] = useState<TConfigValue>( '' )
 
     useEffect(() => {
         const
             getConfig = async () => {
-                const
-                    res = await service.config( key )
-
-                $result( res )
+                $result( service.config.get( key ))
             }
 
         getConfig()

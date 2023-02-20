@@ -1,21 +1,17 @@
 /* eslint-disable no-prototype-builtins */
-import fs   from 'fs'
-import path from 'path'
-
 import { screen, ipcMain, Menu, MenuItem } from 'electron'
 import { DisableMinimize }                 from 'electron-disable-minimize'
 
-import { TFolder, TItem } from 'models'
+import { TItem } from 'models'
 
-import Backend          from '../../backend'
-import { IorF, isItem } from '../../tools'
+import Backend      from '../../backend'
+import { isFolder } from '../../tools'
+
 
 import AskDialog    from './ask.window'
+import contextMenu  from './modules/context-menu'
 import RenameDialog from './rename.window'
 import BaseWindow   from './window.class'
-
-
-const FolderIcon = `data:image/png;base64,${fs.readFileSync( path.resolve( __dirname, '../../assets/folder.png' )).toString( 'base64' )}`
 
 class Main extends BaseWindow {
     url?: string
@@ -34,7 +30,7 @@ class Main extends BaseWindow {
     _debounce: ReturnType<typeof setTimeout> | null = null
     _timer: ReturnType<typeof setInterval> | null = null
     _lockedMinimize = false
-    _item: TItem | TFolder | null = null
+    _item: TItem | null = null
     _lockScroll = false
 
     show = async ( url: string, debug: boolean ) => {
@@ -70,119 +66,11 @@ class Main extends BaseWindow {
 
         events: () => {
             this.events.common()
-            this.events.backend()
             this.events.listen()
         },
 
         contextMenu: () => {
-            this.menus.itemMenu = Menu.buildFromTemplate([
-                {
-                    label: 'Rename',
-                    click: () => {
-                        if ( !this._item ) { return }
-                        IorF(
-                            this._item,
-                            () => RenameDialog.show( `${this.url}/rename/item/${this._item?.id}`, this.debug ),
-                            () => RenameDialog.show( `${this.url}/rename/folder/${this._item?.id}`, this.debug )
-                        )
-                    }
-                },
-                {
-                    label: 'Change icon',
-                    click: () => {
-                        if ( !this._item ) { return }
-                        this.ref?.webContents.send( 'changeIcon', JSON.stringify( this._item ))
-                    }
-                },
-                {
-                    id:    'clearIcon',
-                    label: 'Clear icon',
-                    click: () => {
-                        if ( !this._item ) { return }
-                        Backend.Folders.setIcon( this._item.id, FolderIcon )
-                    }
-                },
-                {
-                    id:    'filePath',
-                    label: 'Reveal in File Exporer',
-                    click: () => {
-                        if ( !this._item ) { return }
-                        Backend.FS.openPath(( this._item as TItem ).path )
-                    }
-                },
-                { type: 'separator' },
-                {
-                    label: 'Remove',
-                    click: () => {
-                        if ( !this._item ) { return }
-
-                        IorF(
-                            this._item,
-                            () => {
-                                if ( !this._item ) { return }
-
-                                this.ref?.webContents.send( 'removeItem', this._item.id )
-
-                                Backend.Items.remove( this._item.id ).then(() => {
-                                    this._item = null
-                                    this.ref?.webContents.send( 'reloadItems' )
-                                })
-                            },
-                            () => {
-                                if ( !this._item ) { return }
-
-                                if (( this._item as TFolder ).children.length > 0 || ( this._item as TFolder ).subdirs.length > 0 ) {
-                                    AskDialog.show(
-                                        `${this.url}/ask`,
-                                        `You are going to remove ${this._item.name} folder. Do you want remove files inside or move it to parent folder?`,
-                                        {
-                                            'move':   'Move up',
-                                            'remove': 'Remove',
-                                        },
-                                        this.debug
-                                    )
-
-                                    ipcMain.handleOnce( 'ui.answer', ( _, result ) => {
-                                        if ( !this._item ) { return }
-
-                                        switch ( result ) {
-                                            case 'remove':
-                                                this.ref?.webContents.send( 'removeFolder', this._item.id )
-
-                                                Backend.Folders.removeRecoursive( this._item.id ).then(() => {
-                                                    this._item = null
-                                                    this.ref?.webContents.send( 'reload' )
-                                                })
-                                                break
-
-                                            case 'move':
-                                                this.ref?.webContents.send( 'removeFolder', this._item.id )
-
-                                                Backend.Folders.remove( this._item.id ).then(() => {
-                                                    this._item = null
-                                                    this.ref?.webContents.send( 'reloadFolders' )
-                                                })
-                                                break
-
-                                            default:
-                                                //Do nothing
-                                        }
-                                    })
-                                } else {
-                                    this.ref?.webContents.send( 'removeFolder', this._item.id )
-
-                                    Backend.Folders.remove( this._item.id ).then(() => {
-                                        this._item = null
-                                        this.ref?.webContents.send( 'reloadFolders' )
-                                    })
-                                }
-
-                                /**/
-                            }
-                        )
-                    }
-                }
-            ])
+            this.menus.itemMenu = contextMenu( this )
 
             this.menus.itemMenu.on( 'menu-will-show', () => {
                 this._lockScroll = true
@@ -210,11 +98,6 @@ class Main extends BaseWindow {
             })
         },
 
-        backend: () => {
-            Backend.Items.onUpdate(() => this.ref?.webContents.send( 'reloadItems' ))
-            Backend.Folders.onUpdate(() => this.ref?.webContents.send( 'reload' ))
-        },
-
         listen: () => {
             ipcMain.handle( 'ui.movein', () => {
                 return this.move.in()
@@ -226,12 +109,15 @@ class Main extends BaseWindow {
 
             ipcMain.handle( 'ui.itemMenu', ( _, itemJSON: string ) => {
                 const
-                    item: TItem | TFolder = JSON.parse( itemJSON )
+                    item: TItem = JSON.parse( itemJSON )
 
                 this._item = item
+
                 this.menu.flush()
-                this.menu.toggle( this.menus.itemMenu, [ 'clearIcon' ], !isItem( item ))
-                this.menu.toggle( this.menus.itemMenu, [ 'filePath' ], isItem( item ))
+                this.menu.toggle( this.menus.itemMenu, [ 'clearIcon' ], isFolder( item ))
+                this.menu.toggle( this.menus.itemMenu, [ 'changeArgs' ], !isFolder( item ))
+                this.menu.toggle( this.menus.itemMenu, [ 'filePath' ], !isFolder( item ))
+
                 this.menus.itemMenu.popup({ window: this.ref })
             })
 
@@ -239,10 +125,10 @@ class Main extends BaseWindow {
                 return new Promise(( resolve ) => {
                     AskDialog.show(
                         `${this.url}/ask`,
-                        `Do you want to add ${length} file${length === 1 ? 's' : ''} as new folder or add them separately?`,
+                        `Do you want to add ${length} file${length === 1 ? 's' : ''} as new folder or add them to current?`,
                         {
-                            'separate': 'Separated',
-                            'folder':   'New folder'
+                            'separate': 'Put here',
+                            'folder':   'Create new subfolder'
                         },
                         this.debug
                     )

@@ -1,14 +1,14 @@
 /* eslint-disable no-prototype-builtins */
-import { TFolder, TItem } from 'models'
+import { TFolder, TItem, TLink } from 'models'
 
-export const IorF = ( item: TItem | TFolder, onItem: ( item: TItem ) => void, onFolder: ( item: TFolder ) => void ) => {
-    if ( item.hasOwnProperty( 'category' )) {
-        onItem( item as TItem )
+export const IorF = ( item: TItem, onLink: ( link: TLink ) => void, onFolder: ( item: TFolder ) => void ) => {
+    if ( !isFolder( item )) {
+        onLink( item as TLink )
     } else {
         onFolder( item as TFolder )
     }
 }
 
-export const isItem = ( item: TItem | TFolder ) => {
-    return item.hasOwnProperty( 'category' )
+export const isFolder = ( item: TItem ) => {
+    return item.hasOwnProperty( 'children' )
 }

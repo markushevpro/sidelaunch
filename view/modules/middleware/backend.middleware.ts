@@ -9,6 +9,7 @@ const init = () => {
         Object.keys(( Backend as any )[ top ]).forEach( key => {
             ipcMain.handle( `${top.toLowerCase()}.${key}`, async ( _, ...args ) => {
                 console.log( `Receive "${top}.${key}" event` )
+                //console.log( `Receive "${top}.${key}" event`, args )
                 return await ( Backend as any )[ top ][ key ]( ...args )
             })
         })

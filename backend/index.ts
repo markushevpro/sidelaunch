@@ -1,11 +1,15 @@
 import Config  from './Config.module'
 import FS      from './FS.module'
-import Folders from './Folders.module'
-import Items   from './Items.module'
+import Files   from './Files.module'
+import Icons   from './Icons.module'
+import Library from './Library.module'
+import Read    from './Read.module'
 
 export default {
-    Items,
-    Folders,
     Config,
-    FS
+    FS,
+    Read,
+    Files,
+    Icons,
+    Library
 }

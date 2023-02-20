@@ -4,13 +4,15 @@
 const
     { ipcRenderer, contextBridge } = require( 'electron' ),
     beHandlers = {
-        'items':   [ 'onUpdate', 'withUpdateNotify', 'runUpdate', 'add', 'get', 'rename', 'changeIcon', 'list', 'remove' ],
-        'folders': [ 'onUpdate', 'withUpdateNotify', 'runUpdate', 'get', 'rename', 'changeIcon', 'list', 'create', 'remove' ],
-        'config':  [ 'get', 'set', 'create' ],
-        'fs':      [ 'run', 'getExtention', 'getRealPath', 'getIcon', 'getThumbnail' ]
+        'config':  [ 'get', 'read', 'load', 'write' ],
+        'fs':      [ 'run', 'appPath', 'read', 'write', 'copy', 'list', 'remove', 'openPath' ],
+        'read':    [ 'raw', 'base64', 'string', 'json' ],
+        'files':   [ 'extention', 'realPath', 'args', 'dir' ],
+        'icons':   [ 'clear', 'remove', 'load', 'update', 'path', 'fromFile', 'base64', 'get', 'thumbnail' ],
+        'library': [ 'read', 'load', 'save', 'exist', 'ids' ]
     },
     elHandlers = { 'ui': [ 'movein', 'moveout', 'itemMenu', 'askForMultiple', 'answer', 'hide', 'show' ] },
-    onHandlers = [ 'reload', 'reloadItems', 'reloadFolders', 'changeIcon', 'removeItem', 'removeFolder' ],
+    onHandlers = [ 'reload', 'reloadItems', 'reloadFolders', 'changeIcon', 'removeFile', 'removeFolder' ],
     handlers = {
         ...beHandlers,
         ...elHandlers

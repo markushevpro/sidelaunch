@@ -33,7 +33,7 @@ const
             buttons = parseButtons( query.get( 'buttons' ) || '' ),
 
             response = ( key: string ) => {
-                service.answer( key ).then(() => window.close())
+                window.backend.ui.answer( key ).then(() => window.close())
             }
 
         return (

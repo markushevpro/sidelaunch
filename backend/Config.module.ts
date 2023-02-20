@@ -1,47 +1,22 @@
-import { TSetting } from 'models'
+import path from 'path'
 
-import defaultConfig from '../default.config'
+import FS   from './FS.module'
+import Read from './Read.module'
 
-import DB from './db.class'
+class Config {
 
-class Config extends DB {
+    filePath = 'data/config.json'
 
-    get = async ( name: string ) => {
-        const res = await this.prisma.setting.findFirst({ where: { name } })
-
-        if ( !res ) {
-            const
-                created = await this.create({
-                    name,
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    value: ( defaultConfig as any )[ name ]
-                })
-
-            return created.value
-        }
-
-        return res.value
+    get = ( key: string ) => {
+        return this.read()[ key ]
     }
 
-    all = async () => {
-        return await this.prisma.setting.findMany({})
-    }
+    read = () => Read.json( path.resolve( FS.appPath(), this.filePath ))
 
-    set = async ({ name, value }: TSetting ) => {
-        return await this.prisma.setting.update({
-            where: { name },
-            data:  { value },
-        })
-    }
+    load = this.read
 
-    create = async ({ name, value }: TSetting ) => {
-        return await this.prisma.setting.create({
-            data: {
-                name,
-                value: `${value}`
-            }
-        })
-    }
+    write = ( data: string ) => FS.write( path.resolve( FS.appPath(), this.filePath ), data )
+
 }
 
 export default new Config()
