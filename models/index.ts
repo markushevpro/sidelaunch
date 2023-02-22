@@ -1,5 +1,6 @@
 export type TLink = {
     id: string,
+    weight: number,
     path: string,
     params: string,
     name: string,
@@ -10,6 +11,7 @@ export type TLink = {
 
 export type TFolder = {
     id: string,
+    weight: number,
     name: string,
     children: TItem[],
     parent?: string,

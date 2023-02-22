@@ -4,12 +4,11 @@
 const
     { ipcRenderer, contextBridge } = require( 'electron' ),
     beHandlers = {
-        'config':  [ 'get', 'read', 'load', 'write' ],
-        'fs':      [ 'run', 'appPath', 'read', 'write', 'copy', 'list', 'remove', 'openPath' ],
-        'read':    [ 'raw', 'base64', 'string', 'json' ],
-        'files':   [ 'extention', 'realPath', 'args', 'dir' ],
-        'icons':   [ 'clear', 'remove', 'load', 'update', 'path', 'fromFile', 'base64', 'get', 'thumbnail' ],
-        'library': [ 'read', 'load', 'save', 'exist', 'ids' ]
+        'config':  [ 'get', 'load', 'save' ],
+        'fs':      [ 'appPath', 'run', 'runLink', 'runFile', 'openPath' ],
+        'files':   [ 'extention', 'info', 'write', 'copy', 'remove' ],
+        'icons':   [ 'path', 'remove', 'clear', 'extract', 'get', 'update' ],
+        'library': [ 'raw', 'load', 'save', 'exist', 'ids' ]
     },
     elHandlers = { 'ui': [ 'movein', 'moveout', 'itemMenu', 'askForMultiple', 'answer', 'hide', 'show' ] },
     onHandlers = [ 'reload', 'reloadItems', 'reloadFolders', 'changeIcon', 'removeFile', 'removeFolder' ],

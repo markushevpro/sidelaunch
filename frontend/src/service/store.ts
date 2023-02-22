@@ -7,6 +7,7 @@ import utils from './utils'
 
 const emptyFolder = {
     id:       'none',
+    weight:   0,
     name:     '',
     children: []
 }
@@ -152,13 +153,15 @@ class Store {
     generate = {
         folder: ( name: string, parent?: string ): TFolder => ({
             id:       crypto.randomUUID(),
+            weight:   0,
             name,
             children: [],
             parent
         }),
 
-        link: ({ name, path, params, dir, parent }: Omit<TLink, 'id'> ): TLink => ({
-            id: crypto.randomUUID(),
+        link: ({ name, path, params, dir, parent }: Omit<TLink, 'id' | 'weight'> ): TLink => ({
+            id:     crypto.randomUUID(),
+            weight: 0,
             name,
             path,
             params,

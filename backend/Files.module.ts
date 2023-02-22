@@ -1,3 +1,6 @@
+/* eslint-disable no-case-declarations */
+import fs from 'fs'
+
 import { shell } from 'electron'
 
 class Files {
@@ -9,42 +12,47 @@ class Files {
                 : ''
         )
 
-    realPath = async ( path: string ) => {
-        const
-            ext = this.extention( path )
+    info = ( path: string ) => {
+        const ext = this.extention( path )
 
         switch ( ext ) {
             case 'lnk':
-                return shell.readShortcutLink( path ).target
+                const info = shell.readShortcutLink( path )
 
-            default:
-                return path
+                return {
+                    ext,
+                    path,
+                    ...info
+                }
+
+            default: {
+                return {
+                    ext,
+                    path,
+                    icon:     '',
+                    realPath: path,
+                    args:     '',
+                    dir:      ''
+                }
+            }
         }
     }
 
-    args = async ( path: string ) => {
-        const
-            ext = this.extention( path )
 
-        switch ( ext ) {
-            case 'lnk':
-                return shell.readShortcutLink( path ).args
-
-            default:
-                return ''
-        }
+    read = {
+        buffer: ( path: string ) => fs.readFileSync( path ),
+        base64: ( path: string ) => this.read.buffer( path ).toString( 'base64' ),
+        string: ( path: string ) => this.read.buffer( path ).toString(),
+        json:   ( path: string ) => JSON.parse( this.read.buffer( path ).toString())
     }
 
-    dir = async ( path: string ) => {
-        const
-            ext = this.extention( path )
+    write = ( path: string, data: string | NodeJS.ArrayBufferView ) => fs.writeFileSync( path, data )
 
-        switch ( ext ) {
-            case 'lnk':
-                return shell.readShortcutLink( path ).cwd
+    copy = ( from: string, to: string, force = false ) => fs.copyFileSync( from, to, force ? fs.constants.COPYFILE_FICLONE_FORCE : fs.constants.COPYFILE_EXCL )
 
-            default:
-                return ''
+    remove = ( file: string ) => {
+        if ( fs.existsSync( file )) {
+            fs.unlinkSync( file )
         }
     }
 }

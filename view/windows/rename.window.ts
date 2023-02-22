@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron'
+import { GlobalEvents } from 'view/modules'
 
 import BaseWindow from './window.class'
 
@@ -19,11 +19,11 @@ class Rename extends BaseWindow {
             this.flushURL()
         })
 
-        ipcMain.handle( 'ui.hide', () => {
+        GlobalEvents.watch( 'ui.hide', () => {
             this.flushURL()
         })
 
-        ipcMain.handle( 'ui.show', () => {
+        GlobalEvents.watch( 'ui.show', () => {
             if ( !this.ref || !this.ref.webContents.getURL()) {
                 return
             }

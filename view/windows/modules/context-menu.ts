@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ipcMain, Menu } from 'electron'
 
 import { TFolder, TLink } from 'models'
@@ -102,8 +103,6 @@ export default ( win: any ) => Menu.buildFromTemplate([
                             keepChildren: false
                         })
                     }
-
-                    /**/
                 }
             )
         }

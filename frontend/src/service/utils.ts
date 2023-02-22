@@ -3,6 +3,7 @@ import { isFolder }                        from 'utils'
 
 const topFolder = ( lib: TLibrary ): TFolder => ({
     id:       'top',
+    weight:   0,
     name:     '',
     children: lib
 })
@@ -18,6 +19,7 @@ const presave = ( item: TItem ): TItem => {
 const presaveFolder = ( item: TFolder ): TFolder => {
     return {
         id:       item.id,
+        weight:   item.weight ?? 0,
         name:     item.name,
         children: item.children.map( presave )
     }
@@ -26,6 +28,7 @@ const presaveFolder = ( item: TFolder ): TFolder => {
 const presaveLink = ( item: TLink ): TLink => {
     return {
         id:     item.id,
+        weight: item.weight ?? 0,
         path:   item.path,
         params: item.params,
         name:   item.name,

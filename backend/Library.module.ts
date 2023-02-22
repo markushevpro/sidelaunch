@@ -4,23 +4,24 @@ import { TFolder, TItem } from 'models'
 
 import { isFolder } from '../tools'
 
-import FS   from './FS.module'
-import Read from './Read.module'
+import Files  from './Files.module'
+import System from './System.module'
 
 class Library {
+
     filePath = 'data/data.json'
 
-    read = (): TItem[] => Read.json( path.resolve( FS.appPath(), this.filePath ))
+    raw = () => Files.read.string( path.resolve( System.appPath(), this.filePath ))
 
-    load = this.read
+    load = (): TItem[] => Files.read.json( path.resolve( System.appPath(), this.filePath ))
 
-    save = ( data: string ) => FS.write( path.resolve( FS.appPath(), this.filePath ), data )
+    save = ( data: string ) => Files.write( path.resolve( System.appPath(), this.filePath ), data )
 
     exist = ( id: string ) => this.ids().includes( id )
 
     ids = ( top: TItem[] = []) => {
         const
-            items = top || this.read()
+            items = top || this.load()
 
         let
             res: string[] = []

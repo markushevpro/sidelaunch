@@ -1,4 +1,7 @@
+import { GlobalEvents } from 'view/modules'
+
 import BaseWindow from './window.class'
+
 
 class Ask extends BaseWindow {
 
@@ -11,6 +14,28 @@ class Ask extends BaseWindow {
             height:      185,
             alwaysOnTop: true,
             show:        false
+        })
+
+        this.ref?.on( 'close', e => {
+            e.preventDefault()
+            this.flushURL()
+        })
+
+        GlobalEvents.watch( 'ui.hide', () => {
+            this.flushURL()
+        })
+
+        GlobalEvents.watch( 'ui.show', () => {
+            if ( !this.ref || !this.ref.webContents.getURL()) {
+                return
+            }
+            this.ref?.show()
+        })
+    }
+
+    flushURL = () => {
+        this.ref?.loadURL( this.ref?.webContents.getURL().split( '/' ).slice( 0, -1 ).join( '/' ) + '/loader' ).then(() => {
+            this.ref?.hide()
         })
     }
 

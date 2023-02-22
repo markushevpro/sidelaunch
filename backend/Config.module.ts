@@ -1,21 +1,17 @@
 import path from 'path'
 
-import FS   from './FS.module'
-import Read from './Read.module'
+import Files  from './Files.module'
+import System from './System.module'
 
 class Config {
 
     filePath = 'data/config.json'
 
-    get = ( key: string ) => {
-        return this.read()[ key ]
-    }
+    get = ( key: string ) => this.load()[ key ]
 
-    read = () => Read.json( path.resolve( FS.appPath(), this.filePath ))
+    load = () => Files.read.json( path.resolve( System.appPath(), this.filePath ))
 
-    load = this.read
-
-    write = ( data: string ) => FS.write( path.resolve( FS.appPath(), this.filePath ), data )
+    save = ( data: string ) => Files.write( path.resolve( System.appPath(), this.filePath ), data )
 
 }
 
