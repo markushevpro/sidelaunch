@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import classNames                     from 'classnames'
-import { DropTargetMonitor, useDrop } from 'react-dnd'
-import { NativeTypes }                from 'react-dnd-html5-backend'
+import classNames                                  from 'classnames'
+import { DndProvider, DropTargetMonitor, useDrop } from 'react-dnd'
+import { HTML5Backend, NativeTypes }               from 'react-dnd-html5-backend'
+
+import { TWithChildren } from 'utils'
 
 import styles from './drag-layer.module.scss'
 
-import type { WithChildren } from 'utils'
-
-type IDragLayerProps = WithChildren & {
+type IDragLayerProps = TWithChildren & {
     onDrop: ( file: any ) => void
 }
 
@@ -34,9 +34,11 @@ const DragLayer = ({ children, onDrop }: IDragLayerProps ) => {
         )
 
     return (
-        <div ref={drop} className={classNames( styles.dragLayer, isOver && canDrop && styles.canDrop, isOver && !canDrop && styles.cantDrop )}>
-            { children }
-        </div>
+        <DndProvider backend={HTML5Backend}>
+            <div ref={drop} className={classNames( styles.dragLayer, isOver && canDrop && styles.canDrop, isOver && !canDrop && styles.cantDrop )}>
+                { children }
+            </div>
+        </DndProvider>
     )
 }
 

@@ -2,20 +2,20 @@ import { Button, Input, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { useParams }           from 'react-router-dom'
 
-import { TItem } from 'models'
-import service   from 'service'
+import { TItem }               from 'models'
+import store, { StoreActions } from 'store'
 
 import styles from './rename.module.scss'
 
 const
     RenameDialog = () => {
         const
-            { id, type } = useParams(),
+            { id } = useParams(),
             [ item, $item ] = useState<TItem | null>( null ),
             [ value, $value ] = useState( 'hewheh' ),
 
             save = () => {
-                item && service.items.rename( item, value )
+                item && StoreActions.rename( item, value )
                 onClose()
             },
 
@@ -27,7 +27,7 @@ const
         useEffect(() => {
             if ( !id || id === 'loader' ) { return }
 
-            const item: TItem = service.get( id )
+            const item: TItem = store.get( id )
 
             $item( item )
             $value( item.name )

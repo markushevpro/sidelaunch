@@ -1,81 +1,38 @@
-import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons'
-import classnames                          from 'classnames'
-import { useEffect, useState }             from 'react'
-import Scrollbars                          from 'react-custom-scrollbars'
 
-import { TFolder, TItem } from 'models'
-import { useConfig }      from 'service'
-import { isFolder }       from 'utils'
+import { useEffect, useRef, useState } from 'react'
 
-import styles from './list.module.scss'
+import { TFolder, TItem }      from 'models'
+import store, { StoreActions } from 'store'
 
+import ListView from './components/ListView/ListView'
+import Uploader from './components/Uploader/Uploader'
 
-type IListProps = {
-    data: Array<TFolder | TItem>,
-    onItemClick: ( data: TFolder | TItem ) => void,
-    onMenu: ( data: TFolder | TItem ) => void,
-    onBack?: () => void,
-    onAdd: () => void
-}
-
-type IListItemProps = {
-    data: TFolder | TItem,
-    size?: number,
-    onClick: ( data: TFolder | TItem ) => void,
-    onMenu: ( data: TFolder | TItem ) => void
-}
-
-const ListItem = ({ data, size, onClick, onMenu }: IListItemProps ) => {
-    return (
-        <li className={styles.item} onClick={() => onClick( data )} onContextMenu={() => onMenu( data )}>
-            <img
-                draggable={false}
-                height={size}
-                src={data.icon}
-                title={data.name}
-                width={size}
-            />
-        </li>
-    )
-}
-
-const List = ({ data, onBack, onItemClick, onMenu, onAdd }: IListProps ) => {
+const List = ({ data }: { data: TFolder }) => {
     const
-        iconSize = useConfig( 'iconSize' )
+        uploader = useRef<HTMLInputElement>( null ),
+        [ iconChange, $iconChange ] = useState<TItem>(),
+
+        saveIcon = ( path: string ) => {
+            iconChange && StoreActions.updateIcon( iconChange, path )
+            $iconChange( void 0 )
+        }
+
+    useEffect(() => {
+        window.backend.on.changeIcon(( id: string ) => {
+            $iconChange( store.get( id ))
+
+            if ( uploader.current ) {
+                uploader.current.value = ''
+                uploader.current.click()
+            }
+        })
+    })
 
     return (
-        <Scrollbars
-            autoHide
-            autoHideDuration={0}
-            autoHideTimeout={500}
-            height={window.innerHeight}
-        >
-            <ul className={styles.list}>
-                {
-                    onBack && (
-                        <li className={classnames( 'center-container', styles.item, styles.backButton )} onClick={onBack}>
-                            <ArrowLeftOutlined />
-                        </li>
-                    )
-                }
-
-                {
-                    data.map( item => (
-                        <ListItem
-                            key={item.id}
-                            data={item}
-                            size={+( iconSize ?? 32 )}
-                            onClick={onItemClick}
-                            onMenu={onMenu}
-                        />
-                    ))
-                }
-
-                <li className={classnames( 'center-container', styles.item, styles.backButton )} onClick={onAdd}>
-                    <PlusOutlined />
-                </li>
-            </ul>
-        </Scrollbars>
+        <>
+            <Uploader ref={uploader} onUpload={saveIcon} />
+            <ListView data = { data } />
+        </>
     )
 }
 

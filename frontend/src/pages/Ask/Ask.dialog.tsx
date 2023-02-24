@@ -1,7 +1,5 @@
 import { Button } from 'antd'
 
-import service from 'service'
-
 import styles from '../Rename/rename.module.scss'
 
 const
