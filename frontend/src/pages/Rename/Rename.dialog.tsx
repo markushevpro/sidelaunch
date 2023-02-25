@@ -1,22 +1,26 @@
 import { Button, Input, Spin } from 'antd'
+import { observer }            from 'mobx-react-lite'
 import { useEffect, useState } from 'react'
 import { useParams }           from 'react-router-dom'
 
-import { TItem }                           from 'models'
-import store, { StoreActions, useCurrent } from 'store'
+import { TItem }               from 'models'
+import store, { StoreActions } from 'store'
 
 import styles from './rename.module.scss'
 
 const
-    RenameDialog = () => {
+    RenameDialog = observer(() => {
         const
-            current = useCurrent(),
+            { loaded } = store,
             { id, action } = useParams(),
             [ item, $item ] = useState<TItem | null>( null ),
             [ value, $value ] = useState( '' ),
 
-            save = () => {
-                item && StoreActions.rename( item, value )
+            save = async () => {
+                if ( item ) {
+                    await StoreActions.rename( item, value )
+                    window.backend.ui.reload()
+                }
                 onClose()
             },
 
@@ -30,7 +34,7 @@ const
         }, [])
 
         useEffect(() => {
-            if ( store.loaded ) {
+            if ( loaded ) {
                 const
                     item: TItem = store.get( id )
 
@@ -38,9 +42,7 @@ const
                 $value( item.name )
                 document.title = `Rename "${item.name}"`
             }
-        }, [ current ])
-
-        console.log( store.current.id, item?.id, store.library, action, store.loaded )
+        }, [ loaded ])
 
         return (
 
@@ -74,6 +76,6 @@ const
                 </div>
             </div>
         )
-    }
+    })
 
 export default RenameDialog

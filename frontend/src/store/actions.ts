@@ -16,6 +16,10 @@ class StoreActions {
             const found = store.get( id )
             this.removeFile( found as TLink )
         })
+
+        window.backend.on.reload(() => {
+            store.load( true )
+        })
     }
 
     current = (): TFolder => store.find( store.current?.id, store.library ) as TFolder
@@ -32,9 +36,15 @@ class StoreActions {
 
         window.backend.ui.askForMultiple( files.length ).then(( answer: string ) => {
             switch ( answer ) {
+
                 case 'folder':
                     this.addFilesAsFolder( files )
                     break
+
+                case 'close':
+                    //Do nothing
+                    break
+
                 default:
                     this.addMultipleFiles( files )
             }

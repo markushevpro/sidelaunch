@@ -92,6 +92,10 @@ class Main extends BaseWindow {
         },
 
         listen: () => {
+            ipcMain.handle( 'ui.reload', () => {
+                this.ref?.webContents.send( 'reload' )
+            })
+
             ipcMain.handle( 'ui.movein', () => {
                 return this.move.in()
             })
@@ -127,7 +131,6 @@ class Main extends BaseWindow {
                     )
 
                     ipcMain.handleOnce( 'ui.answer', ( _, result ) => {
-                        console.log( 'answer', result )
                         resolve( result )
                     })
                 })

@@ -18,10 +18,8 @@
     "start": "react-app-rewired start",
     "desktop": "set NODE_ENV=development && electron . -r ts-node/register",
     "desktop:prod": "set NODE_ENV=production && yarn db:build && electron . -r ts-node/register",
-    "desktop:nodb": "set NODE_ENV=development && electron . -r ts-node/register",
     "run:local": "cd ./frontend/build && ws -p 9101",
     "build": "react-app-rewired build",
-    "build:backend": "yarn db:migrate && yarn middleware",
     "bundle": "set NODE_ENV=production && electron-builder --dir",
     "middleware": "cd ./view/modules/middleware && ts-node generate && eslint --fix ./**.*"
   },

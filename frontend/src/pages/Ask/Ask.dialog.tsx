@@ -1,6 +1,10 @@
-import { Button } from 'antd'
+import { Button }    from 'antd'
+import { useEffect } from 'react'
 
 import styles from '../Rename/rename.module.scss'
+
+let
+    answerState = false
 
 const
     dangerKeys = [ 'danger', 'remove' ],
@@ -31,8 +35,19 @@ const
             buttons = parseButtons( query.get( 'buttons' ) || '' ),
 
             response = ( key: string ) => {
-                window.backend.ui.answer( key ).then(() => window.close())
+                window.backend.ui.answer( key ).then(() => {
+                    answerState = true
+                    window.close()
+                })
             }
+
+        useEffect(() => {
+            window.addEventListener( 'beforeunload', () => {
+                if ( !answerState ) {
+                    window.backend.ui.answer( 'close' )
+                }
+            })
+        }, [])
 
         return (
 

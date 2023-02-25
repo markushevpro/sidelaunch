@@ -10,8 +10,8 @@ const
         'icons':   [ 'path', 'remove', 'clear', 'extract', 'get', 'update' ],
         'library': [ 'raw', 'load', 'save', 'exist', 'ids' ]
     },
-    elHandlers = { 'ui': [ 'movein', 'moveout', 'itemMenu', 'askForMultiple', 'answer', 'hide', 'show' ] },
-    onHandlers = [ 'reload', 'reloadItems', 'reloadFolders', 'changeIcon', 'removeFile', 'removeFolder' ],
+    elHandlers = { 'ui': [ 'movein', 'moveout', 'itemMenu', 'askForMultiple', 'answer', 'hide', 'show', 'reload' ] },
+    onHandlers = [ 'reload', 'changeIcon', 'removeFile', 'removeFolder' ],
     handlers = {
         ...beHandlers,
         ...elHandlers

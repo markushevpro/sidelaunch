@@ -4,12 +4,12 @@ import { DndProvider }  from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { DragLayer, List, MoveLayer } from 'components'
-import { useCurrent, StoreActions }   from 'store'
+import store, { StoreActions }        from 'store'
 
 const
     MainPage = observer(() => {
         const
-            current = useCurrent()
+            { current } = store
 
         return (
             <MoveLayer className="app">

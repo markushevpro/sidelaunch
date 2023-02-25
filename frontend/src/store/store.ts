@@ -68,8 +68,9 @@ class Store {
         this.load()
     }
 
-    load = async () => {
+    load = async ( keepFolder = false ) => {
         const
+            cur = this.current?.id ?? 'top',
             config: TConfig = await window.backend.config.load(),
             rawLib: TLibrary = await window.backend.library.load(),
             library: TFolder = await prepareForView( useAsTopFolder( rawLib )) as TFolder
@@ -77,7 +78,7 @@ class Store {
         this.config = config
         this.library = library
         this.loaded = true
-        this.set( 'top' )
+        this.set( keepFolder ? cur : 'top' )
     }
 
     update = async ( id: string, data: TStruct ) => {

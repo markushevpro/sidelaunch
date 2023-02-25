@@ -2,14 +2,14 @@ import { TItem }     from 'models'
 import { useConfig } from 'store'
 import { run }       from 'utils'
 
-export type IListItemProps = {
+export type TListItemProps = {
     data: TItem,
     size?: number,
     className?: string
 }
 
 
-const ListItem = ({ data, className }: IListItemProps ) => {
+const ListItem = ({ data, className }: TListItemProps ) => {
     const
         size = useConfig( 'iconSize' ) || 32,
         runItem = () => run( data ),

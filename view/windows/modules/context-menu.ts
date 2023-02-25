@@ -76,7 +76,6 @@ export default ( win: any ) => Menu.buildFromTemplate([
                         )
 
                         ipcMain.handleOnce( 'ui.answer', ( _, result ) => {
-                            console.log( '[ANSWER]', result )
                             if ( !win._item ) { return }
 
                             switch ( result ) {
@@ -95,6 +94,7 @@ export default ( win: any ) => Menu.buildFromTemplate([
                                     break
 
                                 default:
+                                    console.error( 'Unknown answer:', result )
                                     //Do nothing
                             }
                         })
