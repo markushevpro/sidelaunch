@@ -26,6 +26,7 @@
         "models": ["models", "../models"],
         "tools": ["tools", "frontend/src/tools", "src/tools", "../tools"],
         "view": ["view"],
+        "view/modules": ["view/modules"],
       }
     },
     "include": ["**/*.ts", "**/*.tsx", "**/*.js"],

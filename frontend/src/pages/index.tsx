@@ -11,7 +11,7 @@ const
             element: <MainPage />
         },
         {
-            path:    '/rename/:type/:id',
+            path:    '/:action/:id',
             element: <RenameDialog />
         },
         {

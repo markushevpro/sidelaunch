@@ -1,12 +1,13 @@
-import { GlobalEvents } from 'view/modules'
-
 import BaseWindow from './window.class'
 
 
 class Ask extends BaseWindow {
 
-    init = () => {
-        this.createWindow( void 0, void 0, {
+    show = async ( url: string, text: string, buttons: Record<string, string>, debug: boolean ) => {
+        const
+            fullUrl = `${url}?text=${text}&buttons=${this.buttons( buttons )}`
+
+        this.createWindow( fullUrl, debug, {
             x:           void 0,
             y:           void 0,
             center:      true,
@@ -16,36 +17,7 @@ class Ask extends BaseWindow {
             show:        false
         })
 
-        this.ref?.on( 'close', e => {
-            e.preventDefault()
-            this.flushURL()
-        })
-
-        GlobalEvents.watch( 'ui.hide', () => {
-            this.flushURL()
-        })
-
-        GlobalEvents.watch( 'ui.show', () => {
-            if ( !this.ref || !this.ref.webContents.getURL()) {
-                return
-            }
-            this.ref?.show()
-        })
-    }
-
-    flushURL = () => {
-        this.ref?.loadURL( this.ref?.webContents.getURL().split( '/' ).slice( 0, -1 ).join( '/' ) + '/loader' ).then(() => {
-            this.ref?.hide()
-        })
-    }
-
-    show = async ( url: string, text: string, buttons: Record<string, string>, debug: boolean ) => {
-        if ( !this.ref ) { return }
-
-        this.ref.loadURL( `${url}?text=${text}&buttons=${this.buttons( buttons )}` )
-        ;( debug ) && this.ref.webContents.openDevTools({ mode: 'detach' })
-
-        this.ref.once( 'ready-to-show', () => {
+        this.ref?.once( 'ready-to-show', () => {
             this.ref?.show()
         })
     }

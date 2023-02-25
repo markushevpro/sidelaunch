@@ -2,24 +2,26 @@ import { TFolder, TItem, TLink } from 'models'
 
 
 import { createFolder, createLink } from './generate'
-import { prepareForView }           from './manipulations'
 import store                        from './store'
 
 class StoreActions {
 
     constructor () {
-        window.backend.on.removeFolder(({ id, recursive }: { id: string, recursive: boolean }) => {
-            this.removeFolder( store.get( id ) as TFolder, recursive )
+        window.backend.on.removeFolder(({ id, keepChildren }: { id: string, keepChildren: boolean }) => {
+            const found = store.get( id )
+            this.removeFolder( found as TFolder, keepChildren )
         })
 
         window.backend.on.removeFile(( id: string ) => {
-            this.removeFile( store.get( id ) as TLink )
+            const found = store.get( id )
+            this.removeFile( found as TLink )
         })
     }
 
-    rename = ( item: TItem, name: string ) => {
-        item.name = name
-        store.save()
+    current = (): TFolder => store.find( store.current?.id, store.library ) as TFolder
+
+    rename = async ( item: TItem, name: string ) => {
+        await store.update( item.id, { name })
     }
 
     append = ( files: File[]) => {
@@ -41,37 +43,40 @@ class StoreActions {
 
     addFolder = async ( name: string ): Promise<TFolder> => {
         const
-            target = store.folder(),
-            newFolder = await prepareForView( createFolder( name, target.id )) as TFolder
+            parent = this.current(),
+            newFolder = await store.insert( parent.id, createFolder( name, parent.id )) as TFolder
 
-        target.children = [ ...target.children, newFolder ]
-        store.set( newFolder )
-
-        store.save()
         return newFolder
     }
 
     addFilesAsFolder = async ( files: File[]) => {
         const
             name = `New ${files.length} element${files.length === 1 ? 's' : ''}`,
-            target = store.folder(),
-            newFolder = await prepareForView( createFolder( name, target?.id )) as TFolder
+            target = this.current(),
+            newFolder = await store.insert( target.id, createFolder( name, target.id )) as TFolder
 
-        target.children = [ ...target.children, newFolder ]
-        store.current = newFolder
+        store.set( newFolder.id )
 
         this.addMultipleFiles( files )
-
-        store.save()
     }
 
-    addMultipleFiles = ( files: File[]) => {
-        files.forEach(( file ) => {
-            this.addSingleFile( file )
-        })
+    addMultipleFiles = async ( files: File[]) => {
+        const items: TItem[] = []
+
+        for ( let i = 0; i < files.length; i++ ) {
+            const generated = await this.generateLink( files[ i ])
+            ;( generated ) && ( items.push( generated ))
+        }
+
+        await store.batchInsert( this.current().id, items )
     }
 
     addSingleFile = async ( file: File ) => {
+        const link = await this.generateLink( file )
+        ;( link ) && ( await store.insert( link.parent ?? 'top', link ))
+    }
+
+    generateLink = async ( file: File ): Promise<TLink | undefined> => {
         const
             checked = this.checkFile( file )
 
@@ -80,25 +85,23 @@ class StoreActions {
         }
 
         const
-            path = await window.backend.files.realPath( file.path ),
-            params = await window.backend.files.args( file.path ),
-            dir = await window.backend.files.dir( file.path ),
+            info = await window.backend.files.info( file.path ),
+            path = info.realPath,
+            params = info.args,
+            dir = info.dir,
             name = file.name.split( '.' ).slice( 0, -1 ).join( '.' ),
-            parent = store.folder(),
+            parent = this.current(),
             item = createLink({
                 name,
                 path,
-                parent: store.current?.id,
+                parent: parent.id,
                 params,
                 dir
             })
 
         item.icon = await this.updateIcon( item, file.path )
 
-        parent.children = [ ...parent.children, item ]
-        store.current = parent
-
-        store.save()
+        return item
     }
 
     checkFile = ( file: File ) => {
@@ -127,32 +130,20 @@ class StoreActions {
         }
     }
 
-    removeFile = ( link: TLink ) => {
-        const
-            parent: TFolder | undefined = store.find( link.parent, store.library ) as TFolder
-
-        if ( !parent ) { return }
-
-        parent.children.splice( parent.children.findIndex(( item: TItem ) => item.id === link.id ), 1 )
-
-        parent.children = [ ...parent.children ]
-        store.save()
+    removeFile = async ( link: TLink ) => {
+        await store.remove( link.id )
     }
 
-    removeFolder = ( folder: TFolder, keepChildren: boolean ) => {
-        const
-            parent: TFolder | undefined = store.find( folder.parent, store.library ) as TFolder
-
-        if ( !parent ) { return }
-
+    removeFolder = async ( folder: TFolder, keepChildren: boolean ) => {
         if ( keepChildren ) {
-            parent.children = [ ...parent.children, ...folder.children ].filter(( item: TItem, index: number, arr: TItem[]) => arr.indexOf( item ) === index )
+            const
+                target = store.find( folder.id, store.library ) as TFolder,
+                kids = target.children
+
+            await store.batchInsert( target.parent ?? 'top', kids )
         }
 
-        parent.children.splice( parent.children.findIndex(( item: TItem ) => item.id === folder.id ), 1 )
-
-        parent.children = [ ...parent.children ]
-        store.save()
+        await store.remove( folder.id )
     }
 }
 

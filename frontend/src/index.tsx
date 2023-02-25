@@ -19,12 +19,3 @@ const
     root = ReactDOM.createRoot( document.getElementById( 'root' ) as HTMLElement )
 
 root.render( <App /> )
-
-/*
-window.addEventListener( 'DOMContentLoaded', () => {
-    if ( window.location.href.split( '/' ).pop() === 'loader' ) {
-        return
-    }
-    window.backend.ui.show()
-})
-*/

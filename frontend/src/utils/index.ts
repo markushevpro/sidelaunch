@@ -20,7 +20,7 @@ export const run = ( data: TItem ) => {
     IorF(
         data,
         () => runFile( data as TLink ),
-        () => store.set( data as TFolder )
+        () => store.set( data.id )
     )
 }
 

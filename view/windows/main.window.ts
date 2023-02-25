@@ -8,10 +8,9 @@ import Backend      from '../../backend'
 import { isFolder } from '../../tools'
 
 
-import AskDialog    from './ask.window'
-import contextMenu  from './modules/context-menu'
-import RenameDialog from './rename.window'
-import BaseWindow   from './window.class'
+import AskDialog   from './ask.window'
+import contextMenu from './modules/context-menu'
+import BaseWindow  from './window.class'
 
 class Main extends BaseWindow {
     url?: string
@@ -49,7 +48,6 @@ class Main extends BaseWindow {
 
         this.init.contextMenu()
         this.init.events()
-        this.init.windows()
     }
 
     init = {
@@ -57,11 +55,6 @@ class Main extends BaseWindow {
             this.size = +( await Backend.Config.get( 'iconSize' )) + 32
             this.offset = -this.size + this.touchSize
             this.display = await this.findDisplay()
-        },
-
-        windows: () => {
-            RenameDialog.init()
-            AskDialog.init()
         },
 
         events: () => {
@@ -134,6 +127,7 @@ class Main extends BaseWindow {
                     )
 
                     ipcMain.handleOnce( 'ui.answer', ( _, result ) => {
+                        console.log( 'answer', result )
                         resolve( result )
                     })
                 })

@@ -11,7 +11,7 @@ export type IListItemProps = {
 
 const ListItem = ({ data, className }: IListItemProps ) => {
     const
-        size = useConfig( 'iconSize' ) ?? 32,
+        size = useConfig( 'iconSize' ) || 32,
         runItem = () => run( data ),
         showMenu = () => window.backend.ui.itemMenu( JSON.stringify( data ))
 

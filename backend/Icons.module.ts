@@ -55,13 +55,13 @@ class Icons {
             const
                 ext = Files.extention( path )
 
-            switch ( ext ) {
+            switch ( ext?.toLowerCase()) {
                 case 'lnk':
                     const linkInfo = Files.info( path )
 
                     return ( linkInfo.icon )
                         ? this.extract( linkInfo.icon )
-                        : this.extract( linkInfo.path )
+                        : this.extract( linkInfo.realPath )
 
                 case 'exe':
                 case 'bat':
@@ -85,9 +85,11 @@ class Icons {
             case 'bmp':
             case 'jpeg':
             case 'gif':
+                console.log( 'image' )
                 return this.read.image( path )
 
             case 'ico':
+                console.log( 'icon' )
                 return this.read.path( path )
 
             default:
@@ -108,6 +110,8 @@ class Icons {
         if ( icon ) {
             Files.write( path.resolve( this.dir, `${payload.id}.png` ), icon.toPNG())
         }
+
+        console.log( icon )
 
         return icon?.toDataURL()
     }

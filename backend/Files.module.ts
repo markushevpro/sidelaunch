@@ -22,7 +22,10 @@ class Files {
                 return {
                     ext,
                     path,
-                    ...info
+                    icon:     info.icon,
+                    realPath: info.target,
+                    args:     info.args,
+                    dir:      info.cwd
                 }
 
             default: {

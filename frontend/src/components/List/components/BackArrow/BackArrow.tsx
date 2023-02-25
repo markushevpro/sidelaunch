@@ -1,8 +1,7 @@
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import classnames            from 'classnames'
 
-import { TFolder } from 'models'
-import store       from 'store'
+import store from 'store'
 
 interface TBackArrowProps {
     target?: string,
@@ -12,7 +11,7 @@ interface TBackArrowProps {
 const BackArrow = ({ className, target }: TBackArrowProps ) => {
     const
         goBack = () => {
-            store.set( store.get( target ) as TFolder )
+            store.set( target ?? 'top' )
         }
 
     if ( !target ) { return null }

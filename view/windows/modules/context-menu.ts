@@ -13,7 +13,7 @@ export default ( win: any ) => Menu.buildFromTemplate([
         label: 'Rename',
         click: () => {
             if ( !win._item ) { return }
-            RenameDialog.show( `${win.url}/rename/item/${win._item?.id}`, win.debug )
+            RenameDialog.show( `${win.url}/rename/${win._item?.id}`, win.debug )
         }
     },
     {
@@ -76,6 +76,7 @@ export default ( win: any ) => Menu.buildFromTemplate([
                         )
 
                         ipcMain.handleOnce( 'ui.answer', ( _, result ) => {
+                            console.log( '[ANSWER]', result )
                             if ( !win._item ) { return }
 
                             switch ( result ) {

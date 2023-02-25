@@ -1,5 +1,5 @@
 import { TFolder, TItem, TLibrary, TLink } from 'models'
-import { isFolder }                        from 'tools'
+import { isFolder }                        from 'utils'
 
 export const useAsTopFolder = ( lib: TLibrary ): TFolder => ({
     id:       'top',
@@ -43,7 +43,7 @@ export const addIcons = async ( item: TItem ) => {
         ( item as TFolder ).children.forEach( async ( kid: TItem ) => await addIcons( kid ))
     }
 
-    item.icon = `data:image/png;base64,${await window.backend.icons.load( item.id )}`
+    item.icon = `data:image/png;base64,${await window.backend.icons.get( item.id )}`
 
     return item
 }

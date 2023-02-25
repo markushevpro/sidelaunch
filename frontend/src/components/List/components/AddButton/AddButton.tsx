@@ -8,7 +8,7 @@ const AddButton = ({ className }: TWithClassName ) => {
     const
         onAdd = async () => {
             const folder = await StoreActions.addFolder( 'New folder' )
-            store.set( folder )
+            store.set( folder.id )
         }
 
     return (

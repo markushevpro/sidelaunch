@@ -26,7 +26,7 @@ const List = ({ data }: { data: TFolder }) => {
                 uploader.current.click()
             }
         })
-    })
+    }, [])
 
     return (
         <>
