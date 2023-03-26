@@ -1,5 +1,6 @@
 /* eslint-disable no-case-declarations */
 import { spawn } from 'child_process'
+import path      from 'path'
 
 import { app, shell } from 'electron'
 
@@ -9,7 +10,13 @@ type TStruct = {
 
 class System {
 
-    appPath = () => app ? app.getAppPath() : `${__dirname}/..`
+    appPath = () => {
+        return app
+            ? process.env.NODE_ENV?.trim() === 'development'
+                ? app.getAppPath()
+                : path.dirname( app.getPath( 'exe' ))
+            : `${__dirname}/..`
+    }
 
     run = ( pathOrPayload: string | TStruct ) => {
         ( typeof pathOrPayload === 'string' )

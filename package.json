@@ -11,7 +11,10 @@
     "productName": "MPRO FastAccess",
     "extends": null,
     "extraFiles": [
-      "db/data.json"
+      "assets/*",
+      "data/data.json",
+      "data/config.json",
+      "data/icons"
     ]
   },
   "scripts": {
@@ -20,7 +23,7 @@
     "desktop:prod": "set NODE_ENV=production && yarn db:build && electron . -r ts-node/register",
     "run:local": "cd ./frontend/build && ws -p 9101",
     "build": "react-app-rewired build",
-    "bundle": "set NODE_ENV=production && electron-builder --dir",
+    "bundle": "set NODE_ENV=production && yarn build && electron-builder --dir",
     "middleware": "cd ./view/modules/middleware && ts-node generate && eslint --fix ./**.*"
   },
   "devDependencies": {
@@ -39,6 +42,7 @@
     "classnames": "^2.3.2",
     "electron": "^23.2.0",
     "electron-builder": "^23.6.0",
+    "electron-rebuild": "^3.2.9",
     "eslint": "^8.0.1",
     "eslint-config-standard": "^17.0.0",
     "eslint-import-resolver-typescript": "^3.5.2",
@@ -65,9 +69,9 @@
     "typescript-plugin-css-modules": "^4.1.1"
   },
   "dependencies": {
+    "@resvg/resvg-js": "^2.4.1",
     "@types/encoding-japanese": "^2.0.1",
     "electron-disable-minimize": "^2.1.0",
-    "electron-rebuild": "^3.2.9",
     "encoding-japanese": "^2.0.0",
     "express": "^4.18.2",
     "ts-node": "^10.9.1"

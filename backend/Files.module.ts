@@ -38,13 +38,11 @@ class Files {
                     values[ pair[ 0 ].toLowerCase() ] = pair[ 1 ]
                 })
 
-                console.log( values )
-
                 return {
                     ext,
                     path,
-                    icon:     values.iconfile.toString(),
-                    realPath: values.url.toString(),
+                    icon:     values.iconfile?.toString(),
+                    realPath: values.url?.toString(),
                     args:     '',
                     dir:      ''
                 }
