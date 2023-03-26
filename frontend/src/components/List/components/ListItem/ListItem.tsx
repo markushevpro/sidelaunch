@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+
 import { TItem }     from 'models'
 import { useConfig } from 'store'
 import { run }       from 'utils'
@@ -16,7 +18,7 @@ const ListItem = ({ data, className }: TListItemProps ) => {
         showMenu = () => window.backend.ui.itemMenu( JSON.stringify( data ))
 
     return (
-        <li className={className} onClick={runItem} onContextMenu={showMenu}>
+        <li className={classNames( 'list-item', className )} onClick={runItem} onContextMenu={showMenu}>
             <img
                 draggable={false}
                 height={size}

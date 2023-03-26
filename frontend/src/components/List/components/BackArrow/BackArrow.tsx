@@ -5,7 +5,7 @@ import store from 'store'
 
 interface TBackArrowProps {
     target?: string,
-    className: string
+    className?: string
 }
 
 const BackArrow = ({ className, target }: TBackArrowProps ) => {

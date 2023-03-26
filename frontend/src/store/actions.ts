@@ -28,6 +28,10 @@ class StoreActions {
         await store.update( item.id, { name })
     }
 
+    updateArgs = async ( item: TLink, params: string ) => {
+        await store.update( item.id, { params })
+    }
+
     append = ( files: File[]) => {
         if ( files.length < 2 ) {
             this.addSingleFile( files[ 0 ])

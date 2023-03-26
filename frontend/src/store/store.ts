@@ -116,6 +116,24 @@ class Store {
         await this.save( lib )
     }
 
+    move = async ( targetId: string, data: TItem ) => {
+        const
+            lib = { ...this.library },
+            parent = this.find( data.parent, lib ) as TFolder,
+            target = this.find( targetId, lib ) as TFolder,
+            insertItem = { ...data }
+
+        if ( target.id === parent.id || target.id === data.id ) {
+            return
+        }
+
+        insertItem.parent = targetId
+        target.children = [ ...target.children, insertItem ]
+        parent.children.splice( parent.children.findIndex(( item: TItem ) => item.id === data.id ), 1 )
+
+        await this.save( lib )
+        return target
+    }
 
     insert = async ( parentId: string, data: TItem ) => {
         const
