@@ -15,9 +15,6 @@ export interface TDroppableProps extends TListItemProps, TWithChildren {
 }
 
 export const DroppableItem = ({ hidden, data, children, className, onMove, onDrop }: TDroppableProps ) => {
-
-    if ( hidden ) { return null }
-
     const
         ref = useRef<HTMLDivElement>( null ),
         [ { handlerId }, drop ] = useDrop<TItem, void, { handlerId: Identifier | null }>({
@@ -36,6 +33,8 @@ export const DroppableItem = ({ hidden, data, children, className, onMove, onDro
                 onMove( item, data )
             },
         })
+
+    if ( hidden ) { return null }
 
     drop( ref )
 

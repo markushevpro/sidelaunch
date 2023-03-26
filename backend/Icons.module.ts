@@ -85,11 +85,9 @@ class Icons {
             case 'bmp':
             case 'jpeg':
             case 'gif':
-                console.log( 'image' )
                 return this.read.image( path )
 
             case 'ico':
-                console.log( 'icon' )
                 return this.read.path( path )
 
             default:
@@ -110,8 +108,6 @@ class Icons {
         if ( icon ) {
             Files.write( path.resolve( this.dir, `${payload.id}.png` ), icon.toPNG())
         }
-
-        console.log( icon )
 
         return icon?.toDataURL()
     }

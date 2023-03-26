@@ -28,10 +28,6 @@ class StoreActions {
         await store.update( item.id, { name })
     }
 
-    updateArgs = async ( item: TLink, params: string ) => {
-        await store.update( item.id, { params })
-    }
-
     append = ( files: File[]) => {
         if ( files.length < 2 ) {
             this.addSingleFile( files[ 0 ])
@@ -113,7 +109,7 @@ class StoreActions {
                 dir
             })
 
-        item.icon = await this.updateIcon( item, file.path )
+        item.icon = await this.updateIcon( item, info.icon || file.path )
 
         return item
     }
@@ -142,6 +138,10 @@ class StoreActions {
         } else {
             return await window.backend.icons.remove( item.id )
         }
+    }
+
+    updateArgs = async ( item: TLink, params: string ) => {
+        await store.update( item.id, { params })
     }
 
     removeFile = async ( link: TLink ) => {

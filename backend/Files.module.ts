@@ -2,6 +2,9 @@
 import fs from 'fs'
 
 import { shell } from 'electron'
+import encoding  from 'encoding-japanese'
+
+import { TStruct } from 'utils'
 
 class Files {
 
@@ -12,10 +15,40 @@ class Files {
                 : ''
         )
 
+    encoding = ( path: string ) => {
+        const
+            preContent = this.read.buffer( path ),
+            enc = encoding.detect( preContent )
+
+        return enc === 'UTF16' ? 'utf16le' : 'utf8'
+    }
+
     info = ( path: string ) => {
         const ext = this.extention( path )
 
         switch ( ext ) {
+            case 'url':
+                const
+                    content = fs.readFileSync( path, this.encoding( path )),
+                    lines = content.replace( /\r/g, '' ).split( '\n' ),
+                    pairs = lines.map(( line: string ) => line.split( '=' )),
+                    values: TStruct = {}
+
+                pairs.forEach(( pair: string[]) => {
+                    values[ pair[ 0 ].toLowerCase() ] = pair[ 1 ]
+                })
+
+                console.log( values )
+
+                return {
+                    ext,
+                    path,
+                    icon:     values.iconfile.toString(),
+                    realPath: values.url.toString(),
+                    args:     '',
+                    dir:      ''
+                }
+
             case 'lnk':
                 const info = shell.readShortcutLink( path )
 

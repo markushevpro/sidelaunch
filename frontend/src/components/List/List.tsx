@@ -13,8 +13,12 @@ const List = ({ data }: { data: TFolder }) => {
         [ iconChange, $iconChange ] = useState<TItem>(),
 
         saveIcon = ( path: string ) => {
-            iconChange && StoreActions.updateIcon( iconChange, path )
-            $iconChange( void 0 )
+            if ( iconChange ) {
+                $iconChange( void 0 )
+                StoreActions.updateIcon( iconChange, path ).then(() => {
+                    store.load( true )
+                })
+            }
         }
 
     useEffect(() => {
