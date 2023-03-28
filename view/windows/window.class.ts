@@ -1,8 +1,13 @@
 import path from 'path'
 
-import { BrowserWindowConstructorOptions, BrowserWindow } from 'electron'
+import { BrowserWindowConstructorOptions, BrowserWindow, nativeImage } from 'electron'
+
+import Backend from '../../backend'
+
 
 const
+    iconPath = path.resolve( Backend.FS.appPath(), '../../assets/icon.png' ),
+    icon = nativeImage.createFromPath( iconPath ),
     defaultOptions: BrowserWindowConstructorOptions = {
         x:               -9999,
         y:               -9999,
@@ -14,6 +19,7 @@ const
         show:            false,
         alwaysOnTop:     false,
         focusable:       true,
+        icon,
         webPreferences:  {
             preload:          path.resolve( __dirname, '../modules/middleware/frontend.middleware.js' ),
             contextIsolation: true,
@@ -31,6 +37,7 @@ class BaseWindow {
         })
 
         this.ref.removeMenu()
+        this.ref.setIcon( iconPath )
 
         ;( url ) && ( this.ref.loadURL( url ))
         ;( debug ) && this.ref.webContents.openDevTools({ mode: 'detach' })

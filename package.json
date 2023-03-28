@@ -1,15 +1,16 @@
 {
-  "name": "fastaccess",
-  "version": "0.0.9-candidate",
-  "description": "Quick access toolbar",
+  "name": "sidelaunch",
+  "version": "0.1.0",
+  "description": "Quick access sidebar",
   "main": "index.js",
   "author": "markushev.pro",
   "license": "MIT",
   "private": true,
   "build": {
-    "appId": "com.fastaccess.markushevpro",
-    "productName": "MPRO FastAccess",
+    "appId": "com.sidelaunch.markushevpro",
+    "productName": "Sidelaunch",
     "extends": null,
+    "icon": "./assets/logo.png",
     "extraFiles": [
       "assets/*",
       "data/data.json",
