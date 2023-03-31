@@ -6,7 +6,7 @@ import Backend from '../../backend'
 
 
 const
-    iconPath = path.resolve( Backend.FS.appPath(), '../../assets/icon.png' ),
+    iconPath = path.resolve( Backend.FS.appPath(), 'assets/icon.png' ),
     icon = nativeImage.createFromPath( iconPath ),
     defaultOptions: BrowserWindowConstructorOptions = {
         x:               -9999,
