@@ -31,6 +31,5 @@
 *.tsbuildinfo
 
 # runner
-/go-runner/runner.exe
-/go-runner/rscr_*
+go-runner/runner.exe
 go-runner/rsrc_*
