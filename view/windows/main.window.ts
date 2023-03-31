@@ -32,7 +32,7 @@ class Main extends BaseWindow {
     _item: TItem | null = null
     _lockScroll = false
 
-    show = async ( url: string, debug: boolean ) => {
+    show = async ( url: string, debug: boolean, onShow?: () => void ) => {
         this.url = url
         this.debug = debug
 
@@ -42,7 +42,7 @@ class Main extends BaseWindow {
             frame:       false,
             alwaysOnTop: true,
             focusable:   false,
-        })
+        }, onShow )
 
         this.ref?.setAlwaysOnTop( true )
 

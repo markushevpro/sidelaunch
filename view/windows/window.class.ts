@@ -30,11 +30,13 @@ const
 class BaseWindow {
     ref?: Electron.BrowserWindow
 
-    createWindow = ( url?: string, debug?: boolean, config?: BrowserWindowConstructorOptions ) => {
+    createWindow = ( url?: string, debug?: boolean, config?: BrowserWindowConstructorOptions, onShow?: () => void ) => {
         this.ref = new BrowserWindow({
             ...defaultOptions,
             ...( config || {})
         })
+
+        ;( onShow ) && ( this.ref.on( 'ready-to-show', onShow ))
 
         this.ref.removeMenu()
         this.ref.setIcon( iconPath )

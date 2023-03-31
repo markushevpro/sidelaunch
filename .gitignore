@@ -29,3 +29,7 @@
 
 # typescript
 *.tsbuildinfo
+
+# runner
+/go-runner/runner.exe
+/go-runner/rscr_*.*
