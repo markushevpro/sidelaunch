@@ -32,4 +32,5 @@
 
 # runner
 /go-runner/runner.exe
-/go-runner/rscr_*.*
+/go-runner/rscr_*
+go-runner/rsrc_*
