@@ -1,4 +1,6 @@
-import electron, { Tray, Menu, nativeImage } from 'electron'
+import electron, { app, Tray, Menu, nativeImage } from 'electron'
+
+import mainWindow from '../../windows/main.window'
 
 class TrayIcon {
 
@@ -10,10 +12,26 @@ class TrayIcon {
         const
             defMenu = Menu.buildFromTemplate([
                 {
+                    label: 'Show',
+                    type:  'normal',
+                    click: () => {
+                        mainWindow.move.in()
+                    }
+                },
+                {
+                    label: 'Restart',
+                    type:  'normal',
+                    click: () => {
+                        app.relaunch()
+                        app.exit()
+                    }
+                },
+                { type: 'separator' },
+                {
                     label: 'Exit',
                     type:  'normal',
                     click: () => {
-                        electron.app.quit()
+                        app.quit()
                         process.exit()
                     }
                 }
