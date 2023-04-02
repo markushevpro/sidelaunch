@@ -1,6 +1,6 @@
 {
   "name": "sidelaunch",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Sidelaunch",
   "main": "index.js",
   "author": "markushev.pro",
@@ -36,7 +36,7 @@
     "winres": "cd .\\dist\\%npm_package_version%\\bin && go-winres extract Sidelaunch.exe && move .\\winres ..\\..\\..\\go-runner\\winres && cd ..\\..\\..\\go-runner && go-winres make && rmdir /s /q winres",
     "build:runner": "yarn build:bin && yarn winres && cd .\\go-runner && go build -ldflags \"-H windowsgui\" && copy .\\runner.exe ..\\dist\\%npm_package_version%\\Sidelaunch.exe",
     "bundle": "set NODE_ENV=production && yarn build:front && yarn build:desktop && yarn build:runner && yarn clean:build",
-    "clean:build": "cd dist\\%npm_package_version%\\bin\\data && del data.json && echo [] > data.json"
+    "clean:build": "cd dist\\%npm_package_version%\\bin\\data && del data.json && echo [] > data.json && rmdir /s /q icons && mkdir icons"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.8.0",
