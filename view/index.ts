@@ -1,4 +1,5 @@
-import { app } from 'electron'
+import AutoLaunch from 'auto-launch'
+import { app }    from 'electron'
 
 import BFF from '../frontend/server'
 
@@ -10,6 +11,12 @@ const
 
 const
     run = () => {
+        if ( !devMode ) {
+            checkAutoLaunch()
+        } else {
+            console.log( 'Skipping autolaunch in dev mode' )
+        }
+
         Protocols.init()
         backendMiddleware.init()
         Tray.init()
@@ -30,3 +37,18 @@ app.whenReady().then(() => {
 app.on( 'window-all-closed', () => {
     if ( process.platform !== 'darwin' ) { app.quit() }
 })
+
+
+function checkAutoLaunch () {
+    const autoLaunch = new AutoLaunch({
+        name:     'Sidelaunch',
+        isHidden: true,
+        path:     app.getPath( 'exe' ),
+    })
+
+    autoLaunch.isEnabled().then(( isEnabled: boolean ) => {
+        if ( !isEnabled ) {
+            autoLaunch.enable()
+        }
+    })
+}
