@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app } from 'electron'
 
 import BFF from '../frontend/server'
 
@@ -8,34 +8,22 @@ import { MainWindow }                         from './windows'
 const
     devMode = process.env.NODE_ENV?.trim() === 'development' && !!process.env.NODE_ENV
 
-let splash: BrowserWindow | undefined
-
 const
     run = () => {
         Protocols.init()
         backendMiddleware.init()
         Tray.init()
 
-        ;( BFF ) && ( console.log( 'I see local server' ))
+        console.log( 'Server status', BFF.settings.env )
 
-        MainWindow.show( 'http://127.0.0.1:9101', devMode, () => {
-            splash?.destroy()
-        })
+        MainWindow.show( 'http://127.0.0.1:9101', devMode )
     }
 
 /* ---------------------------------------------- */
 
-app.whenReady().then(() => {
-    splash = new BrowserWindow({
-        width:       512,
-        height:      512,
-        transparent: true,
-        frame:       false,
-        alwaysOnTop: true,
-        show:        true
-    })
-    splash.loadURL( `file://${__dirname}/splash.html` )
+app.disableHardwareAcceleration()
 
+app.whenReady().then(() => {
     run()
 })
 

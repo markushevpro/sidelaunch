@@ -19,6 +19,7 @@ const
         show:            false,
         alwaysOnTop:     false,
         focusable:       true,
+        transparent:     false,
         icon,
         webPreferences:  {
             preload:          path.resolve( __dirname, '../modules/middleware/frontend.middleware.js' ),

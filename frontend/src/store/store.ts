@@ -192,7 +192,8 @@ class Store {
         const
             found = this.find( folderId, this.library ) as TFolder
 
-        this.current = found ?? this.library
+        this.current = emptyFolder
+        setTimeout(() => this.current = found ?? this.library, 0 )
     }
 
     get = ( id: string | undefined ): TItem => {
