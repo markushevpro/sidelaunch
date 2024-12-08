@@ -1,28 +1,14 @@
-import { ConfigProvider, theme }                from 'antd'
-import { createBrowserRouter, RouterProvider, } from 'react-router-dom'
+import type { ReactNode } from 'react'
 
-import { navigation } from 'pages'
+import { MainScreen } from './app/screens/Main'
 
-import './App.scss'
+function App
+(): ReactNode
+{
+    return (
+        <MainScreen />
+    )
+}
 
-const
-    router = createBrowserRouter( navigation ),
-
-    App = () => {
-        return (
-            <ConfigProvider
-                theme = {{
-                    token: {
-                        colorPrimary:   '#F2994A',
-                        colorLink:      'var(--primary)',
-                        colorLinkHover: 'var(--primary-light)'
-                    },
-                    algorithm: [ theme.darkAlgorithm ]
-                }}
-            >
-                <RouterProvider router={router} />
-            </ConfigProvider>
-        )
-    }
-
+// eslint-disable-next-line import/no-default-export
 export default App
