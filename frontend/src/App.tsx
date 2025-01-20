@@ -1,12 +1,11 @@
-import type { ReactNode } from 'react'
-
-import { MainScreen } from './app/screens/Main'
+import { MainPage } from './@/entrypoints/Main'
+import './@/shared/styles/global.css'
 
 function App
-(): ReactNode
+()
 {
     return (
-        <MainScreen />
+        <MainPage />
     )
 }
 

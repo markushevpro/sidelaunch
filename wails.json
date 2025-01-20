@@ -2,9 +2,9 @@
   "$schema": "https://wails.io/schemas/config.v2.json",
   "name": "sidelaunch",
   "outputfilename": "sidelaunch",
-  "frontend:install": "npm install",
-  "frontend:build": "npm run build",
-  "frontend:dev:watcher": "npm run dev --force",
+  "frontend:install": "yarn install",
+  "frontend:build": "yarn build",
+  "frontend:dev:watcher": "yarn dev --force",
   "frontend:dev:serverUrl": "auto",
   "author": {
     "name": "markushevpro",

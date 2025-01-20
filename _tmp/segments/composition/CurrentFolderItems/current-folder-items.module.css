@@ -1,0 +1,38 @@
+.list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+/* 
+.backButton {    
+    box-shadow: inset 0px 0px 0px rgba( 0, 128, 255, 1 );
+    transition: padding .2s ease, box-shadow .2s ease;
+}
+
+.backButton:global(.center-container) {        
+    padding: 16px;
+}
+
+
+.addButton {    
+    padding: 16px;
+}
+
+.item:not(.folder):not(.backButton).hovered {
+    padding-top: 100cqw;
+}
+
+.backButton.hovered,
+.folder.hovered {
+    box-shadow: inset 0px 0px 5px rgba( 0, 128, 255, 1 );
+}
+
+.dragged ~ .item:not(.folder):not(.backButton).hovered {
+    padding-top: 16px;
+    padding-bottom: 100cqw;
+} */

@@ -1,0 +1,12 @@
+.dragLayer {
+    width: 100%;
+    height: 100%;
+}
+
+.cantDrop {
+    cursor: not-allowed;
+}
+
+.canDrop {
+    background-color: var(--bg-highlight);
+}
