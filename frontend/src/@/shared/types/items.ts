@@ -1,11 +1,10 @@
 export
 interface ListItem
 {
-    id: string,
-    weight: number,
-    name: string,
-    parent?: string,
-    icon?: string,
+    id: string
+    weight?: number
+    name?: string
+    parent?: string
 }
 
 export
@@ -32,6 +31,7 @@ interface AppConfig
 {
     position: 'left'
     iconSize: number
+    hideTimeout: number
 }
 
 export

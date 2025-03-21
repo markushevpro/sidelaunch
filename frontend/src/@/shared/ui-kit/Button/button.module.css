@@ -1,0 +1,20 @@
+.button {
+    background-color: var(--accent);
+    color: var(--text-invert);
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease;
+    min-width: 150px;
+    margin-left: auto;
+    align-self: flex-end;
+}
+
+.button:hover {
+    background-color: var(--accent-highlight);
+}
+
+.button:disabled {
+    cursor: default;
+    background-color: var(--bg-highlight);
+    color: var(--text-faded);
+}

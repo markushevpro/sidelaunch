@@ -1,0 +1,5 @@
+.icon {
+    width: calc(0.73 * var(--icon-size));
+    height: calc(0.52 * var(--icon-size));
+    transform: translateY(4px);
+}

@@ -6,6 +6,7 @@ export
 
 interface CurrentFolderStoreData
 {
+    waitUpdate: boolean
     folder?: FolderItem
     items: ListItem[]
 }
@@ -20,8 +21,9 @@ type CurrentFolderStore = CurrentFolderStoreData & CurrentFolderStoreActions
 
 export
 const useFolderStore = create<CurrentFolderStore>(( set ) => ({
-    folder: undefined,
-    items:  [],
+    waitUpdate: false,
+    folder:     undefined,
+    items:      [],
 
     update: ( payload: Partial<CurrentFolderStoreData> ) => {
         set({ ...payload })

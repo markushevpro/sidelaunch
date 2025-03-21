@@ -1,11 +1,12 @@
-import { useCallback }      from 'react'
-import { useCurrentFolder } from 'src/@/services/folder/hook'
-import { useLibrary }       from 'src/@/services/library/hook'
-import { useHookResult }    from 'src/@/shared/hooks/useHookResult'
+import { useCallback, useMemo } from 'react'
+import { useDnDStore }          from 'src/@/services/dnd/store'
+import { useCurrentFolder }     from 'src/@/services/folder/hook'
+import { useHookResult }        from 'src/@/shared/hooks/useHookResult'
 
 interface HCreateFolderButton
 {
-    visible: boolean
+    show: boolean
+    hidden: boolean
     add: () => void
 }
 
@@ -13,20 +14,23 @@ export
 function useCreateFolderButton
 (): HCreateFolderButton
 {
-    const { create } = useLibrary()
-    const { folder } = useCurrentFolder()
+    const { folder, create } = useCurrentFolder()
+    const { dragged }        = useDnDStore()
+
+    const hidden = useMemo(() => !!dragged, [ dragged ])
 
     const add = useCallback(
-        () => {
+        async () => {
             if ( folder ) {
-                create( folder )
+                await create( folder )
             }
         },
         [ create, folder ]
     )
 
     return useHookResult({
-        visible: !!folder,
+        show: !!folder,
+        hidden,
         add
     })
 }

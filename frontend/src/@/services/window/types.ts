@@ -7,7 +7,7 @@ interface Screen
         width : number
         height : number
     }
-    physicalSize: {
+    physicalSize?: {
         width: number
         height: number
     }

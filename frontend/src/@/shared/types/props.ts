@@ -1,8 +1,10 @@
-import type { CSSProperties } from 'react'
+import type { DetailedHTMLProps, HTMLAttributes, ImgHTMLAttributes } from 'react'
 
 export
-interface Customizable
-{
-    className?: string
-    style?: CSSProperties
-}
+type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+
+export
+type ImageProps = DetailedHTMLProps<HTMLAttributes<HTMLImageElement>, HTMLImageElement> & ImgHTMLAttributes<HTMLImageElement>
+
+export
+type ButtonProps = DetailedHTMLProps<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & { disabled?: boolean, onClick?: (() => void ) | (() => Promise<void> ) }

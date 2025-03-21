@@ -1,0 +1,39 @@
+.container {
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    padding-right: 16px;
+    box-sizing: border-box;
+}
+
+.label {
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.group input {
+    width: 100%;
+    background: var(--bg-highlight);
+    border: 1px solid transparent;
+    color: var(--text);
+    padding: 8px;
+    border-radius: 2px;
+    transition: border .2s ease;
+}
+
+.group input[disabled] {
+    background-color: var(--bg-semi);
+    color: var(--text-faded);
+}
+
+.group input:focus {
+    outline: none;
+    border-bottom-color: var(--text-faded);
+}

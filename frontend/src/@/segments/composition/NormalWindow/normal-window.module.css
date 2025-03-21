@@ -1,0 +1,38 @@
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+.header {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px;
+    background-color: var(--bg-semi);
+    --wails-draggable: drag;
+}
+
+.title {
+    font-size: 14px;
+    font-weight: normal;
+    padding-left: 8px;
+}
+
+.controls {
+    margin-left: auto;
+}
+
+.close {
+    background-color: var(--danger);
+    color: var(--text-highlight);
+}
+
+.content {
+    flex: 1 1 100%;
+}

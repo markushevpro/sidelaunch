@@ -1,0 +1,31 @@
+.item {
+    transition: padding .2s ease;
+}
+
+.hover {
+    padding-top: var(--item-size);
+}
+
+.hover.folder {
+    padding-top: 0;
+    background-color: var(--bg-highlight);
+}
+
+:global(.with-control) .hover.folder {
+    padding-top: var(--item-size);
+    background-color: unset;
+}
+
+.dragged ~ .hover {
+    padding-top: 0;
+    padding-bottom: var(--item-size);
+}
+
+.dragged ~ .hover.folder {
+    padding-bottom: 0;
+}
+
+:global(.with-control) .dragged ~ .hover.folder {
+    padding-top: 0;
+    padding-bottom: var(--item-size);
+}

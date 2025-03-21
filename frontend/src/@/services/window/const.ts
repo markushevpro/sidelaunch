@@ -1,5 +1,5 @@
 export
-const TARGET_WINDOW_SIZE = 96
+const TARGET_WINDOW_SIZE = 64
 
 export
-const MAGIC_OFFSET = 20
+const MAGIC_OFFSET = 4

@@ -4,11 +4,12 @@ import { LoadConfig }             from 'wailsjs/go/main/App'
 
 import type { AppConfig } from 'src/@/shared/types/items'
 
+import { defaultConfig }  from './conts'
 import { useConfigStore } from './store'
 
 interface HConfig
 {
-    config: AppConfig | undefined
+    config: AppConfig
 }
 
 export
@@ -25,7 +26,12 @@ function useConfig
                 const data = JSON.parse( raw )
 
                 if ( data ) {
-                    update({ config: data })
+                    update({
+                        config: {
+                            ...defaultConfig,
+                            ...data
+                        }
+                    })
                 } else {
                     throw new Error( 'No data in config' )
                 }
@@ -45,5 +51,5 @@ function useConfig
         [ config, load ]
     )
 
-    return useHookResult({ config })
+    return useHookResult({ config: config ?? defaultConfig })
 }

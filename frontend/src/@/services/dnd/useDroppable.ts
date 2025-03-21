@@ -14,7 +14,7 @@ interface HDroppable
 
 export
 function useDroppable
-( data: ListItem, onDrop: ( from: ListItem, to: ListItem ) => void, onHover?: ( current: ListItem, hover: ListItem ) => void ): HDroppable
+( data: ListItem, onDrop: ( income: ListItem, base?: ListItem ) => void | Promise<void>, onHover?: ( income: ListItem, base?: ListItem ) => void ): HDroppable
 {
     const ref = useRef<HTMLDivElement>( null )
 
@@ -23,16 +23,16 @@ function useDroppable
         collect ( monitor ) {
             return { handlerId: monitor.getHandlerId() }
         },
-        drop ( item: ListItem ) {
-            onDrop( item, data )
+        drop ( target: ListItem ) {
+            void onDrop( target, data )
             return undefined
         },
-        hover ( item: ListItem ) {
+        hover ( target: ListItem ) {
             if ( !ref.current ) {
                 return
             }
 
-            onHover?.( item, data )
+            onHover?.( target, data )
         }
     })
 

@@ -1,7 +1,6 @@
-import { useMemo, useCallback } from 'react'
-import { useCurrentFolder }     from 'src/@/services/folder/hook'
-import { useLibrary }           from 'src/@/services/library/hook'
-import { useHookResult }        from 'src/@/shared/hooks/useHookResult'
+import { useMemo }          from 'react'
+import { useCurrentFolder } from 'src/@/services/folder/hook'
+import { useHookResult }    from 'src/@/shared/hooks/useHookResult'
 
 import type { ListItem } from 'src/@/shared/types/items'
 
@@ -16,23 +15,13 @@ export
 function useBackButton
 (): HBackButton
 {
-    const { move }   = useLibrary()
-    const { folder } = useCurrentFolder()
-
-    const goUp = useCallback(
-        () => {
-            console.log( 'go to parent folder' )
-        },
-        []
-    )
-
-    const onDrop = useMemo(() => move( folder?.id, folder?.parent ), [ folder, move ])
+    const { folder, goUp, moveUp } = useCurrentFolder()
 
     const visible = useMemo(() => !!folder?.parent, [ folder?.parent ])
 
     return useHookResult({
         visible,
-        onDrop,
+        onDrop:  moveUp,
         onClick: goUp
     })
 }

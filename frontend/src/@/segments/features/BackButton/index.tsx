@@ -1,5 +1,6 @@
-import { AllowDrop } from 'src/@/segments/features/AllowDrop'
-import { IconItem }  from 'src/@/segments/units/IconItem'
+import { AllowDrop }  from 'src/@/segments/units/AllowDrop'
+import { ListButton } from 'src/@/segments/units/ListButton'
+import { BackArrow }  from 'src/@/shared/ui-kit/icons/BackArrow'
 
 import type { ListItem } from 'src/@/shared/types/items'
 
@@ -21,9 +22,9 @@ function BackButton
             onDrop={onDrop}
             // onHover={unknownAction}
         >
-            <IconItem onClick={onClick}>
-                &lt;-
-            </IconItem>
+            <ListButton onClick={onClick}>
+                <BackArrow />
+            </ListButton>
         </AllowDrop>
     )
 }

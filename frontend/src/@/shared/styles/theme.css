@@ -1,0 +1,15 @@
+:root {
+    --bg: #191919;
+    --bg-semi: #1E1E1E;
+    --bg-highlight: #333;
+
+    --text-color: #ccc;
+    --text-highlight: #fff;
+    --text-faded: #999;
+    --text-invert: #191919;
+
+    --danger: red;
+
+    --accent: #EBAE4A;
+    --accent-highlight: #fdbb51;
+}

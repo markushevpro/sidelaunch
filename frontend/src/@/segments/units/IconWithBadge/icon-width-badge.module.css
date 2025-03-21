@@ -1,0 +1,16 @@
+.container {
+    position: relative;
+}
+
+.badge {    
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    transform: translate(50%,50%);
+    pointer-events: none;
+}
+
+.badge.center {
+    right: 50%;
+    bottom: 50%;
+}

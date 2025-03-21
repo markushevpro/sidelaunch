@@ -1,16 +1,25 @@
-import { useCallback, useEffect } from 'react'
-import { useHookResult }          from 'src/@/shared/hooks/useHookResult'
-import { LoadLibrary }            from 'wailsjs/go/main/App'
+import _                                         from 'lodash'
+import { useCallback, useEffect }                from 'react'
+import { useHookResult }                         from 'src/@/shared/hooks/useHookResult'
+import { isFolder }                              from 'src/@/shared/utils/items'
+import { ExtractIcon, LoadLibrary, SaveLibrary } from 'wailsjs/go/main/App'
 
-import type { FolderItem, Library, ListItem } from 'src/@/shared/types/items'
+import type { AppItem, FolderItem, Library, ListItem } from 'src/@/shared/types/items'
 
-import { useLibraryStore } from './store'
+import { addToLibrary, createAppItem, createFolder, findInLibrary, mapParents, parseLibrary, removeFromLibrary, removeParents, resortItems, updateLibraryItem } from './helpers'
+import { useLibraryStore }                                                                                                                                      from './store'
 
 interface HLibrary
 {
     library: Library | undefined
-    move: ( from?: string, to?: string ) => ( item: ListItem ) => void
-    create: ( parent: FolderItem ) => void
+    load: () => Promise<Library | undefined>
+    resort: ( parent: string, a: ListItem, b: ListItem ) => Promise<Library | undefined>
+    append: ( files: string[], parent: string ) => Promise<Library | undefined>
+    move: ( item: ListItem, target: string ) => Promise<Library | undefined>
+    create: ( parent: FolderItem ) => Promise<FolderItem | undefined>
+    find: ( id: string | undefined ) => ListItem | undefined
+    remove: ( item: ListItem ) => Promise<Library | undefined>
+    updateItem: ( item: AppItem | FolderItem, payload: Partial<typeof item> ) => Promise<Library | undefined>
 }
 
 export
@@ -21,43 +30,124 @@ function useLibrary
 
     const load = useCallback(
         async () => {
-            const raw = await LoadLibrary()
+            const raw  = await LoadLibrary()
+            const data = parseLibrary( raw )
 
-            try {
-                const data = JSON.parse( raw )
-
-                if ( data ) {
-                    update({ library: data })
-                } else {
-                    throw new Error( 'No data in library' )
-                }
-            } catch ( e ) {
-                console.error( e )
+            if ( data ) {
+                update({ library: data })
             }
+
+            return data
         },
         [ update ]
     )
 
-    const move = useCallback(
-        ( from?: string, to?: string ) => ( item: ListItem ) => {
-            if ( from && to ) {
-                console.log( 'move item', {
-                    item,
-                    from,
-                    to
-                })
-                // save
+    const find = useCallback(
+        ( id: string | undefined ): ListItem | undefined => {
+            if ( library && id ) {
+                return findInLibrary( library, id )
+            }
+
+            return undefined
+        },
+        [ library ]
+    )
+
+    const manipulate = useCallback(
+        async ( handler: ( lib: Library ) => typeof lib | Promise<typeof lib> ) => {
+            if ( library ) {
+                const copy = await handler( _.cloneDeep<Library>( library ))
+                const lib  = mapParents( _.cloneDeep( copy ))
+
+                update({ library: lib })
+
+                await SaveLibrary( JSON.stringify( removeParents( copy )))
+                return lib
             }
         },
-        []
+        [ library, update ]
+    )
+
+    const move = useCallback(
+        async ( item: ListItem, target: string ) => {
+            return await manipulate( lib => {
+                const removed = removeFromLibrary( lib, item )
+                return addToLibrary( removed, item, target )
+            })
+        },
+        [ manipulate ]
     )
 
     const create = useCallback(
-        ( parent: FolderItem ) => {
-            console.log( 'create folder', { parent })
-            console.log( 'go to new folder' )
+        async ( parent: FolderItem ): Promise<FolderItem | undefined> => {
+            let created: FolderItem | undefined
+
+            await manipulate( lib => {
+                const { folder, updated } = createFolder( lib, parent )
+
+                created = folder
+                return updated
+            })
+
+            return created
         },
-        []
+        [ manipulate ]
+    )
+
+    const remove = useCallback(
+        async ( item: ListItem ) => {
+            return await manipulate( lib => removeFromLibrary( lib, item ))
+        },
+        [ manipulate ]
+    )
+
+    const updateItem = useCallback(
+        async ( item: AppItem | FolderItem, payload: Partial<typeof item> ) => {
+            return await manipulate( lib => updateLibraryItem( lib, item, payload ))
+        },
+        [ manipulate ]
+    )
+
+    const append = useCallback(
+        async ( files: string[], parent: string ) => {
+            return await manipulate( async ( lib ) => {
+                let result = [ ...lib ]
+
+                for ( const file of files ) {
+                    if ( file ) {
+                        const { item, updated } = await createAppItem( result, parent, file )
+
+                        if ( item ) {
+                            await ExtractIcon( item.id, item.path )
+                        }
+
+                        result = updated
+                    }
+                }
+
+                return result
+            })
+        },
+        [ manipulate ]
+    )
+
+    const resort = useCallback(
+        async ( parent: string, a: ListItem, b: ListItem ) => {
+            return await manipulate( lib => {
+                if ( parent === 'top' ) {
+                    return resortItems( lib, a, b )
+                } else {
+                    const target = findInLibrary( lib, parent )
+
+                    if ( target && isFolder( target )) {
+                        target.children = resortItems( target.children, a, b )
+                    }
+
+                    return lib
+                }
+            })
+        },
+        [ manipulate ]
     )
 
     useEffect(
@@ -71,7 +161,13 @@ function useLibrary
 
     return useHookResult({
         library,
+        load,
+        append,
+        find,
         move,
-        create
+        create,
+        remove,
+        resort,
+        updateItem
     })
 }

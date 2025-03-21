@@ -1,12 +1,14 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import type { Screen }   from './types'
 import type * as runtime from 'wailsjs/runtime/runtime'
 
 import { TARGET_WINDOW_SIZE, MAGIC_OFFSET } from './const'
+import { useWindowStore }                   from './store'
 
 interface HWindowOffset
 {
+    fix: number
     visible: number
     hidden: number
 }
@@ -15,9 +17,7 @@ export
 function useWindowOffset
 (): HWindowOffset
 {
-    const [ offset, $offset ]   = useState<number>( 0 )
-    const [ dpi, $dpi ]         = useState<number>( 1 )
-    const [ onPlace, $onPlace ] = useState<boolean>( false )
+    const { onPlace, offset, dpi, update } = useWindowStore()
 
     const searchScreen = useCallback(
         (): void => {
@@ -27,15 +27,16 @@ function useWindowOffset
 
             let current = screen.availLeft
 
+            // TODO: Refactor?
             const testScreen = (): void => {
-                window.runtime.WindowSetPosition( -100, 0 )
+                window.runtime.WindowSetPosition( -TARGET_WINDOW_SIZE, 0 )
                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                setTimeout( async () => {
+                setTimeout(() => {
                     const next = screen.availLeft
 
                     if ( current === next ) {
-                        await window.runtime.WindowSetSize( TARGET_WINDOW_SIZE, screen.availHeight )
-                        $onPlace( true )
+                        window.runtime.WindowSetSize( TARGET_WINDOW_SIZE, screen.availHeight )
+                        update({ onPlace: true })
                         return
                     }
 
@@ -46,32 +47,40 @@ function useWindowOffset
 
             testScreen()
         },
-        [ onPlace ]
+        [ onPlace, update ]
     )
 
     useEffect(() => {
         searchScreen()
     }, [ searchScreen ])
 
-    useEffect(() => {
-        const fixOffset = async (): Promise<void> => {
-            const screens = await window.runtime.ScreenGetAll()
+    useEffect(
+        () => {
+            if ( !onPlace ) {
+                const fixOffset = async (): Promise<void> => {
+                    const screens = await window.runtime.ScreenGetAll()
 
-            const screen = screens.find(( s: runtime.Screen ) => s.isCurrent ) as unknown as Screen
-            const dpi    = screen.physicalSize.width / screen.size.width
-            const fix    = Math.round( TARGET_WINDOW_SIZE / dpi - window.innerWidth )
+                    const screen = screens.find(( s: runtime.Screen ) => s.isCurrent ) as unknown as Screen
+                    const dpi    = ( screen.physicalSize?.width ?? screen.size.width ) / screen.size.width
+                    const fix    = 0 // Math.round( TARGET_WINDOW_SIZE / dpi - window.innerWidth )
 
-            window.runtime.WindowSetPosition( fix - TARGET_WINDOW_SIZE * dpi + MAGIC_OFFSET, 0 )
+                    window.runtime.WindowSetPosition( fix - TARGET_WINDOW_SIZE * dpi + MAGIC_OFFSET, 0 )
 
-            $offset( fix )
-            $dpi( dpi )
-        }
+                    update({
+                        offset: fix,
+                        dpi
+                    })
+                }
 
-        void fixOffset()
-    }, [ onPlace ])
+                void fixOffset()
+            }
+        },
+        [ onPlace, update ]
+    )
 
     return useMemo(
         () => ({
+            fix:     offset / dpi,
             visible: offset,
             hidden:  offset - TARGET_WINDOW_SIZE * dpi + MAGIC_OFFSET
         }),

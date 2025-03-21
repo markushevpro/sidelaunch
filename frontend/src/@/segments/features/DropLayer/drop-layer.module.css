@@ -1,0 +1,16 @@
+.dropLayer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.cantDrop {
+    cursor: not-allowed;
+}
+
+.canDrop {
+    background-color: var(--bg-highlight);
+}

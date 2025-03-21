@@ -18,6 +18,9 @@ export default [
     ...tseslint.configs.recommendedTypeChecked,
     pluginReact.configs.flat.recommended,
     {
+        linterOptions: {
+            reportUnusedDisableDirectives: "off"
+        },
         languageOptions: {
             parserOptions: {
                 projectService: true,
@@ -578,7 +581,7 @@ export default [
         }
     },
     {
-        "files": ["**/index.tsx", "**/App.tsx", "**/main.tsx"],
+        "files": ["**/index.tsx", "**/App.tsx", "**/main.tsx", "**/icons/*.tsx"],
         "rules": {
             "@typescript-eslint/explicit-function-return-type": [0]
         }

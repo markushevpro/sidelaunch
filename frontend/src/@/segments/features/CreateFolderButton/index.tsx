@@ -1,20 +1,23 @@
-import { IconItem } from 'src/@/segments/units/IconItem'
+import cn             from 'classnames'
+import { ListButton } from 'src/@/segments/units/ListButton'
+import { Plus }       from 'src/@/shared/ui-kit/icons/Plus'
 
+import styles                    from './create-folder-button.module.css'
 import { useCreateFolderButton } from './hook'
 
 export
 function CreateFolderButton
 ()
 {
-    const { visible, add } = useCreateFolderButton()
+    const { show, hidden, add } = useCreateFolderButton()
 
-    if ( !visible ) {
+    if ( !show ) {
         return null
     }
 
     return (
-        <IconItem onClick={add}>
-            +
-        </IconItem>
+        <ListButton className={cn( styles.addbtn, hidden && styles.hidden )} onClick={add}>
+            <Plus />
+        </ListButton>
     )
 }

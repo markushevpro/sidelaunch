@@ -1,0 +1,12 @@
+.area {
+    position: fixed;
+    top: 100%;
+    left: 0;
+    transition: transform .2s ease;
+    background-color: rgba( 255, 0, 0, .2 );
+    color: red;
+}
+
+.visible {
+    transform: translateY(-100%);
+}

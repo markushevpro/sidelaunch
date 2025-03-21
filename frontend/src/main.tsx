@@ -4,7 +4,6 @@ import { createRoot } from 'react-dom/client'
 import type * as runtime from '../wailsjs/runtime/runtime'
 
 import App from './App'
-import './global.css'
 
 declare global {
     interface Window {

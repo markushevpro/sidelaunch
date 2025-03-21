@@ -1,6 +1,10 @@
-import { IconItem } from 'src/@/segments/units/IconItem'
+import { DnDItem }            from 'src/@/segments/units/DnDItem'
+import { ItemView }           from 'src/@/segments/units/ItemView'
+import { RightClickProvider } from 'src/@/segments/units/RightClickProvider'
 
 import type { ListItem } from 'src/@/shared/types/items'
+
+import { useSmartItem } from './hook'
 
 interface PSmartItem
 {
@@ -11,12 +15,13 @@ export
 function SmartItem
 ({ data }: PSmartItem )
 {
-    // determine folder or app
-    // return FolderButton / AppButton
+    const { edit } = useSmartItem( data )
 
     return (
-        <IconItem>
-            { data.id }
-        </IconItem>
+        <DnDItem data={data}>
+            <RightClickProvider action={edit}>
+                <ItemView data={data} />
+            </RightClickProvider>
+        </DnDItem>
     )
 }

@@ -22,9 +22,5 @@ const useConfigStore = create<ConfigStore>(( set ) => ({
 
     update: ( payload: Partial<ConfigStoreData> ) => {
         set({ ...payload })
-    },
-
-    append: () => {
-        // Placeholder
     }
 }))
