@@ -41,6 +41,4 @@ require (
 	golang.org/x/text v0.15.0 // indirect
 )
 
-replace github.com/wailsapp/wails/v2 v2.10.1 => D:/projects/coding/desktop/sidelaunch/wails2
-
-// replace github.com/wailsapp/wails/v2 v2.8.0 => C:\Users\wolf\go\pkg\mod
+replace github.com/wailsapp/wails/v2 v2.10.1 => ./wails2
