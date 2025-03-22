@@ -165,6 +165,20 @@ function updateLibraryItem
 }
 
 export
+function moveChildrenAndRemove
+( library: Library, item: FolderItem ): Library
+{
+    console.log({ item })
+    if ( item.parent ) {
+        const parent    = findInLibrary( library, item.parent ) as FolderItem
+        parent.children = [ ...parent.children, ...item.children ]
+        removeFromLibrary( library, item )
+    }
+
+    return library
+}
+
+export
 function removeFromLibrary
 ( library: Library, item: ListItem ): Library
 {

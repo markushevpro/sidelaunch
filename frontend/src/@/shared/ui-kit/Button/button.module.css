@@ -18,3 +18,22 @@
     background-color: var(--bg-highlight);
     color: var(--text-faded);
 }
+
+.button.alert {
+    background-color: var(--danger);
+    color: var(--text-highlight);
+}
+
+.button.alert:hover {
+    background-color: var(--danger-highlight);
+}
+
+.button.ghost {
+    background-color: transparent;
+    color: var(--text-color);
+}
+
+.button.ghost:hover {
+    background-color: var(--bg-semi);
+    color: var(--text-highlight);
+}

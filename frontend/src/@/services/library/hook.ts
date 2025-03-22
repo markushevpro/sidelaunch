@@ -6,8 +6,8 @@ import { ExtractIcon, LoadLibrary, SaveLibrary } from 'wailsjs/go/main/App'
 
 import type { AppItem, FolderItem, Library, ListItem } from 'src/@/shared/types/items'
 
-import { addToLibrary, createAppItem, createFolder, findInLibrary, mapParents, parseLibrary, removeFromLibrary, removeParents, resortItems, updateLibraryItem } from './helpers'
-import { useLibraryStore }                                                                                                                                      from './store'
+import { addToLibrary, createAppItem, createFolder, findInLibrary, mapParents, moveChildrenAndRemove, parseLibrary, removeFromLibrary, removeParents, resortItems, updateLibraryItem } from './helpers'
+import { useLibraryStore }                                                                                                                                                             from './store'
 
 interface HLibrary
 {
@@ -16,6 +16,7 @@ interface HLibrary
     resort: ( parent: string, a: ListItem, b: ListItem ) => Promise<Library | undefined>
     append: ( files: string[], parent: string ) => Promise<Library | undefined>
     move: ( item: ListItem, target: string ) => Promise<Library | undefined>
+    removeFolderSave: ( item: FolderItem ) => Promise<Library | undefined>
     create: ( parent: FolderItem ) => Promise<FolderItem | undefined>
     find: ( id: string | undefined ) => ListItem | undefined
     remove: ( item: ListItem ) => Promise<Library | undefined>
@@ -71,8 +72,17 @@ function useLibrary
     const move = useCallback(
         async ( item: ListItem, target: string ) => {
             return await manipulate( lib => {
-                const removed = removeFromLibrary( lib, item )
-                return addToLibrary( removed, item, target )
+                const updated = removeFromLibrary( lib, item )
+                return addToLibrary( updated, item, target )
+            })
+        },
+        [ manipulate ]
+    )
+
+    const removeFolderSave = useCallback(
+        async ( item: FolderItem ) => {
+            return await manipulate( lib => {
+                return moveChildrenAndRemove( lib, item )
             })
         },
         [ manipulate ]
@@ -165,6 +175,7 @@ function useLibrary
         append,
         find,
         move,
+        removeFolderSave,
         create,
         remove,
         resort,

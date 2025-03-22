@@ -6,3 +6,15 @@
     align-items: flex-start;
     justify-content: space-between;
 }
+
+.stack.align-center {
+    justify-content: center;
+}
+
+.stack.align-start {
+    justify-content: flex-start;
+}
+
+.stack.align-end {
+    justify-content: flex-end;
+}

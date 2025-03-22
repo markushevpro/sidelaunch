@@ -1,0 +1,10 @@
+.wrapper {
+    padding-bottom: 24px;
+}
+
+.content {
+    width: 100%;
+    font-size: 1.2em;
+    text-align: center;
+    flex: 1 1 100%;
+}

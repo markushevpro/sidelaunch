@@ -1,5 +1,6 @@
-import { EditWindow } from './@/entrypoints/Edit'
-import { MainWindow } from './@/entrypoints/Main'
+import { EditWindow }         from './@/entrypoints/Edit'
+import { MainWindow }         from './@/entrypoints/Main'
+import { RemoveFolderWindow } from './@/entrypoints/RemoveFolder'
 import './@/shared/styles/global.css'
 import './@/shared/styles/theme.css'
 // eslint-disable-next-line align-import/align-import
@@ -19,9 +20,17 @@ function App
             return (
                 <EditWindow />
             )
+
+        case 'removefolder':
+            return (
+                <RemoveFolderWindow />
+            )
+
         case 'list':
         default:
-            return <MainWindow />
+            return (
+                <MainWindow />
+            )
     }
 }
 

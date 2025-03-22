@@ -4,14 +4,22 @@ import type { ButtonProps } from 'src/@/shared/types/props'
 
 import styles from './button.module.css'
 
+interface PButton
+extends
+ButtonProps
+{
+    alert?: boolean
+    ghost?: boolean
+}
+
 export
 function Button
-({ className, children, ...rest }: ButtonProps )
+({ alert, ghost, className, children, ...rest }: PButton )
 {
     return (
         <button
             { ...rest }
-            className={cn( className, styles.button )}
+            className={cn( className, styles.button, alert && styles.alert, ghost && styles.ghost )}
         >
             { children }
         </button>

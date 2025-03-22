@@ -850,6 +850,12 @@ func (a *App) EditItem( id string ) {
     exec.Command(self, "edit", id ).Start()
 }
 
+func (a *App) ConfirmFolderRemove( id string ) {
+	self, _ := os.Executable()
+	log.Print(self)
+    exec.Command(self, "removefolder", id ).Start()
+}
+
 /* Resources */
 
 type UrlData struct {

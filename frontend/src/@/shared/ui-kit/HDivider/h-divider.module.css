@@ -1,0 +1,6 @@
+.divider {
+    height: 1px;
+    margin: 16px 0;
+    background-color: var(--bg-highlight);
+    align-self: stretch;
+}

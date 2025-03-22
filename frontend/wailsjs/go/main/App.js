@@ -14,6 +14,10 @@ export function CheckURL(arg1) {
   return window['go']['main']['App']['CheckURL'](arg1);
 }
 
+export function ConfirmFolderRemove(arg1) {
+  return window['go']['main']['App']['ConfirmFolderRemove'](arg1);
+}
+
 export function EditItem(arg1) {
   return window['go']['main']['App']['EditItem'](arg1);
 }

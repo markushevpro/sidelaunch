@@ -8,6 +8,8 @@ export function CheckLibrary():Promise<void>;
 
 export function CheckURL(arg1:string):Promise<string>;
 
+export function ConfirmFolderRemove(arg1:string):Promise<void>;
+
 export function EditItem(arg1:string):Promise<void>;
 
 export function ExtractIcon(arg1:string,arg2:string):Promise<string>;

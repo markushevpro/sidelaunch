@@ -2,6 +2,8 @@ import { useCallback, useMemo } from 'react'
 import { useDnDStore }          from 'src/@/services/dnd/store'
 import { useCurrentFolder }     from 'src/@/services/folder/hook'
 import { useHookResult }        from 'src/@/shared/hooks/useHookResult'
+import { isFolder }             from 'src/@/shared/utils/items'
+import { ConfirmFolderRemove }  from 'wailsjs/go/main/App'
 
 import type { ListItem } from 'src/@/shared/types/items'
 
@@ -16,16 +18,27 @@ function useRemoveArea
 (): HRemoveArea
 {
     const { dragged, end } = useDnDStore()
+    const { waitUpdate }   = useCurrentFolder()
     const { remove }       = useCurrentFolder()
 
     const visible = useMemo(() => !!dragged, [ dragged ])
 
     const drop = useCallback(
         async ( income: ListItem ) => {
-            await remove( income )
+            if ( isFolder( income )) {
+                if ( income.children.length > 0 ) {
+                    await ConfirmFolderRemove( income.id )
+                    setTimeout(() => { waitUpdate() }, 1000 )
+                } else {
+                    await remove( income )
+                }
+            } else {
+                await remove( income )
+            }
+
             end()
         },
-        [ end, remove ]
+        [ end, remove, waitUpdate ]
     )
 
     return useHookResult({

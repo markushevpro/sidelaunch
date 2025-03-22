@@ -9,14 +9,23 @@ interface PStack
     extends
     PropsWithChildren,
     DivProps
-{}
+{
+    align?: 'start' | 'end' | 'center'
+    gap?: number
+}
 
 export
 function Stack
-({ children, className, style }: PStack )
+({ gap, align, children, className, style }: PStack )
 {
     return (
-        <div className={cn( className, styles.stack )} style={style}>
+        <div
+            className={cn( className, styles.stack, align && styles[ `align-${align}` ])}
+            style={{
+                ...style,
+                gap: `${gap}px`
+            }}
+        >
             { children }
         </div>
     )

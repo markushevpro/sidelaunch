@@ -8,7 +8,8 @@
     --text-faded: #999;
     --text-invert: #191919;
 
-    --danger: red;
+    --danger: rgb(181, 44, 44);
+    --danger-highlight: rgb(207, 40, 40);
 
     --accent: #EBAE4A;
     --accent-highlight: #fdbb51;

@@ -58,7 +58,7 @@ func main() {
 
 		// Create application with options
 		err = wails.Run(&options.App{
-			Title:  "sidelaunch",
+			Title:  "Sidelaunch",
 			Width:  64,
 			MinWidth: 0,
 			Height: 768,	
@@ -99,7 +99,7 @@ func main() {
 
 		if ( action == "edit" ){
 			err = wails.Run(&options.App{
-				Title:  "sidelaunch",
+				Title:  "Sidelaunch",
 				Width:  800,
 				MinWidth: 0,
 				Height: 600,	
@@ -108,6 +108,39 @@ func main() {
 				AlwaysOnTop: false,
 				SingleInstanceLock: &options.SingleInstanceLock{
 					UniqueId: "c28e21cc-bec4-42fe-94dd-d304181f59b6",
+				},
+				AssetServer: &assetserver.Options{
+					Assets: assets,
+					Handler: NewFileLoader(),
+				},
+				BackgroundColour: &options.RGBA{R: 25, G: 25, B: 25, A: 1},
+				OnStartup: app.startup,
+				Bind: []interface{}{
+					app,
+				},
+				DragAndDrop: &options.DragAndDrop{
+					EnableFileDrop: false,
+				},
+				Debug: options.Debug{
+					OpenInspectorOnStartup: true,
+				},
+				Windows: &windows.Options{
+					ToolWindow: false,
+					DisablePinchZoom: true,
+					DisableFramelessWindowDecorations: true,
+				},
+			})
+		} else {
+			err = wails.Run(&options.App{
+				Title:  "Confirmation",
+				Width:  565,
+				MinWidth: 0,
+				Height: 300,	
+				Frameless: false,
+				DisableResize: true,
+				AlwaysOnTop: false,
+				SingleInstanceLock: &options.SingleInstanceLock{
+					UniqueId: "c28e21cc-bec4-42fe-94dd-d304181f59b7",
 				},
 				AssetServer: &assetserver.Options{
 					Assets: assets,

@@ -12,6 +12,7 @@ interface WindowStoreData
 interface WindowStoreActions
 {
     update: ( payload: Partial<WindowStoreData> ) => void
+    fix: () => void
 }
 
 export
@@ -26,5 +27,9 @@ const useWindowStore = create<WindowStore>(( set ) => ({
 
     update: ( payload: Partial<WindowStoreData> ) => {
         set({ ...payload })
+    },
+
+    fix: () => {
+        set({ onPlace: true })
     }
 }))
