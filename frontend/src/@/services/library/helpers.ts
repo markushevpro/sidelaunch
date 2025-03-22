@@ -1,8 +1,14 @@
 import { isFolder, sortHandler }                 from 'src/@/shared/utils/items'
 import { ExtractIcon, ExtractLink, ReadUrlFile } from 'wailsjs/go/main/App'
 
-import type { PathInfo }                               from './types'
+import type { PathInfo, WithError }                    from './types'
 import type { AppItem, FolderItem, Library, ListItem } from 'src/@/shared/types/items'
+
+function hasError
+( data: Library | WithError ): data is WithError
+{
+    return !!( data as WithError ).error
+}
 
 export
 function addParents
@@ -74,17 +80,17 @@ function parseLibrary
 ( raw: string ): Library | undefined
 {
     try {
-        const data = JSON.parse( raw )
+        const data: Library | WithError = JSON.parse( raw )
 
-        if ( data && !data.error ) {
+        if ( data && !hasError( data )) {
             return mapParents( data )
         } else {
-            return [{
-                id: crypto.randomUUID(),
-                weight: 0,
-                name: "Folder",
+            return [ {
+                id:       crypto.randomUUID(),
+                weight:   0,
+                name:     'Folder',
                 children: []
-            } as FolderItem]
+            } as FolderItem ]
         }
     } catch ( e ) {
         console.error( e )

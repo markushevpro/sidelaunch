@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 
 export
-
 interface WindowStoreData
 {
     offset: number

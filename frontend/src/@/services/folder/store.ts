@@ -3,7 +3,6 @@ import { create } from 'zustand'
 import type { FolderItem, ListItem } from 'src/@/shared/types/items'
 
 export
-
 interface CurrentFolderStoreData
 {
     waitUpdate: boolean

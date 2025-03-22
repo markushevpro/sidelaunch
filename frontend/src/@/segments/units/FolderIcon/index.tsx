@@ -1,5 +1,5 @@
-import { IconWithBadge }      from 'src/@/segments/units/IconWithBadge'
-import { ImageVisibleOnLoad } from 'src/@/segments/units/ImageVisibleOnLoad'
+import { IconWithBadge }    from 'src/@/segments/units/IconWithBadge'
+import { ImageHideOnError } from 'src/@/segments/units/ImageHideOnError'
 
 import type { CSSProperties } from 'react'
 import type { FolderItem }    from 'src/@/shared/types/items'
@@ -28,7 +28,7 @@ function FolderIcon
             title={data.name}
             width={size}
             badge={(
-                <ImageVisibleOnLoad
+                <ImageHideOnError
                     className={styles.icon}
                     src={icon.icon}
                     style={{ '--icon-size': `${size}px` } as CSSProperties}

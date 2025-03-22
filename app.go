@@ -796,7 +796,6 @@ func (a *App) SaveLibrary( data string ) string {
 /* Config */
 
 func (a *App) LoadConfig() string {
-	a.CheckConfig()
     content, err := ioutil.ReadFile("./data/config.json")
 
     if err != nil {

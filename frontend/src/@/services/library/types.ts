@@ -7,3 +7,9 @@ interface PathInfo
     name: string
     ext: string
 }
+
+export
+interface WithError
+{
+    error: unknown
+}
