@@ -20,7 +20,6 @@ function BackButton
         <AllowDrop
             data={{ id: 'back' } as ListItem }
             onDrop={onDrop}
-            // onHover={unknownAction}
         >
             <ListButton onClick={onClick}>
                 <BackArrow />

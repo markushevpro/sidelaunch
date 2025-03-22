@@ -17,7 +17,10 @@ function useCreateFolderButton
     const { folder, create } = useCurrentFolder()
     const { dragged }        = useDnDStore()
 
-    const hidden = useMemo(() => !!dragged, [ dragged ])
+    const hidden = useMemo(
+        () => !!dragged,
+        [ dragged ]
+    )
 
     const add = useCallback(
         async () => {

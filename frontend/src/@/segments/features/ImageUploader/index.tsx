@@ -1,12 +1,10 @@
-import { useCallback }    from 'react'
-import { Center }         from 'src/@/shared/ui-kit/Center'
-import { FileUploader }   from 'src/@/shared/ui-kit/FileUploader'
-import { getBase64Image } from 'src/@/shared/utils/images'
-import { SaveIcon }       from 'wailsjs/go/main/App'
+import { Center }       from 'src/@/shared/ui-kit/Center'
+import { FileUploader } from 'src/@/shared/ui-kit/FileUploader'
 
 import type { ReactNode } from 'react'
 
-import styles from './image-uploader.module.css'
+import { useImageUploader } from './hook'
+import styles               from './image-uploader.module.css'
 
 interface PImageUploader
 {
@@ -20,15 +18,7 @@ export
 function ImageUploader
 ({ id, image, content, onDone }: PImageUploader )
 {
-    const before = useCallback(
-        async ( file: File ) => {
-            const data = await getBase64Image( file )
-            await SaveIcon( id, data )
-            onDone?.()
-            return false
-        },
-        [ id, onDone ]
-    )
+    const { before } = useImageUploader( id, onDone )
 
     return (
         <div className={styles.container}>

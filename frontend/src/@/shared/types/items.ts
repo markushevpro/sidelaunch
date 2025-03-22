@@ -9,7 +9,8 @@ interface ListItem
 
 export
 interface AppItem
-extends ListItem
+extends
+ListItem
 {
     path: string,
     params: string,
@@ -18,7 +19,8 @@ extends ListItem
 
 export
 interface FolderItem
-extends ListItem
+extends
+ListItem
 {
     children: ListItem[],
 }

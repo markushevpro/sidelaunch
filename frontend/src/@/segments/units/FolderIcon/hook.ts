@@ -18,7 +18,10 @@ function useFolderIcon
     const rawIcon    = useIcon( data )
     const { config } = useConfig()
 
-    const size = useMemo(() => ( customSize ?? config?.iconSize ?? 32 ) * 1.2, [ config?.iconSize, customSize ])
+    const size = useMemo(
+        () => ( customSize ?? config?.iconSize ?? 32 ) * 1.2,
+        [ config?.iconSize, customSize ]
+    )
 
     const icon = useMemo(
         () => ({

@@ -6,7 +6,7 @@ import { WindowCenter, WindowSetPosition } from 'wailsjs/runtime/runtime'
 import { useWindowStore }  from './store'
 import { useWindowOffset } from './useWindowOffset'
 
-interface RWindowPosition
+interface HWindowPosition
 {
     offset: number
     center: () => Promise<void>,
@@ -17,7 +17,7 @@ interface RWindowPosition
 
 export
 function useWindow
-(): RWindowPosition
+(): HWindowPosition
 {
     const { config }          = useConfig()
     const timer               = useRef<ReturnType<typeof setTimeout>>()

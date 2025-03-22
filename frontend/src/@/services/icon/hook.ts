@@ -20,8 +20,15 @@ function useIcon
 {
     const [ reload, $reload ] = useState<string>( '' )
 
-    const icon     = useMemo(() => data ? `/data/icons/${data.id}.png` : '', [ data ])
-    const fallback = useMemo(() => ( data && isFolder( data ) ? '/assets/folder.png' : undefined ), [ data ])
+    const icon = useMemo(
+        () => data ? `/data/icons/${data.id}.png` : '',
+        [ data ]
+    )
+
+    const fallback = useMemo(
+        () => ( data && isFolder( data ) ? '/assets/folder.png' : undefined ),
+        [ data ]
+    )
 
     const force = useCallback(
         () => {

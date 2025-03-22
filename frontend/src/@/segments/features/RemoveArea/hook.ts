@@ -21,7 +21,10 @@ function useRemoveArea
     const { waitUpdate }   = useCurrentFolder()
     const { remove }       = useCurrentFolder()
 
-    const visible = useMemo(() => !!dragged, [ dragged ])
+    const visible = useMemo(
+        () => !!dragged,
+        [ dragged ]
+    )
 
     const drop = useCallback(
         async ( income: ListItem ) => {

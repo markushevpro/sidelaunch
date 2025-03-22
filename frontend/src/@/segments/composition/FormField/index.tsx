@@ -6,13 +6,18 @@ interface PFormField
 extends
 PropsWithChildren
 {
+    hidden?: boolean
     label?: string
 }
 
 export
 function FormField
-({ label, children }: PFormField )
+({ hidden, label, children }: PFormField )
 {
+    if ( hidden ) {
+        return null
+    }
+
     return (
         <div className={styles.container}>
             <label className={styles.group}>

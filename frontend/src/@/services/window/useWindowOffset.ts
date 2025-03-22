@@ -50,9 +50,10 @@ function useWindowOffset
         [ onPlace, update ]
     )
 
-    useEffect(() => {
-        searchScreen()
-    }, [ searchScreen ])
+    useEffect(
+        () => { searchScreen() },
+        [ searchScreen ]
+    )
 
     useEffect(
         () => {

@@ -7,6 +7,7 @@ import type { ConnectDropTarget } from 'react-dnd'
 
 import styles from './drop-layer.module.css'
 
+// https://github.com/wailsapp/wails/issues/3985
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 window.runtime.OnFileDrop(( x, y, paths ) => {}, false )
 

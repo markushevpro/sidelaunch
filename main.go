@@ -135,7 +135,7 @@ func main() {
 				Title:  "Confirmation",
 				Width:  565,
 				MinWidth: 0,
-				Height: 300,	
+				Height: 320,	
 				Frameless: false,
 				DisableResize: true,
 				AlwaysOnTop: false,

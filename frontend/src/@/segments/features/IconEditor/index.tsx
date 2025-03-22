@@ -1,32 +1,20 @@
-import { useMemo }       from 'react'
 import { ImageUploader } from 'src/@/segments/features/ImageUploader'
-import { FolderIcon }    from 'src/@/segments/units/FolderIcon'
-import { useIcon }       from 'src/@/services/icon/hook'
-import { useAppView }    from 'src/@/services/view/hook'
 import { Content }       from 'src/@/shared/ui-kit/Content'
-import { isFolder }      from 'src/@/shared/utils/items'
 
-import type { FolderItem } from 'src/@/shared/types/items'
+import { useIconEditor } from './hook'
+import styles            from './icon-editor.module.css'
 
 export
 function IconEditor
 ()
 {
-    const { item }        = useAppView()
-    const { icon, force } = useIcon( item )
-
-    const folder = useMemo(() => item && isFolder( item ), [ item ])
+    const { id, folder, icon, force } = useIconEditor()
 
     return (
-        <Content
-            style={{
-                width:     230,
-                alignSelf: 'stretch'
-            }}
-        >
+        <Content className={styles.container}>
             <ImageUploader
-                content={( item && folder ) ? <FolderIcon data={item as FolderItem} size={64} /> : undefined}
-                id={item?.id ?? ''}
+                content={folder}
+                id={id}
                 image={icon}
                 onDone={force}
             />

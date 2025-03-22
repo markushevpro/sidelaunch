@@ -17,7 +17,10 @@ function useBackButton
 {
     const { folder, goUp, moveUp } = useCurrentFolder()
 
-    const visible = useMemo(() => !!folder?.parent, [ folder?.parent ])
+    const visible = useMemo(
+        () => !!folder?.parent,
+        [ folder?.parent ]
+    )
 
     return useHookResult({
         visible,

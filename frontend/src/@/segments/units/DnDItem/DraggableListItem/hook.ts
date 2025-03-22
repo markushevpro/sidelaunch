@@ -17,7 +17,10 @@ function useDraggableListItem
 {
     const { dragged, start, end } = useDnDStore()
 
-    const dragging = useMemo(() => dragged === data.id, [ data.id, dragged ])
+    const dragging = useMemo(
+        () => dragged === data.id,
+        [ data.id, dragged ]
+    )
 
     const onStart = useCallback(
         () => {
