@@ -929,6 +929,7 @@ func (a *App) ExtractLink( path string ) string {
 	var oerr strings.Builder
 
 	cmd := exec.Command( ".\\utils\\lnkdata.bat", path )
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	cmd.Stdout = &out
 	cmd.Stderr = &oerr
 
@@ -952,6 +953,7 @@ func (a *App) ExtractIcon( id string, path string ) string {
 	log.Print( path )
 
 	cmd := exec.Command( ".\\utils\\geticon.bat", path, id )
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	cmd.Stdout = &out
 	cmd.Stderr = &oerr
 
