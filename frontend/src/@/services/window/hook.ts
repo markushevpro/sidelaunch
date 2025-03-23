@@ -62,6 +62,7 @@ function useWindow
 
     const hideTimeout = useCallback(
         () => {
+            console.log({ visible })
             if ( visible ) {
                 if ( timer.current ) {
                     clearTimeout( timer.current )
