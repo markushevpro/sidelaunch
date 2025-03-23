@@ -730,12 +730,11 @@ func (a *App) startup(ctx context.Context) {
         runtime.WindowSetSize( ctx, 0, 0 )
 
         runtime.OnFileDrop(a.ctx, func(x, y int, paths []string) {
-            runtime.EventsEmit(a.ctx, "filedrop", paths )
+        	runtime.EventsEmit(a.ctx, "filedrop", paths )
         })
 
         systray.Run(systemTray(a), func() {})
     }
-
 }
 
 /* =========== JS API */
@@ -750,6 +749,47 @@ func (a *App) GetPageData() *PageData {
         Page: a.page,
         Id: a.id,
     }
+}
+
+func (a *App) SystemError( dlgtype runtime.DialogType, title string, message string ) {
+	runtime.MessageDialog( a.ctx, runtime.MessageDialogOptions{
+		Type: dlgtype,
+		Title: title,
+		Message: message,
+	})
+}
+
+func (a *App) OpenFile( title string, accept []runtime.FileFilter ) string {
+	file, err := runtime.OpenFileDialog( a.ctx, runtime.OpenDialogOptions{
+		Title: title,
+		Filters: accept,
+		ShowHiddenFiles: false,
+		CanCreateDirectories: false,
+		ResolvesAliases: true,
+		TreatPackagesAsDirectories: false,
+	})
+
+	if err != nil && file != "" {
+		return "{ \"error\": \"" + err.Error() + "\" }"
+	}
+
+	return "{ \"path\": \"" + strings.Replace( file, "\\", "\\\\", -1 ) + "\" }"
+}
+
+func (a *App) OpenDir( title string ) string {
+	file, err := runtime.OpenDirectoryDialog( a.ctx, runtime.OpenDialogOptions{
+		Title: title,
+		ShowHiddenFiles: false,
+		CanCreateDirectories: true,
+		ResolvesAliases: true,
+		TreatPackagesAsDirectories: false,
+	})
+
+	if err != nil && file != "" {
+		return "{ \"error\": \"" + err.Error() + "\" }"
+	}
+
+	return "{ \"path\": \"" + strings.Replace( file, "\\", "\\\\", -1 ) + "\" }"
 }
 
 /* Library */
@@ -923,7 +963,27 @@ func (a *App) ExtractIcon( id string, path string ) string {
 	return out.String()
 }
 
-func (a *App ) SaveIcon( id string, data string ) {
+func (a *App ) SaveIcon( id string, path string ) string {
+	var dest = "./data/icons/" + id + ".png"
+
+	data, err := ioutil.ReadFile( path )
+
+	if err != nil {
+		log.Print( err )
+		return "{ \"error\": \"Error fetching icon from " + path + "\", \"err\": \"" + err.Error() + "\" }"
+	}
+	
+	err = ioutil.WriteFile( dest, data, 0644 )
+
+    if err != nil {
+		log.Print( err )
+		return "{ \"error\": \"Error saving icon from " + path + " to " + dest + "\", \"err\": \"" + err.Error() + "\" }"
+    }
+
+	return "{}"
+}
+
+func (a *App ) _saveIcon( id string, data string ) {
     idx := strings.Index(data, ";base64,")
 
     if idx < 0 {
@@ -936,11 +996,10 @@ func (a *App ) SaveIcon( id string, data string ) {
 	f, err := os.Create("./data/icons/" + id + ".png")
 
     if err != nil {
-		log.Print("[ERROR] Cant create save icon")
+		log.Print("[ERROR] Cant create icon")
         return
     }
 
     io.Copy(f, reader)
     f.Close()
-	runtime.EventsEmit(a.ctx, "iconchanged", id)
 }

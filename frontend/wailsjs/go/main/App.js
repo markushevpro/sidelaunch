@@ -42,6 +42,14 @@ export function LoadLibrary() {
   return window['go']['main']['App']['LoadLibrary']();
 }
 
+export function OpenDir(arg1) {
+  return window['go']['main']['App']['OpenDir'](arg1);
+}
+
+export function OpenFile(arg1, arg2) {
+  return window['go']['main']['App']['OpenFile'](arg1, arg2);
+}
+
 export function OpenURL(arg1) {
   return window['go']['main']['App']['OpenURL'](arg1);
 }
@@ -60,4 +68,8 @@ export function SaveIcon(arg1, arg2) {
 
 export function SaveLibrary(arg1) {
   return window['go']['main']['App']['SaveLibrary'](arg1);
+}
+
+export function SystemError(arg1, arg2, arg3) {
+  return window['go']['main']['App']['SystemError'](arg1, arg2, arg3);
 }

@@ -1,22 +1,22 @@
 import cn from 'classnames'
 
 import type { PropsWithChildren } from 'react'
+import type { DivProps }          from 'src/@/shared/types/props'
 
 import styles from './center.module.css'
 
 interface PCenter
     extends
-    PropsWithChildren
-{
-    className?: string
-}
+    PropsWithChildren,
+    DivProps
+{}
 
 export
 function Center
-({ children, className }: PCenter )
+({ children, className, ...rest }: PCenter )
 {
     return (
-        <div className={cn( styles.center, className )}>
+        <div className={cn( styles.center, className )} {...rest}>
             { children }
         </div>
     )

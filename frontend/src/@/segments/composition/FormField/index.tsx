@@ -25,7 +25,9 @@ function FormField
                     { label }
                 </span>
 
-                { children }
+                <section className={styles.row}>
+                    { children }
+                </section>
             </label>
         </div>
     )

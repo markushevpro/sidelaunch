@@ -1,6 +1,8 @@
-import { FormField } from 'src/@/segments/composition/FormField'
+import { FormField }         from 'src/@/segments/composition/FormField'
+import { Button }            from 'src/@/shared/ui-kit/Button'
+import { getValueFromInput } from 'src/@/shared/utils/inputs'
 
-import type { ChangeEvent } from 'react'
+import { useAppItemFields } from './hook'
 
 type SupportedFields = 'path' | 'dir' | 'params'
 
@@ -8,13 +10,15 @@ interface PAppItemFields
 {
     loading: boolean
     values: Record<SupportedFields, string | undefined>
-    onChange: Record<SupportedFields, ( e: ChangeEvent<HTMLInputElement> ) => void>
+    onChange: Record<SupportedFields, ( val: string ) => void>
 }
 
 export
 function AppItemFields
 ({ loading, values, onChange }: PAppItemFields )
 {
+    const { searchFile, searchDir } = useAppItemFields()
+
     return (
         <>
             <FormField label="Path">
@@ -22,8 +26,10 @@ function AppItemFields
                     disabled={loading}
                     type="text"
                     value={values.path}
-                    onChange={onChange.path}
+                    onChange={getValueFromInput( onChange.path )}
                 />
+
+                <Button onClick={searchFile( onChange.path )}>...</Button>
             </FormField>
 
             <FormField label="Working directory">
@@ -31,8 +37,10 @@ function AppItemFields
                     disabled={loading}
                     type="text"
                     value={values.dir}
-                    onChange={onChange.dir}
+                    onChange={getValueFromInput( onChange.dir )}
                 />
+
+                <Button onClick={searchDir( onChange.dir )}>...</Button>
             </FormField>
 
             <FormField label="Arguments">
@@ -40,7 +48,7 @@ function AppItemFields
                     disabled={loading}
                     type="text"
                     value={values.params}
-                    onChange={onChange.params}
+                    onChange={getValueFromInput( onChange.params )}
                 />
             </FormField>
         </>

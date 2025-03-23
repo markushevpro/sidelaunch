@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useHookResult }                             from 'src/@/shared/hooks/useHookResult'
-import { isFolder }                                  from 'src/@/shared/utils/items'
-import { byProtocol }                                from 'src/@/shared/utils/protocols'
-import { ExtractIcon }                               from 'wailsjs/go/main/App'
+import { useCallback, useMemo, useState } from 'react'
+import { useHookResult }                  from 'src/@/shared/hooks/useHookResult'
+import { isFolder }                       from 'src/@/shared/utils/items'
+import { byProtocol }                     from 'src/@/shared/utils/protocols'
+import { ExtractIcon }                    from 'wailsjs/go/main/App'
 
 import type { AppItem, ListItem } from 'src/@/shared/types/items'
+
+import { useIconsStore } from './store'
 
 interface HIcon
 {
@@ -18,6 +20,7 @@ export
 function useIcon
 ( data: ListItem | undefined ): HIcon
 {
+    const { cache }           = useIconsStore()
     const [ reload, $reload ] = useState<string>( '' )
 
     const icon = useMemo(
@@ -73,23 +76,8 @@ function useIcon
         [ data, force ]
     )
 
-    useEffect(
-        () => {
-            window.runtime.EventsOn( 'iconchanged', ( id: string ) => {
-                if ( data && id === data.id ) {
-                    force()
-                }
-            })
-
-            return () => {
-                window.runtime.EventsOff( 'iconchanged' )
-            }
-        },
-        [ data, force ]
-    )
-
     return useHookResult({
-        icon: reload ? `${icon}?${reload}` : icon,
+        icon: reload ? `${icon}?${reload}` : `${icon}?${cache}`,
         fallback,
         fix,
         force

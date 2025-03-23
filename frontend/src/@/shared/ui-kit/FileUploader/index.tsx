@@ -1,4 +1,5 @@
-import Upload from 'rc-upload'
+import Upload     from 'rc-upload'
+import { Center } from 'src/@/shared/ui-kit/Center'
 
 import type { ComponentProps, PropsWithChildren } from 'react'
 
@@ -10,11 +11,13 @@ PropsWithChildren
 
 export
 function FileUploader
-({ children, ...rest }: PFileUploader )
+({ children, onClick, ...rest }: PFileUploader )
 {
     return (
-        <Upload { ...rest }>
-            { children }
-        </Upload>
+        <Center onClick={onClick}>
+            <Upload openFileDialogOnClick={false} { ...rest }>
+                { children }
+            </Upload>
+        </Center>
     )
 }

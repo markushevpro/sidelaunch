@@ -4,7 +4,6 @@ import { useAppView }                     from 'src/@/services/view/hook'
 import { useHookResult }                  from 'src/@/shared/hooks/useHookResult'
 import { isFolder }                       from 'src/@/shared/utils/items'
 
-import type { ChangeEvent }       from 'react'
 import type { AppItem, ListItem } from 'src/@/shared/types/items'
 
 interface HItemDataEditor
@@ -14,8 +13,9 @@ interface HItemDataEditor
     updated: boolean
     isApp: boolean
     changed: Record<string, string | undefined>
-    updaters: Record<string, ( e: ChangeEvent<HTMLInputElement> ) => void>
+    updaters: Record<string, ( val: string ) => void>
     save: () => void
+    cancel: () => void
 }
 
 export
@@ -54,10 +54,13 @@ function useItemDataEditor
     )
 
     const update = useCallback(
-        ( arg: string ) => ( e: ChangeEvent<HTMLInputElement> ) => {
-            $changed({ [ arg ]: e.target.value })
+        ( key: string ) => ( value: string ) => {
+            $changed({
+                ...changed,
+                [ key ]: value
+            })
         },
-        []
+        [ changed ]
     )
 
     const updaters = useMemo(
@@ -88,6 +91,13 @@ function useItemDataEditor
         [ changed, item, updateItem, updated ]
     )
 
+    const cancel = useCallback(
+        () => {
+            window.runtime.Quit()
+        },
+        []
+    )
+
     return useHookResult({
         item,
         loading,
@@ -95,6 +105,7 @@ function useItemDataEditor
         changed,
         updaters,
         isApp,
-        save
+        save,
+        cancel
     })
 }

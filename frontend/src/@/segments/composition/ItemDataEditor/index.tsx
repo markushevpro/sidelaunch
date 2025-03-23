@@ -1,5 +1,6 @@
 import { Button }  from 'src/@/shared/ui-kit/Button'
 import { Content } from 'src/@/shared/ui-kit/Content'
+import { Stack }   from 'src/@/shared/ui-kit/Stack'
 
 import { AppItemFields }     from './AppItemFields'
 import { SharedItemFields }  from './SharedItemFields'
@@ -9,7 +10,7 @@ export
 function ItemDataEditor
 ()
 {
-    const { item, loading, changed, updaters, updated, isApp, save } = useItemDataEditor()
+    const { item, loading, changed, updaters, updated, isApp, save, cancel } = useItemDataEditor()
 
     if ( !item ) {
         return null
@@ -34,9 +35,15 @@ function ItemDataEditor
                 )
             }
 
-            <Button disabled={!updated || loading} onClick={save}>
-                Save
-            </Button>
+            <Stack align="end" gap={8}>
+                <Button ghost onClick={cancel}>
+                    Cancel
+                </Button>
+
+                <Button disabled={!updated || loading} onClick={save}>
+                    Save
+                </Button>
+            </Stack>
         </Content>
     )
 }

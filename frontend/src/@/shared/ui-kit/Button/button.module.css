@@ -9,6 +9,10 @@
     align-self: flex-end;
 }
 
+.button + .button {
+    margin-left: 0;
+}
+
 .button:hover {
     background-color: var(--accent-highlight);
 }

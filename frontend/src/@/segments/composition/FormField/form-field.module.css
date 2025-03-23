@@ -9,7 +9,6 @@
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
-    padding-right: 16px;
     box-sizing: border-box;
 }
 
@@ -18,8 +17,17 @@
     margin-bottom: 4px;
 }
 
-.group input {
+.group .row {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: flex-start;
+    flex: 1 1 100%;
     width: 100%;
+}
+
+.group input {
+    flex: 1 1 100%;
     background: var(--bg-highlight);
     border: 1px solid transparent;
     color: var(--text);
@@ -33,7 +41,25 @@
     color: var(--text-faded);
 }
 
-.group input:focus {
+.group input:focus,
+.group:focus-within input {
     outline: none;
     border-bottom-color: var(--text-faded);
+}
+
+.group input + button {
+    min-width: 0;
+    background-color: var(--bg-semi);
+    color: var(--text-faded);
+    height: 33px;
+}
+
+.group input + button:hover {
+    background-color: var(--accent);
+    color: var(--text-invert);
+}
+
+.group input + button:active {
+    background-color: var(--bg-highlight);
+    color: var(--text-faded);
 }

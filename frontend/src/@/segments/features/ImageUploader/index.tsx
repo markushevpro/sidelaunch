@@ -18,11 +18,11 @@ export
 function ImageUploader
 ({ id, image, content, onDone }: PImageUploader )
 {
-    const { before } = useImageUploader( id, onDone )
+    const { open } = useImageUploader( id, onDone )
 
     return (
         <div className={styles.container}>
-            <FileUploader accept="image/jpeg,image/png" beforeUpload={before}>
+            <FileUploader accept=".exe,image/vnd.microsoft.icon,image/jpeg,image/png" onClick={open}>
                 <Center>
                     {
                         content ?? (

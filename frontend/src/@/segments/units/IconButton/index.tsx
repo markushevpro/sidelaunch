@@ -3,6 +3,7 @@ import { ListButton } from 'src/@/segments/units/ListButton'
 import type { ButtonProps } from 'src/@/shared/types/props'
 
 import { useIconButton } from './hook'
+import styles            from './icon-button.module.css'
 
 interface PIconButton
 extends
@@ -24,6 +25,7 @@ function IconButton
     return (
         <ListButton {...rest}>
             <img
+                className={styles.icon}
                 draggable={false}
                 height={height ?? size}
                 src={src}
