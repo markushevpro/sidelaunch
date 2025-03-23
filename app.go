@@ -5,6 +5,7 @@ import (
 	"strings"
 	"log"
 	"errors"
+	"syscall"
 
 	"net/http"
 	"os"
@@ -850,7 +851,9 @@ func (a *App) LoadConfig() string {
 func (a *App) OpenURL( url string ) {
 	var args = []string{"/c", "start", url}	
 	log.Print("[URL]", args)
-	exec.Command("cmd", args...).Start()
+	instance := exec.Command("cmd", args...)
+	instance.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	instance.Start()
 }
 
 func (a *App) RunExecutable( path string ) {
