@@ -11,7 +11,7 @@ export
 function ImageHideOnError
 ({ src, className, ...rest }: PImageHideOnError )
 {
-    const { visible, onError } = useImageHideOnError( src )
+    const { visible, onError, onLoad } = useImageHideOnError( src )
 
     return (
         <img
@@ -19,6 +19,7 @@ function ImageHideOnError
             className={cn( className, styles.base, visible && styles.visible )}
             src={src}
             onError={onError}
+            onLoad={onLoad}
         />
     )
 }

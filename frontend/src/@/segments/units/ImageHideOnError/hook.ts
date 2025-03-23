@@ -5,6 +5,7 @@ import { useHookResult }         from 'src/@/shared/hooks/useHookResult'
 interface HImageHideOnError
 {
     visible: boolean
+    onLoad: () => void
     onError: () => void
 }
 
@@ -12,9 +13,16 @@ export
 function useImageHideOnError
 ( src: string | undefined ): HImageHideOnError
 {
-    const { error } = useIconsStore()
+    const { loaded, error } = useIconsStore()
 
-    const [ visible, $visible ] = useState<boolean>( !!( src && !error.includes( src )))
+    const [ visible, $visible ] = useState<boolean>( !!( src && loaded.includes( src ) && !error.includes( src )))
+
+    const onLoad = useCallback(
+        () => {
+            $visible( true )
+        },
+        []
+    )
 
     const onError = useCallback(
         () => {
@@ -25,6 +33,7 @@ function useImageHideOnError
 
     return useHookResult({
         visible,
+        onLoad,
         onError
     })
 }

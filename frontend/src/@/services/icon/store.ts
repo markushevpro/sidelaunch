@@ -4,12 +4,14 @@ export
 interface IconsStoreData
 {
     cache: string,
+    loaded: string[],
     error: string[]
 }
 
 interface IconsStoreActions
 {
     failed: ( src: string ) => void
+    success: ( src: string ) => void
     revalidate: () => void
 }
 
@@ -18,11 +20,27 @@ type IconsStore = IconsStoreData & IconsStoreActions
 
 export
 const useIconsStore = create<IconsStore>(( set ) => ({
-    error: [],
-    cache: crypto.randomUUID(),
+    error:  [],
+    loaded: [],
+    cache:  crypto.randomUUID(),
 
     revalidate: () => {
         set({ cache: crypto.randomUUID() })
+    },
+
+    success: ( src: string ) => {
+        set(({ loaded }) => {
+            if ( !loaded.includes( src )) {
+                return {
+                    loaded: [
+                        ...loaded,
+                        src
+                    ]
+                }
+            }
+
+            return { loaded }
+        })
     },
 
     failed: ( src: string ) => {

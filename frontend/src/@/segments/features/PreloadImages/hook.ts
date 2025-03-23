@@ -8,14 +8,21 @@ export
 function usePreloadImages
 (): void
 {
-    const { library } = useLibrary()
-    const { failed }  = useIconsStore()
+    const { library }         = useLibrary()
+    const { failed, success } = useIconsStore()
 
     const onError = useCallback(
         ( src: string ) => () => {
             failed( src )
         },
         [ failed ]
+    )
+
+    const onSuccess = useCallback(
+        ( src: string ) => () => {
+            success( src )
+        },
+        [ success ]
     )
 
     useEffect(
@@ -28,9 +35,10 @@ function usePreloadImages
                 const src = `/data/icons/${id}.png`
 
                 img.onerror = onError( src )
+                img.onload  = onSuccess( src )
                 img.src     = src
             })
         },
-        [ library, onError ]
+        [ library, onError, onSuccess ]
     )
 }
