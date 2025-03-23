@@ -14,13 +14,14 @@ export
 function AppListItem
 ({ data }: PAppListItem )
 {
-    const { error, icon, click } = useAppListItem( data )
+    const { loading, error, icon, click } = useAppListItem( data )
 
     return (
         <IconWithBadge
             badge={error && <ErrorBadge />}
             fallback={icon.fallback}
             icon={icon.icon}
+            loading={loading}
             title={`${data.name}${error ? ` (${error})` : ''}`}
             onClick={click}
             onError={icon.fix}

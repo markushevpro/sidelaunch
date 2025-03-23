@@ -5,7 +5,7 @@ import type { FolderItem, ListItem } from 'src/@/shared/types/items'
 export
 interface CurrentFolderStoreData
 {
-    waitUpdate: boolean
+    waitUpdate: string | null
     folder?: FolderItem
     items: ListItem[]
 }
@@ -20,7 +20,7 @@ type CurrentFolderStore = CurrentFolderStoreData & CurrentFolderStoreActions
 
 export
 const useFolderStore = create<CurrentFolderStore>(( set ) => ({
-    waitUpdate: false,
+    waitUpdate: null,
     folder:     undefined,
     items:      [],
 

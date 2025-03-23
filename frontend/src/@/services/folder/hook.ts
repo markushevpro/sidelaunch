@@ -13,7 +13,7 @@ interface HCurrentFolder
 {
     folder: FolderItem | undefined
     items: ListItem[]
-    isWaitingUpdate: boolean
+    waitingUpdate: string | null
     refresh: ( lib: Library | undefined ) => Library | undefined
     resort: ( a: ListItem, b: ListItem ) => Promise<Library | undefined>
     append: ( files: string[]) => Promise<Library | undefined>
@@ -23,8 +23,9 @@ interface HCurrentFolder
     set: ( item: FolderItem | undefined ) => void
     goUp: () => void
     moveUp: ( item: ListItem ) => void
-    waitUpdate: () => void
+    waitUpdate: ( id: string ) => void
     stopWaitingUpdate: () => void
+    isWaiting: ( data: ListItem ) => boolean
 }
 
 export
@@ -33,7 +34,7 @@ function useCurrentFolder
 {
     const { library, find, ...handlers } = useLibrary()
 
-    const { folder, items, waitUpdate: isWaitingUpdate, update } = useFolderStore()
+    const { folder, items, waitUpdate: waitingUpdate, update } = useFolderStore()
 
     const _set = useCallback(
         ( f: FolderItem ) => {
@@ -139,17 +140,24 @@ function useCurrentFolder
     )
 
     const waitUpdate = useCallback(
-        () => {
-            update({ waitUpdate: true })
+        ( id: string ) => {
+            update({ waitUpdate: id })
         },
         [ update ]
     )
 
     const stopWaitingUpdate = useCallback(
         () => {
-            update({ waitUpdate: false })
+            update({ waitUpdate: null })
         },
         [ update ]
+    )
+
+    const isWaiting = useCallback(
+        ( data: ListItem ) => {
+            return !!( waitingUpdate && waitingUpdate === data.id )
+        },
+        [ waitingUpdate ]
     )
 
     useEffect(
@@ -165,7 +173,7 @@ function useCurrentFolder
     return useHookResult({
         folder,
         items: items ?? [],
-        isWaitingUpdate,
+        waitingUpdate,
         refresh,
         resort,
         append,
@@ -176,6 +184,7 @@ function useCurrentFolder
         goUp,
         moveUp,
         waitUpdate,
-        stopWaitingUpdate
+        stopWaitingUpdate,
+        isWaiting
     })
 }

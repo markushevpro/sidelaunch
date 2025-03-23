@@ -22,7 +22,7 @@ function useSmartItem
         ( e: MouseEvent ) => {
             e.preventDefault()
             editMode( data )
-            setTimeout(() => { waitUpdate() }, 1000 )
+            setTimeout(() => { waitUpdate( data.id ) }, 1000 )
         },
         [ data, editMode, waitUpdate ]
     )

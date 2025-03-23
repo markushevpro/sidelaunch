@@ -19,7 +19,7 @@ function SharedItemFields
 {
     return (
         <>
-            <FormField label="ID">
+            <FormField hidden label="ID">
                 <input
                     disabled
                     readOnly

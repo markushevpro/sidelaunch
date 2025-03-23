@@ -1,5 +1,6 @@
-import cn             from 'classnames'
-import { IconButton } from 'src/@/segments/units/IconButton'
+import cn                 from 'classnames'
+import { IconButton }     from 'src/@/segments/units/IconButton'
+import { LoadingOverlay } from 'src/@/shared/ui-kit/LoadingOverlay'
 
 import type { ComponentProps, ReactNode } from 'react'
 
@@ -9,13 +10,14 @@ interface PIconWithBadge
 extends
 ComponentProps<typeof IconButton>
 {
+    loading?: boolean
     badge?: ReactNode
     center?: boolean
 }
 
 export
 function IconWithBadge
-({ badge, center, ...rest }: PIconWithBadge )
+({ loading, badge, center, ...rest }: PIconWithBadge )
 {
     return (
         <div className={styles.container}>
@@ -24,6 +26,12 @@ function IconWithBadge
             <div className={cn( styles.badge, center && styles.center )}>
                 { badge }
             </div>
+
+            {
+                loading && (
+                    <LoadingOverlay />
+                )
+            }
         </div>
     )
 }

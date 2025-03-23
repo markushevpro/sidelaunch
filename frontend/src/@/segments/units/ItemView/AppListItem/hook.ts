@@ -1,4 +1,5 @@
 import { useCallback }            from 'react'
+import { useCurrentFolder }       from 'src/@/services/folder/hook'
 import { useIcon }                from 'src/@/services/icon/hook'
 import { useWindow }              from 'src/@/services/window/hook'
 import { useHookResult }          from 'src/@/shared/hooks/useHookResult'
@@ -11,6 +12,7 @@ import { useAppListtItemState } from './state'
 
 interface HAppListItem
 {
+    loading: boolean
     error: string | undefined
     icon: ReturnType<typeof useIcon>
     click: () => void
@@ -20,9 +22,10 @@ export
 function useAppListItem
 ( data: AppItem ): HAppListItem
 {
-    const icon      = useIcon( data )
-    const { error } = useAppListtItemState( data )
-    const { hide }  = useWindow()
+    const icon          = useIcon( data )
+    const { error }     = useAppListtItemState( data )
+    const { hide }      = useWindow()
+    const { isWaiting } = useCurrentFolder()
 
     const customProtocolRun = useCallback(
         async ( url: string ) => {
@@ -52,8 +55,9 @@ function useAppListItem
     )
 
     return useHookResult({
+        loading: isWaiting( data ),
         error,
         icon,
-        click: run
+        click:   run
     })
 }

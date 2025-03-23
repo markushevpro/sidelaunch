@@ -27,7 +27,6 @@ function usePreloadImages
 
     useEffect(
         () => {
-            console.log( 'icons updated' )
             const ids = extractAllIDs( library )
 
             ids.forEach( id => {

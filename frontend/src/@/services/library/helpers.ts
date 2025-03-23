@@ -168,7 +168,6 @@ export
 function moveChildrenAndRemove
 ( library: Library, item: FolderItem ): Library
 {
-    console.log({ item })
     if ( item.parent ) {
         const parent    = findInLibrary( library, item.parent ) as FolderItem
         parent.children = [ ...parent.children, ...item.children ]

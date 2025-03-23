@@ -18,13 +18,14 @@ export
 function FolderIcon
 ({ data, size: customSize, onClick }: PFolderIcon )
 {
-    const { icon, size } = useFolderIcon( data, customSize )
+    const { loading, icon, size } = useFolderIcon( data, customSize )
 
     return (
         <IconWithBadge
             center
             height={size}
             icon={icon.fallback}
+            loading={loading}
             title={data.name}
             width={size}
             badge={(
