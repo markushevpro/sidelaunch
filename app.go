@@ -856,16 +856,16 @@ func (a *App) OpenURL( url string ) {
 	instance.Start()
 }
 
-func (a *App) RunExecutable( path string ) {
-    if ( filepath.Ext( path ) != ".exe" ) {
-        var args = []string{"/c", "start", path}	
+func (a *App) RunExecutable( path string, params string ) {
+    if ( filepath.Ext( path ) != ".exe" || filepath.Base( path ) == "cmd.exe" ) {
+        var args = []string{"/c", "start", path, params }	
         log.Print("[FILE]", args)
         exec.Command("cmd", args...).Start()
         return
     }
 
-	log.Print("[EXE]", path)
-	exec.Command(path).Start()
+	log.Print("[EXE]", path + " " + params )
+	exec.Command(path + " " + params).Start()
 }
 
 func (a *App) CheckFile( path string ) string {
