@@ -1,4 +1,4 @@
-import { useMemo }     from 'react'
+import { useEffect, useMemo }     from 'react'
 import { useDrop }     from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
 
@@ -48,6 +48,19 @@ function useDropArea
             canDrop
         }),
         [ canDrop, isOver ]
+    )
+
+    useEffect(
+        () => {
+            window.runtime.EventsOn( 'filedrop', ( files: string[]) => {
+                onDrop( files )
+            })
+
+            return () => {
+                window.runtime.EventsOff( 'filedrop' )
+            }
+        },
+        [ onDrop ]
     )
 
     return useMemo(
