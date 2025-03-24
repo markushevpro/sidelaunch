@@ -14,6 +14,7 @@ interface HCurrentFolder
     folder: FolderItem | undefined
     items: ListItem[]
     waitingUpdate: string | null
+    waitOut: boolean
     refresh: ( lib: Library | undefined ) => Library | undefined
     resort: ( a: ListItem, b: ListItem ) => Promise<Library | undefined>
     append: ( files: string[]) => Promise<Library | undefined>
@@ -25,6 +26,7 @@ interface HCurrentFolder
     moveUp: ( item: ListItem ) => void
     waitUpdate: ( id: string ) => void
     stopWaitingUpdate: () => void
+    stopWaitingOut: () => void
     isWaiting: ( data: ListItem ) => boolean
 }
 
@@ -34,7 +36,7 @@ function useCurrentFolder
 {
     const { library, find, ...handlers } = useLibrary()
 
-    const { folder, items, waitUpdate: waitingUpdate, update } = useFolderStore()
+    const { folder, items, waitUpdate: waitingUpdate, waitOut, update } = useFolderStore()
 
     const _set = useCallback(
         ( f: FolderItem ) => {
@@ -141,7 +143,10 @@ function useCurrentFolder
 
     const waitUpdate = useCallback(
         ( id: string ) => {
-            update({ waitUpdate: id })
+            update({
+                waitUpdate: id,
+                waitOut:    true
+            })
         },
         [ update ]
     )
@@ -149,6 +154,13 @@ function useCurrentFolder
     const stopWaitingUpdate = useCallback(
         () => {
             update({ waitUpdate: null })
+        },
+        [ update ]
+    )
+
+    const stopWaitingOut = useCallback(
+        () => {
+            update({ waitOut: false })
         },
         [ update ]
     )
@@ -174,6 +186,7 @@ function useCurrentFolder
         folder,
         items: items ?? [],
         waitingUpdate,
+        waitOut,
         refresh,
         resort,
         append,
@@ -185,6 +198,7 @@ function useCurrentFolder
         moveUp,
         waitUpdate,
         stopWaitingUpdate,
+        stopWaitingOut,
         isWaiting
     })
 }

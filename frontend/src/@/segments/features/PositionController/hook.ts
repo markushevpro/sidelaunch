@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useEffect, useState } from 'react'
 import { useConfig }                        from 'src/@/services/config/hook'
+import { useCurrentFolder }                 from 'src/@/services/folder/hook'
 import { useKeyboardCatcher }               from 'src/@/services/keyboard/useKeyboardCatcher'
 import { useLibrary }                       from 'src/@/services/library/hook'
 import { useWindow }                        from 'src/@/services/window/hook'
@@ -20,25 +21,37 @@ export
 function usePositionController
 (): HPositionController
 {
-    const { config }           = useConfig()
-    const { hide, show }       = useWindow()
-    const { onPlace, visible } = useWindowStore()
-    const { library }          = useLibrary()
+    const { config }                  = useConfig()
+    const { hide, show }              = useWindow()
+    const { onPlace, visible }        = useWindowStore()
+    const { library }                 = useLibrary()
+    const { waitOut, stopWaitingOut } = useCurrentFolder()
 
     const [ shown, $shown ] = useState<boolean>( false )
+
+    const waitHide = useCallback(
+        () => {
+            if ( waitOut ) {
+                stopWaitingOut()
+            }
+
+            hide()
+        },
+        [ waitOut, stopWaitingOut, hide ]
+    )
 
     const hideOut = useKeyboardCatcher<DragEvent>(
         useCallback(
             ( e: DragEvent ) => {
                 if ( e.pageX > window.innerWidth ) {
-                    hide()
+                    waitHide()
                 }
             },
-            [ hide ]
+            [ waitHide ]
         )
     )
 
-    const mHide = useKeyboardCatcher<MouseEvent>( hide )
+    const mHide = useKeyboardCatcher<MouseEvent>( waitHide )
     const mShow = useKeyboardCatcher<MouseEvent>( show )
 
     useEffect(

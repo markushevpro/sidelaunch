@@ -6,7 +6,7 @@ function EditWindow
 ()
 {
     return (
-        <Content>
+        <Content fill>
             <EditItemFlow />
         </Content>
     )

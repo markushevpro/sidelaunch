@@ -95,14 +95,14 @@ func main() {
 		// Create an instance of the app structure
 		app := NewApp( action, id )
 
-		log.Print("[RUN] Edit", id)
+		log.Print("[RUN] Action: " + action + " / " + id)
 
 		if ( action == "edit" ){
 			err = wails.Run(&options.App{
 				Title:  "Sidelaunch",
 				Width:  800,
 				MinWidth: 0,
-				Height: 600,	
+				Height: 420,	
 				Frameless: false,
 				DisableResize: false,
 				AlwaysOnTop: false,

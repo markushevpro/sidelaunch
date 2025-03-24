@@ -31,7 +31,7 @@ function useRemoveArea
             if ( isFolder( income )) {
                 if ( income.children.length > 0 ) {
                     await ConfirmFolderRemove( income.id )
-                    setTimeout(() => { waitUpdate( income.id ) }, 1000 )
+                    waitUpdate( income.id )
                 } else {
                     await remove( income )
                 }

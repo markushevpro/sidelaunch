@@ -25,7 +25,7 @@ function useCurrentFolderItems
     const { revalidate } = useIconsStore()
     const { ctrl }       = useKeyboardStore()
 
-    const { items, waitingUpdate, stopWaitingUpdate, refresh } = useCurrentFolder()
+    const { items, waitingUpdate, waitOut, stopWaitingUpdate, refresh } = useCurrentFolder()
 
     const classNames = useMemo(
         () => cn( styles.list, ctrl && 'with-control' ),
@@ -42,12 +42,12 @@ function useCurrentFolderItems
 
     const checkUpdate = useCallback(
         () => {
-            if ( waitingUpdate ) {
+            if ( waitingUpdate && !waitOut ) {
                 void reload()
                 stopWaitingUpdate()
             }
         },
-        [ waitingUpdate, reload, stopWaitingUpdate ]
+        [ waitingUpdate, waitOut, reload, stopWaitingUpdate ]
     )
 
     return useHookResult({

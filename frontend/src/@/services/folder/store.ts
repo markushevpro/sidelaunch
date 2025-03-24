@@ -6,6 +6,7 @@ export
 interface CurrentFolderStoreData
 {
     waitUpdate: string | null
+    waitOut: boolean
     folder?: FolderItem
     items: ListItem[]
 }
@@ -21,6 +22,7 @@ type CurrentFolderStore = CurrentFolderStoreData & CurrentFolderStoreActions
 export
 const useFolderStore = create<CurrentFolderStore>(( set ) => ({
     waitUpdate: null,
+    waitOut:    false,
     folder:     undefined,
     items:      [],
 
