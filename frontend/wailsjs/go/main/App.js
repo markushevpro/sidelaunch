@@ -6,10 +6,6 @@ export function CheckFile(arg1) {
   return window['go']['main']['App']['CheckFile'](arg1);
 }
 
-export function CheckLibrary() {
-  return window['go']['main']['App']['CheckLibrary']();
-}
-
 export function CheckURL(arg1) {
   return window['go']['main']['App']['CheckURL'](arg1);
 }

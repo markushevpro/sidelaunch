@@ -1,10 +1,11 @@
-module main
+module sidelaunch
 
 go 1.22.0
 
 toolchain go1.22.3
 
 require (
+	dario.cat/mergo v1.0.1
 	github.com/energye/systray v1.0.2
 	github.com/wailsapp/wails/v2 v2.10.1
 	gopkg.in/ini.v1 v1.67.0
