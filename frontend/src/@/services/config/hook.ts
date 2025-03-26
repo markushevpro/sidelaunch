@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useHookResult }          from 'src/@/shared/hooks/useHookResult'
 import { LoadConfig }             from 'wailsjs/go/main/App'
 
@@ -41,6 +41,17 @@ function useConfig
         },
         [ update ]
     )
+    
+    const fixed = useMemo(
+        () => {
+            const res = { ...defaultConfig, ...config }
+
+            res.iconSize = Math.max( 16, Math.min( 48, res.iconSize ))
+
+            return res
+        },
+        [ config ]
+    )
 
     useEffect(
         () => {
@@ -51,5 +62,5 @@ function useConfig
         [ config, load ]
     )
 
-    return useHookResult({ config: config ?? defaultConfig })
+    return useHookResult({ config: fixed })
 }

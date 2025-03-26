@@ -53,7 +53,7 @@ function useIconButton
 
     return useHookResult({
         src,
-        size:  config?.iconSize,
+        size:  config.iconSize,
         error: handleError
     })
 }

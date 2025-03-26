@@ -22,8 +22,8 @@ function useFolderIcon
     const { isWaiting } = useCurrentFolder()
 
     const size = useMemo(
-        () => ( customSize ?? config?.iconSize ?? 32 ) * 1.2,
-        [ config?.iconSize, customSize ]
+        () => ( customSize ?? config.iconSize ?? 32 ) * 1.2,
+        [ config.iconSize, customSize ]
     )
 
     const icon = useMemo(
