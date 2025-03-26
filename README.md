@@ -10,7 +10,7 @@
 </h2>
 
 <h3 align="center">
-    Additional Launchbar for Windows 10
+    Additional Launchbar for Windows 10 & 11
 </h3>
 
 <p align="center">
