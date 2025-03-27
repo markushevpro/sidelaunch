@@ -41,10 +41,10 @@ func main() {
 		app := NewApp( action, id )
 
 		if ( action == "edit" ){
-			err = wails.Run(windows.EditWindow( getBinds( app )))
+			err = wails.Run(windows.EditWindow( id, getBinds( app ), app.Focus ))
 		} else {
 			// Dialog window
-			err = wails.Run(windows.DialogWindow( getBinds( app )))
+			err = wails.Run(windows.DialogWindow( "remove-" + id, getBinds( app ), app.Focus ))
 		}
 	}
 

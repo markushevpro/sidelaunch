@@ -26,6 +26,10 @@ export function ExtractLink(arg1) {
   return window['go']['main']['App']['ExtractLink'](arg1);
 }
 
+export function Focus(arg1) {
+  return window['go']['main']['App']['Focus'](arg1);
+}
+
 export function GetPageData() {
   return window['go']['main']['App']['GetPageData']();
 }

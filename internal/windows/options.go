@@ -35,9 +35,6 @@ var mainWindowOptions = options.App{
 	Height: 768,	
 	Frameless: true,
 	AlwaysOnTop: true,
-	SingleInstanceLock: &options.SingleInstanceLock{
-		UniqueId: "c28e21cc-bec4-42fe-94dd-d304181f59b5",
-	},
 	DragAndDrop: &options.DragAndDrop{
 		EnableFileDrop: true,
 	},
@@ -52,16 +49,10 @@ var editWindowOptions = options.App{
 	Width:  800,
 	Height: 420,	
 	DisableResize: false,
-	SingleInstanceLock: &options.SingleInstanceLock{
-		UniqueId: "c28e21cc-bec4-42fe-94dd-d304181f59b6",
-	},
 }
 
 var dialogWindowOptions = options.App{
 	Title:  "Confirmation",
 	Width:  565,
-	Height: 320,	
-	SingleInstanceLock: &options.SingleInstanceLock{
-		UniqueId: "c28e21cc-bec4-42fe-94dd-d304181f59b7",
-	},
+	Height: 320,
 }
