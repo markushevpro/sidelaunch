@@ -97,6 +97,7 @@ You can change some parameters in the `data/config.json` file. Not all of them a
 
 _Default values ​​are specified below_
 
+- **fixed**: `false` - set "true" for app be always visible
 - **position**: `left` - currently only this value is supported
 - **iconSize**: `32` - Value from 16 to 48. Other values ​​will be adjusted to this range
 - **hideTimeout**: `0.5` - timeout value for hiding in seconds
