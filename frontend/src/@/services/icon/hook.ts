@@ -1,8 +1,9 @@
 import { useCallback, useMemo, useState } from 'react'
-import { useHookResult }                  from 'src/@/shared/hooks/useHookResult'
-import { isFolder }                       from 'src/@/shared/utils/items'
-import { byProtocol }                     from 'src/@/shared/utils/protocols'
-import { ExtractIcon }                    from 'wailsjs/go/main/App'
+
+import { useHookResult } from 'src/@/shared/hooks/useHookResult'
+import { isFolder }      from 'src/@/shared/utils/items'
+import { byProtocol }    from 'src/@/shared/utils/protocols'
+import { ExtractIcon }   from 'wailsjs/go/main/App'
 
 import type { AppItem, ListItem } from 'src/@/shared/types/items'
 

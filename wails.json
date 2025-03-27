@@ -9,5 +9,10 @@
   "author": {
     "name": "markushevpro",
     "email": "artem@markushev.pro"
+  },
+  "info": {
+    "productName": "Sidelaunch",
+    "companyName": "markushevpro",
+    "productVersion": "2.0.1"
   }
 }

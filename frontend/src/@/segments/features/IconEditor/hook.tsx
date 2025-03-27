@@ -1,4 +1,5 @@
-import { useMemo }       from 'react'
+import { useMemo } from 'react'
+
 import { FolderIcon }    from 'src/@/segments/units/FolderIcon'
 import { useIcon }       from 'src/@/services/icon/hook'
 import { useAppView }    from 'src/@/services/view/hook'

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
-import { GetPageData }                      from 'wailsjs/go/main/App'
+
+import { GetPageData } from 'wailsjs/go/main/App'
 
 interface PageData
 {

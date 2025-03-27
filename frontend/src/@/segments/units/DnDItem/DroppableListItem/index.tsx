@@ -1,4 +1,5 @@
-import cn            from 'classnames'
+import cn from 'classnames'
+
 import { AllowDrop } from 'src/@/segments/units/AllowDrop'
 
 import type { PropsWithChildren } from 'react'

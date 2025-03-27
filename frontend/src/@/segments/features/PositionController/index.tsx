@@ -1,3 +1,5 @@
+import cn from 'classnames'
+
 import type { PropsWithChildren } from 'react'
 
 import { usePositionController } from './hook'
@@ -9,14 +11,14 @@ export
 function PositionController
 ({ children }: PPositionController )
 {
-    const { show, hide, hideOut } = usePositionController()
+    const { drop, show, hide, dropShow, dropHide } = usePositionController()
 
     return (
         <main
-            className={styles.container}
-            onDragEnd={hideOut}
-            onDragLeave={hideOut}
-            onDragOver = {show}
+            className={cn( styles.container, drop && styles.drop )}
+            onDragEnd={dropHide}
+            onDragLeave={dropHide}
+            onDragOver = {dropShow}
             onMouseEnter = {show}
             onMouseLeave = {hide}
             onMouseMove={show}

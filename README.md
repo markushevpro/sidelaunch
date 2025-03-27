@@ -63,6 +63,9 @@ Drag an added item inside the window.
 - **Moving files into a folder**<br/>
 Drag an item into the specified folder.
 
+- **Moving files into the parent folder**<br/>
+While inside a folder, drag an item onto "Back button" at the top of the screen
+
 - **Sorting folders**<br/>
 Move folders while holding down the "Ctrl" key.
 

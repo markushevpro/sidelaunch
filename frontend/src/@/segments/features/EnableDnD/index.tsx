@@ -1,6 +1,7 @@
 import { DndProvider }  from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { DropLayer }    from 'src/@/segments/features/DropLayer'
+
+import { DropLayer } from 'src/@/segments/features/DropLayer'
 
 import type { PropsWithChildren } from 'react'
 

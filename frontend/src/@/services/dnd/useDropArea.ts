@@ -2,6 +2,8 @@ import { useEffect, useMemo } from 'react'
 import { useDrop }            from 'react-dnd'
 import { NativeTypes }        from 'react-dnd-html5-backend'
 
+import { useWindowStore } from 'src/@/services/window/store'
+
 import type { ConnectDropTarget, DropTargetMonitor } from 'react-dnd'
 
 export
@@ -23,6 +25,7 @@ export
 function useDropArea
 ( onDrop: ( file: string[]) => void ): HDropArea
 {
+    const { update }                    = useWindowStore()
     const [ { canDrop, isOver }, drop ] = useDrop(
         () => ({
             accept: [ NativeTypes.FILE ],
@@ -53,6 +56,7 @@ function useDropArea
     useEffect(
         () => {
             window.runtime.EventsOn( 'filedrop', ( files: string[]) => {
+                update({ drop: false })
                 onDrop( files )
             })
 
@@ -60,7 +64,7 @@ function useDropArea
                 window.runtime.EventsOff( 'filedrop' )
             }
         },
-        [ onDrop ]
+        [ onDrop, update ]
     )
 
     return useMemo(

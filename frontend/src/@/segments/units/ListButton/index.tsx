@@ -1,4 +1,5 @@
-import cn                     from 'classnames'
+import cn from 'classnames'
+
 import { TARGET_WINDOW_SIZE } from 'src/@/services/window/const'
 
 import type {  PropsWithChildren } from 'react'

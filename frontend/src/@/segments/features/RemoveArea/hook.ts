@@ -1,9 +1,10 @@
 import { useCallback, useMemo } from 'react'
-import { useDnDStore }          from 'src/@/services/dnd/store'
-import { useCurrentFolder }     from 'src/@/services/folder/hook'
-import { useHookResult }        from 'src/@/shared/hooks/useHookResult'
-import { isFolder }             from 'src/@/shared/utils/items'
-import { ConfirmFolderRemove }  from 'wailsjs/go/main/App'
+
+import { useDnDStore }         from 'src/@/services/dnd/store'
+import { useCurrentFolder }    from 'src/@/services/folder/hook'
+import { useHookResult }       from 'src/@/shared/hooks/useHookResult'
+import { isFolder }            from 'src/@/shared/utils/items'
+import { ConfirmFolderRemove } from 'wailsjs/go/main/App'
 
 import type { ListItem } from 'src/@/shared/types/items'
 

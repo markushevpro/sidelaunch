@@ -1,4 +1,5 @@
-import Upload     from 'rc-upload'
+import Upload from 'rc-upload'
+
 import { Center } from 'src/@/shared/ui-kit/Center'
 
 import type { ComponentProps, PropsWithChildren } from 'react'

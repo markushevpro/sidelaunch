@@ -51,7 +51,7 @@ function onDragOver(e) {
     if (!window.wails.flags.enableWailsDragAndDrop) {
         return;
     }
-    e.dataTransfer.dropEffect = 'copy';
+    e.dataTransfer.dropEffect = 'link';
     e.preventDefault();
 
     if (!flags.useDropTarget) {

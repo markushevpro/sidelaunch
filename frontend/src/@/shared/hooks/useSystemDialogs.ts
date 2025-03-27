@@ -1,4 +1,5 @@
-import { useCallback }                    from 'react'
+import { useCallback } from 'react'
+
 import { OpenDir, OpenFile, SystemError } from 'wailsjs/go/main/App'
 
 import { useHookResult } from './useHookResult'

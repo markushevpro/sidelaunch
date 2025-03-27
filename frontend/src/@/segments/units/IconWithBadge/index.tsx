@@ -1,4 +1,5 @@
-import cn                 from 'classnames'
+import cn from 'classnames'
+
 import { IconButton }     from 'src/@/segments/units/IconButton'
 import { LoadingOverlay } from 'src/@/shared/ui-kit/LoadingOverlay'
 

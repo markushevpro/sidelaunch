@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react'
-import { useIconsStore }          from 'src/@/services/icon/store'
-import { useLibrary }             from 'src/@/services/library/hook'
+
+import { useIconsStore } from 'src/@/services/icon/store'
+import { useLibrary }    from 'src/@/services/library/hook'
 
 import { extractAllIDs } from './helpers'
 

@@ -1,5 +1,6 @@
-import { useRef }        from 'react'
-import { useDrag }       from 'react-dnd'
+import { useRef }  from 'react'
+import { useDrag } from 'react-dnd'
+
 import { useHookResult } from 'src/@/shared/hooks/useHookResult'
 
 import type { RefObject }         from 'react'

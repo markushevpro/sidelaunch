@@ -1,4 +1,5 @@
-import { useMemo }          from 'react'
+import { useMemo } from 'react'
+
 import { useConfig }        from 'src/@/services/config/hook'
 import { useCurrentFolder } from 'src/@/services/folder/hook'
 import { useIcon }          from 'src/@/services/icon/hook'

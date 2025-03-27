@@ -1,4 +1,5 @@
-import { useCallback, useRef }             from 'react'
+import { useCallback, useRef } from 'react'
+
 import { useConfig }                       from 'src/@/services/config/hook'
 import { useHookResult }                   from 'src/@/shared/hooks/useHookResult'
 import { WindowCenter, WindowSetPosition } from 'wailsjs/runtime/runtime'

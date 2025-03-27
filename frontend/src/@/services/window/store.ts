@@ -7,6 +7,7 @@ interface WindowStoreData
     dpi: number
     onPlace: boolean
     visible: boolean
+    drop: boolean
 }
 
 interface WindowStoreActions
@@ -24,6 +25,7 @@ const useWindowStore = create<WindowStore>(( set ) => ({
     dpi:     1,
     onPlace: false,
     visible: false,
+    drop:    false,
 
     update: ( payload: Partial<WindowStoreData> ) => {
         set({ ...payload })

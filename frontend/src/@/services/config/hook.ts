@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react'
-import { useHookResult }          from 'src/@/shared/hooks/useHookResult'
-import { LoadConfig }             from 'wailsjs/go/main/App'
+
+import { useHookResult } from 'src/@/shared/hooks/useHookResult'
+import { LoadConfig }    from 'wailsjs/go/main/App'
 
 import type { AppConfig } from 'src/@/shared/types/items'
 
@@ -41,10 +42,13 @@ function useConfig
         },
         [ update ]
     )
-    
+
     const fixed = useMemo(
         () => {
-            const res = { ...defaultConfig, ...config }
+            const res = {
+                ...defaultConfig,
+                ...config
+            }
 
             res.iconSize = Math.max( 16, Math.min( 48, res.iconSize ))
 

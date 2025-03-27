@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect } from 'react'
-import { useHookResult }                    from 'src/@/shared/hooks/useHookResult'
-import { byProtocol }                       from 'src/@/shared/utils/protocols'
-import { CheckURL, CheckFile }              from 'wailsjs/go/main/App'
+
+import { useHookResult }       from 'src/@/shared/hooks/useHookResult'
+import { byProtocol }          from 'src/@/shared/utils/protocols'
+import { CheckURL, CheckFile } from 'wailsjs/go/main/App'
 
 import type { AppItem } from 'src/@/shared/types/items'
 

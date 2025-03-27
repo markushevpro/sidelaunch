@@ -567,11 +567,11 @@ export default [
                     "warnOnUnassignedImports": true,
                     "pathGroups": [
                         {
-                            "pattern": "~/**",
+                            "pattern": "src/@/**",
                             "group": "internal"
                         },
                         {
-                            "pattern": "@/**",
+                            "pattern": "wailsjs/**",
                             "group": "internal"
                         }
                     ],

@@ -1,4 +1,5 @@
-import { useMemo }       from 'react'
+import { useMemo } from 'react'
+
 import { useAppView }    from 'src/@/services/view/hook'
 import { useHookResult } from 'src/@/shared/hooks/useHookResult'
 

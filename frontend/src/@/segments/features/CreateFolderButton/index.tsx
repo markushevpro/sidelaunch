@@ -1,4 +1,5 @@
-import cn             from 'classnames'
+import cn from 'classnames'
+
 import { ListButton } from 'src/@/segments/units/ListButton'
 import { Plus }       from 'src/@/shared/ui-kit/icons/Plus'
 

@@ -1,4 +1,5 @@
-import cn            from 'classnames'
+import cn from 'classnames'
+
 import { Draggable } from 'src/@/segments/units/Draggable'
 
 import type { PropsWithChildren } from 'react'

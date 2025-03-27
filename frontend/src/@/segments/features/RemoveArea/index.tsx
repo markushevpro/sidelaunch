@@ -1,4 +1,5 @@
-import cn             from 'classnames'
+import cn from 'classnames'
+
 import { AllowDrop }  from 'src/@/segments/units/AllowDrop'
 import { ListButton } from 'src/@/segments/units/ListButton'
 import { Trash }      from 'src/@/shared/ui-kit/icons/Trash'
