@@ -31,6 +31,7 @@ type AppConfigValue = string | number | null
 export
 interface AppConfig
 {
+    fixed?: boolean
     position: 'left'
     iconSize: number
     hideTimeout: number

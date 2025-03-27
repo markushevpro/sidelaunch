@@ -55,20 +55,24 @@ function useWindow
 
     const hide = useCallback(
         (): void => {
-            window.runtime.WindowSetPosition( offset.hidden, 0 )
-            update({ visible: false })
+            if ( !config.fixed ) {
+                window.runtime.WindowSetPosition( offset.hidden, 0 )
+                update({ visible: false })
+            }
         },
-        [ offset.hidden, update ]
+        [ config.fixed, offset.hidden, update ]
     )
 
     const hideTimeout = useCallback(
         () => {
-            if ( visible ) {
-                if ( timer.current ) {
-                    clearTimeout( timer.current )
-                }
+            if ( !config.fixed ) {
+                if ( visible ) {
+                    if ( timer.current ) {
+                        clearTimeout( timer.current )
+                    }
 
-                timer.current = setTimeout( hide, config.hideTimeout * 1000 )
+                    timer.current = setTimeout( hide, config.hideTimeout * 1000 )
+                }
             }
         },
         [ config.hideTimeout, hide, visible ]
