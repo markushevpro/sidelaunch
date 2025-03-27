@@ -1,7 +1,6 @@
 package tray
 
 import (
-	"os"
 	"github.com/energye/systray"
 	"sidelaunch/internal/app"
 )
@@ -24,7 +23,7 @@ func Create() func() {
 		mQuit := systray.AddMenuItem("Close", "Exit application")
 		mQuit.Enable()
 		mQuit.Click(func() {
-			os.Exit(0)
+			systray.Quit()
 		})
 	}
 }

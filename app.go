@@ -40,7 +40,9 @@ func (a *App) startup(ctx context.Context) {
         	runtime.EventsEmit(a.ctx, "filedrop", paths )
         })
 
-        systray.Run(tray.Create(), func() {})
+        systray.Run(tray.Create(), func() {
+			os.Exit(0)
+		})
     }
 }
 
