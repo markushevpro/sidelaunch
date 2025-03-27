@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { useHookResult } from 'src/@/shared/hooks/useHookResult'
 import { isFolder }      from 'src/@/shared/utils/items'
@@ -21,8 +21,7 @@ export
 function useIcon
 ( data: ListItem | undefined ): HIcon
 {
-    const { cache }           = useIconsStore()
-    const [ reload, $reload ] = useState<string>( '' )
+    const { cache, revalidate } = useIconsStore()
 
     const icon = useMemo(
         () => data ? `/data/icons/${data.id}.png` : '',
@@ -36,9 +35,9 @@ function useIcon
 
     const force = useCallback(
         () => {
-            $reload( Math.random().toString().substring( 2, 8 ))
+            revalidate()
         },
-        []
+        [ revalidate ]
     )
 
     const fix = useCallback(
@@ -78,7 +77,7 @@ function useIcon
     )
 
     return useHookResult({
-        icon: reload ? `${icon}?${reload}` : `${icon}?${cache}`,
+        icon: `${icon}?${cache}`,
         fallback,
         fix,
         force

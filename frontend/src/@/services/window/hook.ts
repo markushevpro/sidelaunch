@@ -75,7 +75,7 @@ function useWindow
                 }
             }
         },
-        [ config.hideTimeout, hide, visible ]
+        [ config.fixed, config.hideTimeout, hide, visible ]
     )
 
     const show = useCallback(
