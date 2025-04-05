@@ -1,11 +1,7 @@
-.list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+.container {
+    min-height: 100%;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
-    min-height: 100%;
-    flex: 1 1 100%;
 }

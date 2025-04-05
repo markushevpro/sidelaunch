@@ -1,3 +1,4 @@
+import { LastPlace }        from 'src/@/segments/features/LastPlace'
 import { SmartItem }        from 'src/@/segments/features/SmartItem'
 import { ItemSizeProvider } from 'src/@/segments/units/ItemSizeProvider'
 
@@ -17,6 +18,8 @@ function CurrentFolderItems
                         <SmartItem key={item.id} data={item} />
                     ))
                 }
+
+                <LastPlace />
             </ul>
         </ItemSizeProvider>
     )

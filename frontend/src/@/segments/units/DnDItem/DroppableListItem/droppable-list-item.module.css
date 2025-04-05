@@ -1,5 +1,6 @@
 .item {
     transition: padding .2s ease, background .2s ease;
+    flex: 0 0 auto;
 }
 
 .hover {

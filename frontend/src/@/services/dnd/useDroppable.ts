@@ -15,7 +15,7 @@ interface HDroppable
 
 export
 function useDroppable
-( data: ListItem, onDrop: ( income: ListItem, base?: ListItem ) => void | Promise<void>, onHover?: ( income: ListItem, base?: ListItem ) => void ): HDroppable
+( data: ListItem | undefined, onDrop: ( income: ListItem, base?: ListItem ) => void | Promise<void>, onHover?: ( income: ListItem, base?: ListItem ) => void ): HDroppable
 {
     const ref = useRef<HTMLDivElement>( null )
 

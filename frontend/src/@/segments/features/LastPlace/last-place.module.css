@@ -1,0 +1,18 @@
+.dropzone {
+    flex: 1 1 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+.place {
+    cursor: default;
+    flex: 1 1 100%;
+    min-height: var(--item-size);
+    height: 100% !important;
+}
+
+.place:hover {    
+    background-color: transparent;
+}

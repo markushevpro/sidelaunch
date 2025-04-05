@@ -20,6 +20,7 @@ interface HCurrentFolder
     resort: ( a: ListItem, b: ListItem ) => Promise<Library | undefined>
     append: ( files: string[]) => Promise<Library | undefined>
     move: ( item: ListItem, target: string ) => Promise<Library | undefined>
+    sortLast: ( item: ListItem ) => Promise<Library | undefined>
     create: ( parent: FolderItem ) => Promise<void>
     remove: ( item: ListItem ) => Promise<Library | undefined>
     set: ( item: FolderItem | undefined ) => void
@@ -142,6 +143,22 @@ function useCurrentFolder
         [ folder?.id, handlers, refresh ]
     )
 
+    const sortLast = useCallback(
+        async ( item: ListItem ) => {
+            const list: ListItem[] | undefined = folder?.children ?? library
+
+            if ( list ) {
+                const sorted = list.sort(( a, b ) => ( a.weight ?? 0 ) - ( b.weight ?? 0 ))
+                const last   = sorted[ sorted.length - 1 ]
+
+                return refresh( await handlers.resort( folder?.id ?? 'top', item, last ))
+            }
+
+            return library
+        },
+        [ folder?.children, folder?.id, library, refresh, handlers ]
+    )
+
     const waitUpdate = useCallback(
         ( id: string ) => {
             update({
@@ -190,6 +207,7 @@ function useCurrentFolder
         waitOut,
         refresh,
         resort,
+        sortLast,
         append,
         move,
         create,

@@ -10,7 +10,7 @@ extends
 PropsWithChildren,
 Omit<DivProps, 'onDrop'>
 {
-    data: ListItem
+    data?: ListItem
     onDrop: ( income: ListItem ) => void | Promise<void>
     onHover?: ( income: ListItem ) => void,
 }
