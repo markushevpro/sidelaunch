@@ -33,7 +33,7 @@ export function OpenURL(arg1:string):Promise<void>;
 
 export function ReadUrlFile(arg1:string):Promise<system.UrlData>;
 
-export function RunExecutable(arg1:string,arg2:string):Promise<void>;
+export function RunExecutable(arg1:string,arg2:string,arg3:string):Promise<void>;
 
 export function SaveIcon(arg1:string,arg2:string):Promise<string>;
 

@@ -45,8 +45,8 @@ function useAppListItem
                     steam:                    customProtocolRun,
                     http:                     customProtocolRun,
 
-                    _: async ( path: string, params?: string ) => {
-                        await RunExecutable( path, params ?? '' )
+                    _: async ( path: string, cwd?: string, params?: string ) => {
+                        await RunExecutable( path, cwd ?? '', params ?? '' )
                     }
                 }
             )

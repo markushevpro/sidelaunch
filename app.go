@@ -95,8 +95,8 @@ func (a *App) OpenURL( url string ) {
 	system.OpenURL( url )
 }
 
-func (a *App) RunExecutable( path string, params string ) {
-	system.OpenFile( path, params )
+func (a *App) RunExecutable( path string, cwd string, params string ) {
+	system.OpenFile( path, cwd, params )
 }
 
 func (a *App) CheckFile( path string ) string {

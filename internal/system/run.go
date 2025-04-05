@@ -39,16 +39,22 @@ func OpenAny( path string, params string ) {
 	instance.Start()
 }
 
-func OpenExe( path string, params string ) {
+func OpenExe( path string, cwd string, params string ) {
 	log.Print("[EXE]", path + " " + params )
-	exec.Command(path + " " + params).Start()
+	cmd := exec.Command(path + " " + params)
+
+	if ( cwd != "" ) {
+		cmd.Dir = cwd
+	}
+
+	cmd.Start()
 }
 
-func OpenFile( path string, params string ) {
+func OpenFile( path string, cwd string, params string ) {
     if ( filepath.Ext( path ) != ".exe" || filepath.Base( path ) == "cmd.exe" ) {
 		OpenAny( path, params )
         return
     }
 
-	OpenExe( path, params )
+	OpenExe( path, cwd, params )
 }
