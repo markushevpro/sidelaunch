@@ -93,16 +93,6 @@ function useWindow
         [ offset.visible, update, visible ]
     )
 
-    useEffect(
-        () => {
-            if ( !config.fixed && visible ) {
-                hideTimeout()
-            }
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [ config.fixed ]
-    )
-
     return useHookResult({
         center,
         reset,

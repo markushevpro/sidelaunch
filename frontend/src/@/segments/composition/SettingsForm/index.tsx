@@ -31,6 +31,12 @@ function SettingsForm
             await load()
             await Reload( 'config', '' )
 
+            if ( data.fixed ) {
+                await Reload( 'show', '' )
+            } else {
+                await Reload( 'hide', '' )
+            }
+
             $loading( false )
             window.runtime.Quit()
         },
