@@ -3,7 +3,6 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useConfig }          from 'src/@/services/config/hook'
 import { useDnDStore }        from 'src/@/services/dnd/store'
-import { useCurrentFolder }   from 'src/@/services/folder/hook'
 import { useKeyboardCatcher } from 'src/@/services/keyboard/useKeyboardCatcher'
 import { useLibrary }         from 'src/@/services/library/hook'
 import { useWindow }          from 'src/@/services/window/hook'
@@ -30,7 +29,6 @@ function usePositionController
     const { onPlace, visible, drop, update } = useWindowStore()
     const { dragged }                        = useDnDStore()
     const { library }                        = useLibrary()
-    const { waitOut, stopWaitingOut }        = useCurrentFolder()
 
     const hideTimeout = useRef<ReturnType<typeof setTimeout> | null>( null )
 
@@ -48,13 +46,9 @@ function usePositionController
     const hoverHide = useKeyboardCatcher<MouseEvent>(
         useCallback(
             () => {
-                if ( waitOut ) {
-                    stopWaitingOut()
-                }
-
                 hide()
             },
-            [ waitOut, stopWaitingOut, hide ]
+            [ hide ]
         )
     )
 

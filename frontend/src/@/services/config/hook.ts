@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useHookResult } from 'src/@/shared/hooks/useHookResult'
 import { LoadConfig }    from 'wailsjs/go/main/App'
@@ -20,8 +20,12 @@ function useConfig
 {
     const { config, update } = useConfigStore()
 
+    const [ loading, $loading ] = useState<boolean>( false )
+
     const load = useCallback(
         async () => {
+            $loading( true )
+
             const raw = await LoadConfig()
 
             try {
@@ -40,6 +44,8 @@ function useConfig
             } catch ( e ) {
                 console.error( e )
             }
+
+            $loading( false )
         },
         [ update ]
     )
@@ -65,6 +71,23 @@ function useConfig
             }
         },
         [ config, load ]
+    )
+
+    useEffect(
+        () => {
+            const watcher = ([ _, what ]: string[]): void => {
+                if ( !loading && what === 'config' ) {
+                    void load()
+                }
+            }
+
+            window.runtime.EventsOn( 'reload', watcher )
+
+            return () => {
+                window.runtime.EventsOff( 'reload' )
+            }
+        },
+        [ load, loading ]
     )
 
     return useHookResult({

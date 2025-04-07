@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"os"
+	"context"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -15,9 +16,10 @@ import (
 //go:embed all:frontend/dist
 var assets embed.FS
 
-func getBinds( app *App ) options.App {
+func getBinds( app *App, shutdown func( ctx context.Context ) ) options.App {
 	return options.App{
 		OnStartup: app.startup,
+		OnShutdown: shutdown,
 		Bind: []interface{}{
 			app,
 		},
@@ -30,28 +32,32 @@ func getBinds( app *App ) options.App {
 
 func main() {
 	var err error
+	var reloadEmpty = func( _ context.Context ){}
 
 	if ( len( os.Args ) < 2 ) {
 		// Main window
 		app := NewApp( "", "" )
-		err = wails.Run( windows.MainWindow( getBinds( app )))
+		err = wails.Run( windows.MainWindow( getBinds( app, reloadEmpty ), app.OnReload ))
 	} else {
 		action := os.Args[1]
 
-		if ( action == "edit" ){
+		if ( action == "reload" ) {
+			app := NewApp( "", "" )
+			err = wails.Run( windows.MainWindow( getBinds( app, reloadEmpty ), app.OnReload ))			
+		} else if ( action == "edit" ){
 			id := os.Args[2]
 			app := NewApp( action, id )
 
-			err = wails.Run( windows.EditWindow( id, getBinds( app ), app.Focus ))
+			err = wails.Run( windows.EditWindow( id, getBinds( app, func( _ context.Context ){ app.Reload( "library", id )} ), app.Focus ))
 		} else if ( action == "settings" ) {
 			app := NewApp( action, "" )
-			err = wails.Run( windows.SettingsWindow( getBinds( app ), app.Focus ))
+			err = wails.Run( windows.SettingsWindow( getBinds( app, func( _ context.Context ){ app.Reload( "config", "" )} ), app.Focus ))
 		} else {
 			// Dialog window
 			id := os.Args[2]
 			app := NewApp( action, id )
 
-			err = wails.Run( windows.DialogWindow( "remove-" + id, getBinds( app ), app.Focus ))
+			err = wails.Run( windows.DialogWindow( "remove-" + id, getBinds( app, func( _ context.Context ){ app.Reload( "library", id )} ), app.Focus ))
 		}
 	}
 

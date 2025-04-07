@@ -42,6 +42,10 @@ export function LoadLibrary() {
   return window['go']['main']['App']['LoadLibrary']();
 }
 
+export function OnReload(arg1) {
+  return window['go']['main']['App']['OnReload'](arg1);
+}
+
 export function OpenDir(arg1) {
   return window['go']['main']['App']['OpenDir'](arg1);
 }
@@ -56,6 +60,10 @@ export function OpenURL(arg1) {
 
 export function ReadUrlFile(arg1) {
   return window['go']['main']['App']['ReadUrlFile'](arg1);
+}
+
+export function Reload(arg1, arg2) {
+  return window['go']['main']['App']['Reload'](arg1, arg2);
 }
 
 export function RunExecutable(arg1, arg2, arg3) {

@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 import { useConfig }                       from 'src/@/services/config/hook'
 import { useHookResult }                   from 'src/@/shared/hooks/useHookResult'
@@ -82,6 +82,7 @@ function useWindow
         (): void => {
             if ( timer.current ) {
                 clearTimeout( timer.current )
+                timer.current = undefined
             }
 
             if ( !visible ) {
@@ -90,6 +91,16 @@ function useWindow
             }
         },
         [ offset.visible, update, visible ]
+    )
+
+    useEffect(
+        () => {
+            if ( !config.fixed && visible ) {
+                hideTimeout()
+            }
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [ config.fixed ]
     )
 
     return useHookResult({

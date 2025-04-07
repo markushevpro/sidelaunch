@@ -1,5 +1,5 @@
-import _                          from 'lodash'
-import { useCallback, useEffect } from 'react'
+import _                                    from 'lodash'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useHookResult }                         from 'src/@/shared/hooks/useHookResult'
 import { isFolder }                              from 'src/@/shared/utils/items'
@@ -13,6 +13,7 @@ import { useLibraryStore }                                                      
 interface HLibrary
 {
     library: Library | undefined
+    loading: boolean
     ids: () => string[],
     load: () => Promise<Library | undefined>
     resort: ( parent: string, a: ListItem, b: ListItem ) => Promise<Library | undefined>
@@ -31,14 +32,20 @@ function useLibrary
 {
     const { library, update } = useLibraryStore()
 
+    const [ loading, $loading ] = useState<boolean>( false )
+
     const load = useCallback(
         async () => {
+            $loading( true )
+
             const raw  = await LoadLibrary()
             const data = parseLibrary( raw )
 
             if ( data ) {
                 update({ library: data })
             }
+
+            $loading( false )
 
             return data
         },
@@ -180,6 +187,7 @@ function useLibrary
 
     return useHookResult({
         library,
+        loading,
         ids,
         load,
         append,

@@ -8,11 +8,11 @@ export
 function CurrentFolderItems
 ()
 {
-    const { classNames, checkUpdate, items } = useCurrentFolderItems()
+    const { classNames, items } = useCurrentFolderItems()
 
     return (
         <ItemSizeProvider>
-            <ul className={classNames} onMouseMove={checkUpdate}>
+            <ul className={classNames}>
                 {
                     items.map( item => (
                         <SmartItem key={item.id} data={item} />

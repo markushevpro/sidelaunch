@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react'
 
-import { useConfig }  from 'src/@/services/config/hook'
-import { Button }     from 'src/@/shared/ui-kit/Button'
-import { Fill }       from 'src/@/shared/ui-kit/Fill'
-import { HDivider }   from 'src/@/shared/ui-kit/HDivider'
-import { SaveConfig } from 'wailsjs/go/main/App'
+import { useConfig }          from 'src/@/services/config/hook'
+import { Button }             from 'src/@/shared/ui-kit/Button'
+import { Fill }               from 'src/@/shared/ui-kit/Fill'
+import { HDivider }           from 'src/@/shared/ui-kit/HDivider'
+import { Reload, SaveConfig } from 'wailsjs/go/main/App'
 
 import type { ChangedProps } from 'src/@/segments/units/ChangedProvider/types'
 import type { AppConfig }    from 'src/@/shared/types/items'
@@ -29,6 +29,7 @@ function SettingsForm
 
             await SaveConfig( JSON.stringify( data ))
             await load()
+            await Reload( 'config', '' )
 
             $loading( false )
             window.runtime.Quit()

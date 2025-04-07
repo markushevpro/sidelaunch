@@ -25,6 +25,8 @@ export function LoadConfig():Promise<string>;
 
 export function LoadLibrary():Promise<string>;
 
+export function OnReload(arg1:options.SecondInstanceData):Promise<void>;
+
 export function OpenDir(arg1:string):Promise<string>;
 
 export function OpenFile(arg1:string,arg2:Array<frontend.FileFilter>):Promise<string>;
@@ -32,6 +34,8 @@ export function OpenFile(arg1:string,arg2:Array<frontend.FileFilter>):Promise<st
 export function OpenURL(arg1:string):Promise<void>;
 
 export function ReadUrlFile(arg1:string):Promise<system.UrlData>;
+
+export function Reload(arg1:string,arg2:string):Promise<void>;
 
 export function RunExecutable(arg1:string,arg2:string,arg3:string):Promise<void>;
 

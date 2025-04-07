@@ -18,9 +18,9 @@ function PositionController
             className={cn( styles.container, drop && styles.drop )}
             onDragEnd={dropHide}
             onDragLeave={dropHide}
-            onDragOver = {dropShow}
-            onMouseEnter = {show}
-            onMouseLeave = {hide}
+            onDragOver={dropShow}
+            onMouseEnter={show}
+            onMouseLeave={hide}
             onMouseMove={show}
         >
             { children }

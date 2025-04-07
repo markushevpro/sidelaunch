@@ -14,8 +14,6 @@ interface HCurrentFolder
 {
     folder: FolderItem | undefined
     items: ListItem[]
-    waitingUpdate: string | null
-    waitOut: boolean
     refresh: ( lib: Library | undefined ) => Library | undefined
     resort: ( a: ListItem, b: ListItem ) => Promise<Library | undefined>
     append: ( files: string[]) => Promise<Library | undefined>
@@ -27,8 +25,6 @@ interface HCurrentFolder
     goUp: () => void
     moveUp: ( item: ListItem ) => void
     waitUpdate: ( id: string ) => void
-    stopWaitingUpdate: () => void
-    stopWaitingOut: () => void
     isWaiting: ( data: ListItem ) => boolean
 }
 
@@ -36,9 +32,9 @@ export
 function useCurrentFolder
 (): HCurrentFolder
 {
-    const { library, find, ...handlers } = useLibrary()
+    const { library, loading, find, load, ...handlers } = useLibrary()
 
-    const { folder, items, waitUpdate: waitingUpdate, waitOut, update } = useFolderStore()
+    const { folder, items, waitUpdate: waitingUpdate, update } = useFolderStore()
 
     const _set = useCallback(
         ( f: FolderItem ) => {
@@ -161,31 +157,25 @@ function useCurrentFolder
 
     const waitUpdate = useCallback(
         ( id: string ) => {
-            update({
-                waitUpdate: id,
-                waitOut:    true
-            })
+            update({ waitUpdate: [ ...waitingUpdate, id ] })
         },
-        [ update ]
+        [ waitingUpdate, update ]
     )
 
     const stopWaitingUpdate = useCallback(
-        () => {
-            update({ waitUpdate: null })
-        },
-        [ update ]
-    )
+        ( id: string ) => {
+            const res = [ ...waitingUpdate ]
 
-    const stopWaitingOut = useCallback(
-        () => {
-            update({ waitOut: false })
+            res.splice( res.indexOf( id ), 1 )
+
+            update({ waitUpdate: res })
         },
-        [ update ]
+        [ waitingUpdate, update ]
     )
 
     const isWaiting = useCallback(
         ( data: ListItem ) => {
-            return !!( waitingUpdate && waitingUpdate === data.id )
+            return waitingUpdate.includes( data.id )
         },
         [ waitingUpdate ]
     )
@@ -200,11 +190,29 @@ function useCurrentFolder
         [ library ]
     )
 
+    useEffect(
+        () => {
+            const watcher = async ([ _, what, id ]: string[]): Promise<void> => {
+                if ( !loading && what === 'library' && waitingUpdate.includes( id )) {
+                    const lib = await load()
+                    refresh( lib )
+                    stopWaitingUpdate( id )
+                }
+            }
+
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            window.runtime.EventsOn( 'reload', watcher )
+
+            return () => {
+                window.runtime.EventsOff( 'reload' )
+            }
+        },
+        [ loading, waitingUpdate, load, refresh, stopWaitingUpdate ]
+    )
+
     return useHookResult({
         folder,
         items: items ?? [],
-        waitingUpdate,
-        waitOut,
         refresh,
         resort,
         sortLast,
@@ -217,7 +225,6 @@ function useCurrentFolder
         moveUp,
         waitUpdate,
         stopWaitingUpdate,
-        stopWaitingOut,
         isWaiting
     })
 }

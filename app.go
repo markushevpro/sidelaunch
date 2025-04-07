@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
 
 	"os"
 	"os/exec"
@@ -49,8 +48,8 @@ func (a *App) startup(ctx context.Context) {
 
 func (a *App) rerun( args ...string ) {
 	self, _ := os.Executable()
-	log.Print(self)
-	log.Print(args)
+	// log.Print(self)
+	// log.Print(args)
     exec.Command(self, args... ).Start()
 }
 
@@ -64,6 +63,10 @@ func (a *App) GetPageData() *app.PageData {
 func (a *App) Focus( data options.SecondInstanceData ) {
     runtime.WindowUnminimise(a.ctx)
     runtime.Show(a.ctx)
+}
+
+func (a *App ) OnReload( data options.SecondInstanceData ) {
+	runtime.EventsEmit( a.ctx, "reload", data.Args )
 }
 
 /* FLAT API */
@@ -110,6 +113,10 @@ func (a *App) CheckFile( path string ) string {
 
 func (a *App) CheckURL( url string ) string {
 	return system.CheckURL( url )
+}
+
+func (a *App) Reload( what string, id string ) {
+	a.rerun( "reload", what, id )
 }
 
 func (a *App) ShowSettings() {

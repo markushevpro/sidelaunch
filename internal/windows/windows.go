@@ -6,11 +6,12 @@ import (
 
 const uniq = "c28e21cc-bec4-42fe-94dd-d304181f59b5"
 
-func MainWindow( binds options.App ) *options.App {
+func MainWindow( binds options.App, onSecond func( data options.SecondInstanceData )) *options.App {
 	var res = sharedOptions
 
 	res.SingleInstanceLock = &options.SingleInstanceLock{
 		UniqueId: uniq,
+		OnSecondInstanceLaunch: onSecond,
 	}
 
 	merge( &res, mainWindowOptions )
