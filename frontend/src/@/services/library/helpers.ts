@@ -75,6 +75,39 @@ function findInLibrary
     return library.reduce(( found, item ) => found ?? findInFolder( item, id ), undefined )
 }
 
+function fixDelimiter
+( str: string ): string
+{
+    return str.replace( /\//g, '\\' )
+}
+
+function fixPath
+( item: AppItem ): void
+{
+    if ( !item.path.includes( '://' )) {
+        item.path = fixDelimiter( item.path )
+
+        if ( item.dir ) {
+            item.dir = fixDelimiter( item.dir )
+        }
+    }
+}
+
+export
+function fixPaths
+( data: ListItem[] | Library ): typeof data
+{
+    data.forEach( item => {
+        if ( isFolder( item )) {
+            fixPaths( item.children )
+        } else {
+            fixPath( item as AppItem )
+        }
+    })
+
+    return data
+}
+
 export
 function parseLibrary
 ( raw: string ): Library | undefined

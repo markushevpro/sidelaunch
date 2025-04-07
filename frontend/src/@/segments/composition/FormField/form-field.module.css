@@ -51,19 +51,19 @@
     border-bottom-color: var(--text-faded);
 }
 
-.group input + button {
+.group input ~ button {
     min-width: 0;
     background-color: var(--bg-semi);
     color: var(--text-faded);
     height: 33px;
 }
 
-.group input + button:hover {
+.group input ~ button:hover {
     background-color: var(--accent);
     color: var(--text-invert);
 }
 
-.group input + button:active {
+.group input ~ button:active {
     background-color: var(--bg-highlight);
     color: var(--text-faded);
 }

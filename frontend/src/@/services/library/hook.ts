@@ -7,8 +7,8 @@ import { ExtractIcon, LoadLibrary, SaveLibrary } from 'wailsjs/go/main/App'
 
 import type { AppItem, FolderItem, Library, ListItem } from 'src/@/shared/types/items'
 
-import { addToLibrary, createAppItem, createFolder, findInLibrary, getIDs, mapParents, moveChildrenAndRemove, parseLibrary, removeFromLibrary, removeParents, resortItems, updateLibraryItem } from './helpers'
-import { useLibraryStore }                                                                                                                                                                     from './store'
+import { addToLibrary, createAppItem, createFolder, findInLibrary, fixPaths, getIDs, mapParents, moveChildrenAndRemove, parseLibrary, removeFromLibrary, removeParents, resortItems, updateLibraryItem } from './helpers'
+import { useLibraryStore }                                                                                                                                                                               from './store'
 
 interface HLibrary
 {
@@ -42,7 +42,7 @@ function useLibrary
             const data = parseLibrary( raw )
 
             if ( data ) {
-                update({ library: data })
+                update({ library: fixPaths( data ) })
             }
 
             $loading( false )

@@ -82,6 +82,10 @@ export function SaveLibrary(arg1) {
   return window['go']['main']['App']['SaveLibrary'](arg1);
 }
 
+export function ShowInExplorer(arg1, arg2) {
+  return window['go']['main']['App']['ShowInExplorer'](arg1, arg2);
+}
+
 export function ShowSettings() {
   return window['go']['main']['App']['ShowSettings']();
 }

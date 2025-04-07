@@ -83,6 +83,10 @@ func (a *App) OpenDir( title string ) string {
 	return system.DirDialog( a.ctx, title )
 }
 
+func (a *App) ShowInExplorer( path string, dir bool ) {
+	system.ShowInExplorer( path, dir )
+}
+
 func (a *App) LoadConfig() string {
 	return library.GetConfig()
 }
