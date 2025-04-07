@@ -51,6 +51,12 @@ var editWindowOptions = options.App{
 	DisableResize: false,
 }
 
+var settingsWindowOptions = options.App{
+	Width:  420,
+	Height: 335,	
+	DisableResize: false,
+}
+
 var dialogWindowOptions = options.App{
 	Title:  "Confirmation",
 	Width:  565,

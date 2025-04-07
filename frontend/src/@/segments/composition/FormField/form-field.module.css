@@ -17,6 +17,10 @@
     margin-bottom: 4px;
 }
 
+.label span {
+    opacity: .5;
+}
+
 .group .row {
     display: flex;
     flex-direction: row;

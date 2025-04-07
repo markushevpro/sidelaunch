@@ -55,3 +55,26 @@ func GetConfig() string {
 
 	return string(content)
 }
+
+func SaveConfig( data string ) string {
+	f, err := os.Create( app.Folder + "/config.json" )
+
+	if err != nil {
+		return helpers.Error( "Error writing config (open)" )
+	}
+
+	_, err = f.WriteString( data )
+
+	if err != nil {
+        f.Close()
+		return helpers.Error( "Error writing config (write)" )
+	}
+
+	err = f.Close()
+
+	if err != nil {
+		return helpers.Error( "Error writing config (close)" )
+	}
+
+	return helpers.Status( "ok" )
+}

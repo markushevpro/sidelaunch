@@ -5,7 +5,7 @@ import (
 	"sidelaunch/internal/app"
 )
 
-func Create() func() {
+func Create( onSettings func() ) func() {
 	return func() {
 		systray.SetIcon( app.Icon )
 		systray.SetTitle( "Sidelaunch" )
@@ -19,6 +19,12 @@ func Create() func() {
 		})
 		
 		systray.CreateMenu()
+
+		mSettings := systray.AddMenuItem("Settings", "Configure Sidelaunch")
+		mSettings.Enable()
+		mSettings.Click( onSettings )
+
+		systray.AddSeparator()
 
 		mQuit := systray.AddMenuItem("Close", "Exit application")
 		mQuit.Enable()

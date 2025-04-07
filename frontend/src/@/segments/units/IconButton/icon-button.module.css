@@ -1,3 +1,4 @@
 .icon {
     object-fit: contain;
+    transition: width .1s ease, height .1s ease;
 }

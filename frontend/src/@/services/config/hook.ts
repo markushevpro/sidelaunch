@@ -11,6 +11,7 @@ import { useConfigStore } from './store'
 interface HConfig
 {
     config: AppConfig
+    load: () => Promise<void>
 }
 
 export
@@ -66,5 +67,8 @@ function useConfig
         [ config, load ]
     )
 
-    return useHookResult({ config: fixed })
+    return useHookResult({
+        config: fixed,
+        load
+    })
 }

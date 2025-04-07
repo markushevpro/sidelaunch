@@ -1,0 +1,12 @@
+.container {
+    flex: 0 0 auto;
+    align-items: center;
+    width: calc(100% - 16px);
+    margin-top: 16px;
+}
+
+.button {
+    width: 64px;
+    flex: 0 0 64px;
+    margin-right: 16px;
+}

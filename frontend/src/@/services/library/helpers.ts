@@ -344,3 +344,20 @@ async function createAppItem
         updated
     }
 }
+
+export
+function getIDs
+( items: ListItem[], deep?: boolean ): string[]
+{
+    let res: string[] = []
+
+    items.forEach( item => {
+        res.push( item.id )
+
+        if ( isFolder( item )) {
+            res = [ ...res, ...getIDs( item.children ) ]
+        }
+    })
+
+    return res
+}

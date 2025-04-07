@@ -32,19 +32,26 @@ func main() {
 	var err error
 
 	if ( len( os.Args ) < 2 ) {
+		// Main window
 		app := NewApp( "", "" )
-		err = wails.Run(windows.MainWindow( getBinds( app )))
+		err = wails.Run( windows.MainWindow( getBinds( app )))
 	} else {
 		action := os.Args[1]
-		id := os.Args[2]
-
-		app := NewApp( action, id )
 
 		if ( action == "edit" ){
-			err = wails.Run(windows.EditWindow( id, getBinds( app ), app.Focus ))
+			id := os.Args[2]
+			app := NewApp( action, id )
+
+			err = wails.Run( windows.EditWindow( id, getBinds( app ), app.Focus ))
+		} else if ( action == "settings" ) {
+			app := NewApp( action, "" )
+			err = wails.Run( windows.SettingsWindow( getBinds( app ), app.Focus ))
 		} else {
 			// Dialog window
-			err = wails.Run(windows.DialogWindow( "remove-" + id, getBinds( app ), app.Focus ))
+			id := os.Args[2]
+			app := NewApp( action, id )
+
+			err = wails.Run( windows.DialogWindow( "remove-" + id, getBinds( app ), app.Focus ))
 		}
 	}
 

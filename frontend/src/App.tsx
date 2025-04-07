@@ -1,6 +1,7 @@
 import { EditWindow }         from './@/entrypoints/Edit'
 import { MainWindow }         from './@/entrypoints/Main'
 import { RemoveFolderWindow } from './@/entrypoints/RemoveFolder'
+import { SettingsWindow }     from './@/entrypoints/Settings'
 import './@/shared/styles/global.css'
 import './@/shared/styles/theme.css'
 // eslint-disable-next-line align-import/align-import
@@ -16,6 +17,11 @@ function App
     }
 
     switch ( page ) {
+        case 'settings':
+            return (
+                <SettingsWindow />
+            )
+
         case 'edit':
             return (
                 <EditWindow />

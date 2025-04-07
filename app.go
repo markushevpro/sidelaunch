@@ -41,7 +41,7 @@ func (a *App) startup(ctx context.Context) {
         	runtime.EventsEmit(a.ctx, "filedrop", paths )
         })
 
-        systray.Run(tray.Create(), func() {
+        systray.Run(tray.Create( a.ShowSettings ), func() {
 			os.Exit(0)
 		})
     }
@@ -50,6 +50,7 @@ func (a *App) startup(ctx context.Context) {
 func (a *App) rerun( args ...string ) {
 	self, _ := os.Executable()
 	log.Print(self)
+	log.Print(args)
     exec.Command(self, args... ).Start()
 }
 
@@ -79,16 +80,20 @@ func (a *App) OpenDir( title string ) string {
 	return system.DirDialog( a.ctx, title )
 }
 
+func (a *App) LoadConfig() string {
+	return library.GetConfig()
+}
+
+func (a *App ) SaveConfig( data string ) string {
+	return library.SaveConfig( data )
+}
+
 func (a *App) LoadLibrary() string {
 	return library.Load()
 }
 
 func (a *App) SaveLibrary( data string ) string {
 	return library.Save( data )
-}
-
-func (a *App) LoadConfig() string {
-	return library.GetConfig()
 }
 
 func (a *App) OpenURL( url string ) {
@@ -105,6 +110,10 @@ func (a *App) CheckFile( path string ) string {
 
 func (a *App) CheckURL( url string ) string {
 	return system.CheckURL( url )
+}
+
+func (a *App) ShowSettings() {
+	a.rerun( "settings" )
 }
 
 func (a *App) EditItem( id string ) {

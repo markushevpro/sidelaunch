@@ -1,0 +1,30 @@
+.container {    
+    width: 100%;
+    flex: 1 1 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.input {
+    accent-color: var(--accent);
+    width: 100%;
+    margin: 0;
+    padding: 0 !important;
+    margin-top: -4px ;
+}
+
+.markers {
+    writing-mode: horizontal-tb;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 12px;
+    opacity: .75;
+}
+
+.markers option {
+    width: 16px;
+    text-align: center;
+}

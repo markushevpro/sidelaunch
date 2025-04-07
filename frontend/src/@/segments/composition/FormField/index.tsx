@@ -1,4 +1,6 @@
-import type { PropsWithChildren } from 'react'
+import cn from 'classnames'
+
+import type { PropsWithChildren, ReactNode } from 'react'
 
 import styles from './form-field.module.css'
 
@@ -6,20 +8,21 @@ interface PFormField
 extends
 PropsWithChildren
 {
+    className?: string
     hidden?: boolean
-    label?: string
+    label?: ReactNode
 }
 
 export
 function FormField
-({ hidden, label, children }: PFormField )
+({ hidden, label, className, children }: PFormField )
 {
     if ( hidden ) {
         return null
     }
 
     return (
-        <div className={styles.container}>
+        <div className={cn( styles.container, className )}>
             <label className={styles.group}>
                 <span className={styles.label}>
                     { label }

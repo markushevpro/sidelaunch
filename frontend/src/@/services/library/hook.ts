@@ -7,12 +7,13 @@ import { ExtractIcon, LoadLibrary, SaveLibrary } from 'wailsjs/go/main/App'
 
 import type { AppItem, FolderItem, Library, ListItem } from 'src/@/shared/types/items'
 
-import { addToLibrary, createAppItem, createFolder, findInLibrary, mapParents, moveChildrenAndRemove, parseLibrary, removeFromLibrary, removeParents, resortItems, updateLibraryItem } from './helpers'
-import { useLibraryStore }                                                                                                                                                             from './store'
+import { addToLibrary, createAppItem, createFolder, findInLibrary, getIDs, mapParents, moveChildrenAndRemove, parseLibrary, removeFromLibrary, removeParents, resortItems, updateLibraryItem } from './helpers'
+import { useLibraryStore }                                                                                                                                                                     from './store'
 
 interface HLibrary
 {
     library: Library | undefined
+    ids: () => string[],
     load: () => Promise<Library | undefined>
     resort: ( parent: string, a: ListItem, b: ListItem ) => Promise<Library | undefined>
     append: ( files: string[], parent: string ) => Promise<Library | undefined>
@@ -161,6 +162,13 @@ function useLibrary
         [ manipulate ]
     )
 
+    const ids = useCallback(
+        () => {
+            return getIDs( library ?? [], true )
+        },
+        [ library ]
+    )
+
     useEffect(
         () => {
             if ( !library ) {
@@ -172,6 +180,7 @@ function useLibrary
 
     return useHookResult({
         library,
+        ids,
         load,
         append,
         find,
