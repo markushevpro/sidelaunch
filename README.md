@@ -48,11 +48,14 @@
 ## Installing
 Just download a [release](https://github.com/markushevpro/sidelaunch/releases/latest) and unzip to any folder you like.
 
+## Updating
+Download separate [executable](https://github.com/markushevpro/sidelaunch/releases/latest) and replace `sidelaunch.exe` in your Sidelaunch folder.
+
 ## Using Sidelaunch
 Intuitive interface (I hope) with mouse control only.
 
 - **Appearance**<br/>
-The app floats on the left edge. To make it appear, simply move the mouse to the left edge of the left-most screen. If the mouse is not hovering over the window, it hides after a configurable timeout. ([*](#configuration))
+The app floats on the left edge. By default, to make it appear, simply move the mouse to the left edge of the left-most screen. If the mouse is not hovering over the window, it hides after a configurable timeout. Can be fixed (no hiding). See [Configuration](#configuration) section below.
 
 - **Adding files**<br/>
 Drag a file into the application window.
@@ -82,7 +85,7 @@ A separate pop-up window with options: completely delete or move the contents to
 Right-click the item, wait for a separate pop-up window.
 
 - **Close application**<br/>
-Search for Sidelaunch icon in system tray, click on it then click "Close".
+Click on the Sidelaunch icon in system tray, then click "Close".
 
 ## Notices
 
@@ -93,7 +96,9 @@ Search for Sidelaunch icon in system tray, click on it then click "Close".
 While it is possible to launch a link with any protocol, creation is limited to the drag'n'drop interface. So if you want to create a link to a custom protocol, first create a .lnk or .url file and then add it to the application.
 
 ### Configuration
-You can change some parameters in the `data/config.json` file. Not all of them are working, but just a reserve for the future.
+Click on the Sidelaunch icon in the tray and select "Settings". In the window that opens, you can easily change the supported settings.
+
+Or you can change some parameters in the `data/config.json` file. Not all of them are working, but just a reserve for the future.
 
 _Default values ​​are specified below_
 
