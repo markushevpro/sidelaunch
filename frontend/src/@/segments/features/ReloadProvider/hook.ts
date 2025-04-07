@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 
 import { useConfig }        from 'src/@/services/config/hook'
 import { useCurrentFolder } from 'src/@/services/folder/hook'
+import { useIconsStore }    from 'src/@/services/icon/store'
 import { useLibrary }       from 'src/@/services/library/hook'
 import { useWindow }        from 'src/@/services/window/hook'
 
@@ -11,6 +12,7 @@ function useReloadProvider
 {
     const config                              = useConfig()
     const wnd                                 = useWindow()
+    const { revalidate }                      = useIconsStore()
     const { loading, load }                   = useLibrary()
     const { refresh, stopWaiting, isWaiting } = useCurrentFolder()
 
@@ -24,6 +26,10 @@ function useReloadProvider
 
                     case 'hide':
                         wnd.hide()
+                        break
+
+                    case 'icon':
+                        revalidate()
                         break
 
                     case 'config':
@@ -52,6 +58,6 @@ function useReloadProvider
                 window.runtime.EventsOff( 'reload' )
             }
         },
-        [ wnd, config, loading, isWaiting, load, refresh, stopWaiting ]
+        [ wnd, config, loading, isWaiting, load, refresh, stopWaiting, revalidate ]
     )
 }
