@@ -93,28 +93,6 @@ function usePositionController
         [ library, shown, onPlace, visible, hide, show, config.hideTimeout ]
     )
 
-
-    useEffect(
-        () => {
-            const watcher = ([ _, what ]: string[]): void => {
-                if ( what === 'show' ) {
-                    show()
-                }
-
-                if ( what === 'hide' ) {
-                    hide()
-                }
-            }
-
-            window.runtime.EventsOn( 'reload', watcher )
-
-            return () => {
-                window.runtime.EventsOff( 'reload' )
-            }
-        },
-        [ show, hide  ]
-    )
-
     return useHookResult({
         drop,
         dropShow,

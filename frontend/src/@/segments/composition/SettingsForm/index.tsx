@@ -38,7 +38,6 @@ function SettingsForm
             }
 
             $loading( false )
-            window.runtime.Quit()
         },
         [ data, load ]
     )

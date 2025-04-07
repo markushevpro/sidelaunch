@@ -25,7 +25,8 @@ interface HCurrentFolder
     goUp: () => void
     moveUp: ( item: ListItem ) => void
     waitUpdate: ( id: string ) => void
-    isWaiting: ( data: ListItem ) => boolean
+    stopWaiting: ( id: string ) => void
+    isWaiting: ( data: ListItem | string ) => boolean
 }
 
 export
@@ -162,7 +163,7 @@ function useCurrentFolder
         [ waitingUpdate, update ]
     )
 
-    const stopWaitingUpdate = useCallback(
+    const stopWaiting = useCallback(
         ( id: string ) => {
             const res = [ ...waitingUpdate ]
 
@@ -174,8 +175,10 @@ function useCurrentFolder
     )
 
     const isWaiting = useCallback(
-        ( data: ListItem ) => {
-            return waitingUpdate.includes( data.id )
+        ( data: ListItem | string ) => {
+            return typeof data === 'string'
+                ? waitingUpdate.includes( data )
+                : waitingUpdate.includes( data.id )
         },
         [ waitingUpdate ]
     )
@@ -188,26 +191,6 @@ function useCurrentFolder
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [ library ]
-    )
-
-    useEffect(
-        () => {
-            const watcher = async ([ _, what, id ]: string[]): Promise<void> => {
-                if ( !loading && what === 'library' && waitingUpdate.includes( id )) {
-                    const lib = await load()
-                    refresh( lib )
-                    stopWaitingUpdate( id )
-                }
-            }
-
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            window.runtime.EventsOn( 'reload', watcher )
-
-            return () => {
-                window.runtime.EventsOff( 'reload' )
-            }
-        },
-        [ loading, waitingUpdate, load, refresh, stopWaitingUpdate ]
     )
 
     return useHookResult({
@@ -224,7 +207,7 @@ function useCurrentFolder
         goUp,
         moveUp,
         waitUpdate,
-        stopWaitingUpdate,
+        stopWaiting,
         isWaiting
     })
 }

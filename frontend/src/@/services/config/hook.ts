@@ -11,6 +11,7 @@ import { useConfigStore } from './store'
 interface HConfig
 {
     config: AppConfig
+    loading: boolean
     load: () => Promise<void>
 }
 
@@ -73,25 +74,9 @@ function useConfig
         [ config, load ]
     )
 
-    useEffect(
-        () => {
-            const watcher = ([ _, what ]: string[]): void => {
-                if ( !loading && what === 'config' ) {
-                    void load()
-                }
-            }
-
-            window.runtime.EventsOn( 'reload', watcher )
-
-            return () => {
-                window.runtime.EventsOff( 'reload' )
-            }
-        },
-        [ load, loading ]
-    )
-
     return useHookResult({
         config: fixed,
+        loading,
         load
     })
 }
