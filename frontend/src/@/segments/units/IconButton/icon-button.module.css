@@ -2,3 +2,36 @@
     object-fit: contain;
     transition: width .1s ease, height .1s ease;
 }
+
+.loading {
+    position: relative;
+}
+
+.loading > * {
+    z-index: 2;
+}
+
+.loading:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 1;
+    width: 25%;
+    height: 25%;
+    border-radius: 50%;
+    border: 3px solid currentColor;
+    border-top-color: transparent;
+    animation: turn .5s linear infinite;
+    opacity: .25;
+}
+
+@keyframes turn {
+    0%{
+        transform: translate(-50%,-50%) rotate(0deg);
+    }
+    100%{
+        transform: translate(-50%,-50%) rotate(360deg);
+    }
+}

@@ -7,6 +7,8 @@ interface HIconButton
 {
     src: string
     size: number | undefined
+    loading: boolean
+    loaded: () => void
     error: () => void
 }
 
@@ -16,8 +18,9 @@ function useIconButton
 {
     const { config } = useConfig()
 
-    const [ error, $error ]   = useState<boolean>( false )
-    const [ failed, $failed ] = useState<boolean>( false )
+    const [ error, $error ]     = useState<boolean>( false )
+    const [ failed, $failed ]   = useState<boolean>( false )
+    const [ loading, $loading ] = useState<boolean>( true )
 
     const src = useMemo(
         (): string => {
@@ -30,6 +33,13 @@ function useIconButton
         [ error, fallback, icon ]
     )
 
+    const loaded = useCallback(
+        () => {
+            $loading( false )
+        },
+        []
+    )
+
     const handleError = useCallback(
         () => {
             if ( !failed ) {
@@ -40,9 +50,11 @@ function useIconButton
                 } else {
                     $error( true )
                 }
+
+                loaded()
             }
         },
-        [ error, failed, onError ]
+        [ error, failed, loaded, onError ]
     )
 
     useEffect(
@@ -55,6 +67,8 @@ function useIconButton
     return useHookResult({
         src,
         size:  config.iconSize,
+        loading,
+        loaded,
         error: handleError
     })
 }

@@ -1,3 +1,5 @@
+import cn from 'classnames'
+
 import { ListButton } from 'src/@/segments/units/ListButton'
 
 import type { ButtonProps } from 'src/@/shared/types/props'
@@ -18,12 +20,12 @@ ButtonProps
 
 export
 function IconButton
-({ icon, fallback, width, height, onError, ...rest }: PIconButton )
+({ icon, fallback, width, height, onError, className, ...rest }: PIconButton )
 {
-    const { src, size, error } = useIconButton( icon, fallback, onError )
+    const { src, size, loading, error, loaded } = useIconButton( icon, fallback, onError )
 
     return (
-        <ListButton {...rest}>
+        <ListButton {...rest} className={cn( className, loading && styles.loading )}>
             <img
                 className={styles.icon}
                 draggable={false}
@@ -31,6 +33,7 @@ function IconButton
                 src={src}
                 width={width ?? size}
                 onError={error}
+                onLoad={loaded}
             />
         </ListButton>
     )
