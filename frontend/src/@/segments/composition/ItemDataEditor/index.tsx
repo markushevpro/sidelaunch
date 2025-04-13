@@ -1,5 +1,6 @@
 import { Button }  from 'src/@/shared/ui-kit/Button'
 import { Content } from 'src/@/shared/ui-kit/Content'
+import { Spinner } from 'src/@/shared/ui-kit/Spinner'
 import { Stack }   from 'src/@/shared/ui-kit/Stack'
 
 import { AppItemFields }     from './AppItemFields'
@@ -12,7 +13,7 @@ export
 function ItemDataEditor
 ()
 {
-    const { item, loading, changed, updaters, updated, isApp, save, cancel } = useItemDataEditor()
+    const { item, loading, canSave, changed, updaters, updated, isApp, isUrl, save, cancel } = useItemDataEditor()
 
     if ( !item ) {
         return null
@@ -30,6 +31,7 @@ function ItemDataEditor
             {
                 isApp && (
                     <AppItemFields
+                        isUrl={isUrl}
                         loading={loading}
                         values={changed}
                         onChange={updaters}
@@ -38,12 +40,16 @@ function ItemDataEditor
             }
 
             <Stack align="end" gap={8}>
-                <Button ghost onClick={cancel}>
+                <Button ghost disabled={loading} onClick={cancel}>
                     Cancel
                 </Button>
 
-                <Button disabled={!updated || loading} onClick={save}>
-                    Save
+                <Button disabled={!updated || !canSave || loading} onClick={save}>
+                    {
+                        loading
+                            ? <Spinner />
+                            : 'Save'
+                    }
                 </Button>
             </Stack>
         </Content>

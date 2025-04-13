@@ -1,6 +1,6 @@
 import { CurrentFolderItems } from 'src/@/segments/composition/CurrentFolderItems'
 import { BackButton }         from 'src/@/segments/features/BackButton'
-import { CreateFolderButton } from 'src/@/segments/features/CreateFolderButton'
+import { CreateButton }       from 'src/@/segments/features/CreateButton'
 import { RemoveArea }         from 'src/@/segments/features/RemoveArea'
 import { Fill }               from 'src/@/shared/ui-kit/Fill'
 import { Scrollable }         from 'src/@/shared/ui-kit/Scrollable'
@@ -17,7 +17,7 @@ function FolderScreen
                 <CurrentFolderItems />
             </Scrollable>
 
-            <CreateFolderButton />
+            <CreateButton />
             <RemoveArea />
         </Fill>
     )

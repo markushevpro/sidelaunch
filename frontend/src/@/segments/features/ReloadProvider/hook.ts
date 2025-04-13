@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { useConfig }        from 'src/@/services/config/hook'
 import { useCurrentFolder } from 'src/@/services/folder/hook'
 import { useIconsStore }    from 'src/@/services/icon/store'
+import { cleanEmptyItems }  from 'src/@/services/library/helpers'
 import { useLibrary }       from 'src/@/services/library/hook'
 import { useWindow }        from 'src/@/services/window/hook'
 
@@ -41,7 +42,7 @@ function useReloadProvider
                     case 'library':
                         if ( id && !loading && isWaiting( id )) {
                             const lib = await load()
-                            refresh( lib )
+                            refresh( cleanEmptyItems( lib ))
                             stopWaiting( id )
                         }
                         break

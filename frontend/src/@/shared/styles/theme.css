@@ -1,6 +1,7 @@
 :root {
     --bg: #191919;
     --bg-semi: #1E1E1E;
+    --bg-disabled: #252525;
     --bg-highlight: #333;
 
     --text-color: #ccc;

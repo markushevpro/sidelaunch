@@ -1,6 +1,7 @@
 import cn from 'classnames'
 
-import { ListButton } from 'src/@/segments/units/ListButton'
+import { ImageHideOnError } from 'src/@/segments/units/ImageHideOnError'
+import { ListButton }       from 'src/@/segments/units/ListButton'
 
 import type { ButtonProps } from 'src/@/shared/types/props'
 
@@ -26,7 +27,7 @@ function IconButton
 
     return (
         <ListButton {...rest} className={cn( className, loading && styles.loading )}>
-            <img
+            <ImageHideOnError
                 className={styles.icon}
                 draggable={false}
                 height={height ?? size}

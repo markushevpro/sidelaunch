@@ -6,6 +6,7 @@ import (
 	"syscall"
 
 	"os/exec"
+	"net/url"
 
     "gopkg.in/ini.v1"
 )
@@ -47,7 +48,7 @@ func ExtractLink( path string ) string {
 	if err != nil {
 		log.Print( err )
 		log.Print( oerr.String())
-		return "{ \"error\": \"Error fetching lnk from " + path + "\", \"err\": \"" + err.Error() + "\", \"content\": \"" + oerr.String() + "\" }"
+		return `{ "error": "Error fetching lnk from ` + path + `", "err": "` + err.Error() + `", "content": "` + oerr.String() + `" }`
 	}
 
 	return out.String()
@@ -71,8 +72,38 @@ func ExtractIcon( id string, path string ) string {
 	if err != nil {
 		log.Print( err )
 		log.Print( oerr.String())
-		return "{ \"error\": \"Error fetching icon from " + path + "\", \"err\": \"" + err.Error() + "\", \"content\": \"" + oerr.String() + "\" }"
+		return `{ "error": "Error fetching icon from ` + path + `", "err": "` + err.Error() + `", "content": "` + oerr.String() + `" }`
 	}
 
 	return out.String()
+}
+
+func ExtractFavicon( id string, uri string ) string {
+	baseURL, err := url.Parse( uri )
+
+	log.Print( "Extracting icon from: " + uri )
+
+	if err != nil {
+		log.Print( err )
+		return `{ "error": "Invalid URL: ` + uri + `"}`
+	}
+
+	err = findStandartIcons( baseURL, id )
+
+	if err == nil {
+		log.Print( "Found standart icon" )
+		return `{ "status": "ok" }`
+	}
+
+	log.Print( err )
+
+	err = findIconsInHTML( baseURL, id )
+
+	if ( err == nil ) {
+		log.Print( "Found icon in html" )
+		return `{ "status": "ok" }`
+	}
+
+	log.Print( err )
+	return `{ "error": "No icons found for url ` + uri + `"}`
 }

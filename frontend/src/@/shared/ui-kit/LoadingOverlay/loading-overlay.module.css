@@ -12,20 +12,8 @@
     background-color: rgba(0,0,0,.5);
 }
 
-.spinner {
+.container .spinner {
     width: 25%;
     height: 25%;
-    border-radius: 50%;
-    border: 3px solid currentColor;
-    border-top-color: transparent;
-    animation: turn .5s linear infinite;
-}
-
-@keyframes turn {
-    0%{
-        transform: rotate(0deg);
-    }
-    100%{
-        transform: rotate(360deg);
-    }
+    border-width: 3px;
 }

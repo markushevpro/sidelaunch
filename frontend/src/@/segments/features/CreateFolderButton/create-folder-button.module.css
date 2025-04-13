@@ -1,8 +1,0 @@
-.addbtn {
-    margin-top: auto;
-    transition: transform .2s ease;
-}
-
-.hidden {
-    transform: translateY(100%);
-}

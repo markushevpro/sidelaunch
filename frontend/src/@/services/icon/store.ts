@@ -1,5 +1,7 @@
 import { create } from 'zustand'
 
+import { Reload } from 'wailsjs/go/main/App'
+
 export
 interface IconsStoreData
 {

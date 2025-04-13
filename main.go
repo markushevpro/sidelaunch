@@ -44,7 +44,7 @@ func main() {
 		if ( action == "reload" ) {
 			app := NewApp( "", "" )
 			err = wails.Run( windows.MainWindow( getBinds( app, reloadEmpty ), app.OnReload ))			
-		} else if ( action == "edit" ){
+		} else if ( action == "edit" || action == "editurl" ){
 			id := os.Args[2]
 			app := NewApp( action, id )
 

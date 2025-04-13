@@ -19,12 +19,12 @@ func (l *DefaultLogger) Print(message string) {
 
 // Trace level logging. Works like Sprintf.
 func (l *DefaultLogger) Trace(message string) {
-	println("TRA | " + message)
+	// println("TRA | " + message)
 }
 
 // Debug level logging. Works like Sprintf.
 func (l *DefaultLogger) Debug(message string) {
-	println("DEB | " + message)
+	// println("DEB | " + message)
 }
 
 // Info level logging. Works like Sprintf.

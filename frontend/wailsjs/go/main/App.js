@@ -18,6 +18,14 @@ export function EditItem(arg1) {
   return window['go']['main']['App']['EditItem'](arg1);
 }
 
+export function EditURLItem(arg1) {
+  return window['go']['main']['App']['EditURLItem'](arg1);
+}
+
+export function ExtractFavicon(arg1, arg2) {
+  return window['go']['main']['App']['ExtractFavicon'](arg1, arg2);
+}
+
 export function ExtractIcon(arg1, arg2) {
   return window['go']['main']['App']['ExtractIcon'](arg1, arg2);
 }

@@ -20,7 +20,7 @@ func (h *Loader) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	}
     
 	var requestedFilename = cwd + "/" + strings.TrimPrefix(req.URL.Path, "/")
-    println("Requesting file:", requestedFilename)
+    // println("Requesting file:", requestedFilename)
 
     fileData, err := os.ReadFile( requestedFilename)
 

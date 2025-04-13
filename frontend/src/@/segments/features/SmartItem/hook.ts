@@ -3,9 +3,10 @@ import { useCallback } from 'react'
 import { useCurrentFolder } from 'src/@/services/folder/hook'
 import { useAppView }       from 'src/@/services/view/hook'
 import { useHookResult }    from 'src/@/shared/hooks/useHookResult'
+import { isFolder }         from 'src/@/shared/utils/items'
 
-import type { MouseEvent } from 'react'
-import type { ListItem }   from 'src/@/shared/types/items'
+import type { MouseEvent }        from 'react'
+import type { AppItem, ListItem } from 'src/@/shared/types/items'
 
 interface HSmartItem
 {
@@ -22,7 +23,10 @@ function useSmartItem
     const edit = useCallback(
         ( e: MouseEvent ) => {
             e.preventDefault()
-            editMode( data )
+
+            const url = !isFolder( data ) && ( data as AppItem ).path?.includes( '://' )
+
+            editMode( data, url )
             waitUpdate( data.id )
         },
         [ data, editMode, waitUpdate ]

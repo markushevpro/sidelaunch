@@ -1,0 +1,22 @@
+.error {
+    color: var(--danger-highlight);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.error:before {
+    content: ' ! ';
+    background-color: var(--danger);
+    color: var(--text-highlight);
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex: 0 0 1em;
+    text-align: center;
+    font-size: 1.2em;
+    line-height: 1;
+    border-radius: .5em;
+    margin-right: .5em;
+}

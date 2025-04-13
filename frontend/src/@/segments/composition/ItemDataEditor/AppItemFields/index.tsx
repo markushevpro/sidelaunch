@@ -3,6 +3,7 @@ import { Button }            from 'src/@/shared/ui-kit/Button'
 import { ExternalIcon }      from 'src/@/shared/ui-kit/icons/External'
 import { getValueFromInput } from 'src/@/shared/utils/inputs'
 
+import { ProtocolError }    from './ProtocolError'
 import { useAppItemFields } from './hook'
 
 type SupportedFields = 'path' | 'dir' | 'params'
@@ -10,50 +11,74 @@ type SupportedFields = 'path' | 'dir' | 'params'
 interface PAppItemFields
 {
     loading: boolean
+    isUrl: boolean
     values: Record<SupportedFields, string | undefined>
     onChange: Record<SupportedFields, ( val: string ) => void>
 }
 
 export
 function AppItemFields
-({ loading, values, onChange }: PAppItemFields )
+({ loading, isUrl, values, onChange }: PAppItemFields )
 {
-    const { searchFile, searchDir, showInExplorer } = useAppItemFields()
+    const { pathRef, searchFile, searchDir, showInExplorer } = useAppItemFields( isUrl )
 
     return (
         <>
-            <FormField label="Path">
+            <FormField label={ isUrl ? 'Url' : 'Path'}>
                 <input
+                    ref={pathRef}
                     disabled={loading}
                     type="text"
                     value={values.path}
                     onChange={getValueFromInput( onChange.path )}
                 />
 
-                <Button onClick={searchFile( onChange.path )}>...</Button>
-                <Button onClick={showInExplorer( values.path ?? '' )}><ExternalIcon /></Button>
+                {
+                    !isUrl && (
+                        <>
+                            <Button onClick={searchFile( onChange.path )}>...</Button>
+
+                            <Button disabled={!values.path} onClick={showInExplorer( values.path ?? '' )}>
+                                <ExternalIcon />
+                            </Button>
+                        </>
+                    )
+                }
+
             </FormField>
 
-            <FormField label="Working directory">
-                <input
-                    disabled={loading}
-                    type="text"
-                    value={values.dir}
-                    onChange={getValueFromInput( onChange.dir )}
-                />
+            {
+                isUrl && (
+                    <ProtocolError value={values.path} />
+                )
+            }
 
-                <Button onClick={searchDir( onChange.dir )}>...</Button>
-                <Button onClick={showInExplorer( values.dir ?? '', true )}><ExternalIcon /></Button>
-            </FormField>
+            {
+                !isUrl && (
+                    <>
+                        <FormField label="Working directory">
+                            <input
+                                disabled={loading}
+                                type="text"
+                                value={values.dir}
+                                onChange={getValueFromInput( onChange.dir )}
+                            />
 
-            <FormField label="Arguments">
-                <input
-                    disabled={loading}
-                    type="text"
-                    value={values.params}
-                    onChange={getValueFromInput( onChange.params )}
-                />
-            </FormField>
+                            <Button onClick={searchDir( onChange.dir )}>...</Button>
+                            <Button onClick={showInExplorer( values.dir ?? '', true )}><ExternalIcon /></Button>
+                        </FormField>
+
+                        <FormField label="Arguments">
+                            <input
+                                disabled={loading}
+                                type="text"
+                                value={values.params}
+                                onChange={getValueFromInput( onChange.params )}
+                            />
+                        </FormField>
+                    </>
+                )
+            }
         </>
     )
 }

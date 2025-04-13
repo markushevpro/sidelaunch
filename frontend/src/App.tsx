@@ -23,6 +23,7 @@ function App
             )
 
         case 'edit':
+        case 'editurl':
             return (
                 <EditWindow />
             )

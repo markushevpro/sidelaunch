@@ -3,38 +3,42 @@ import { useCallback, useState } from 'react'
 import { useIconsStore } from 'src/@/services/icon/store'
 import { useHookResult } from 'src/@/shared/hooks/useHookResult'
 
+import type { ReactEventHandler, SyntheticEvent } from 'react'
+
 interface HImageHideOnError
 {
     visible: boolean
-    onLoad: () => void
-    onError: () => void
+    loaded: ( e: SyntheticEvent<HTMLImageElement> ) => void
+    error: ( e: SyntheticEvent<HTMLImageElement> ) => void
 }
 
 export
 function useImageHideOnError
-( src: string | undefined ): HImageHideOnError
+( src: string | undefined, onError?: ReactEventHandler<HTMLImageElement>, onLoad?: ReactEventHandler<HTMLImageElement> ): HImageHideOnError
 {
     const { loaded, error } = useIconsStore()
 
     const [ visible, $visible ] = useState<boolean>( !!( src && loaded.includes( src ) && !error.includes( src )))
 
-    const onLoad = useCallback(
-        () => {
+    const handleLoad = useCallback(
+        ( e: SyntheticEvent<HTMLImageElement> ) => {
             $visible( true )
+            onLoad?.( e )
         },
         []
     )
 
-    const onError = useCallback(
-        () => {
+    const handleError = useCallback(
+        ( e: SyntheticEvent<HTMLImageElement> ) => {
             $visible( false )
+            onError?.( e )
         },
         []
     )
 
     return useHookResult({
         visible,
-        onLoad,
-        onError
+        loaded: handleLoad,
+        error:  handleError
     })
 }

@@ -17,6 +17,17 @@ function useAppListtItemState
 {
     const [ error, $error ] = useState<string | undefined>()
 
+    const urlChecker = useCallback(
+        async ( url: string ) => {
+            const res = await CheckURL( url )
+
+            if ( res !== '200 OK' ) {
+                $error( res )
+            }
+        },
+        []
+    )
+
     const checkError = useCallback(
         () => {
             byProtocol(
@@ -26,21 +37,18 @@ function useAppListtItemState
 
                     mailrugames: () => { /* Do nothing */ },
                     steam:       () => { /* Do nothing */ },
-                    http:        async ( url: string ) => {
-                        const res = await CheckURL( url )
-
-                        if ( res !== '200 OK' ) {
-                            $error( res )
-                        }
-                    },
+                    http:        urlChecker,
+                    https:       urlChecker,
 
                     _: async ( path: string ) => {
-                        $error( await CheckFile( path ))
+                        if ( path ) {
+                            $error( await CheckFile( path ))
+                        }
                     }
                 }
             )
         },
-        [ data ]
+        [ urlChecker, data ]
     )
 
     useEffect(

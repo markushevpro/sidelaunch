@@ -9,17 +9,17 @@ type PImageHideOnError = ImageProps
 
 export
 function ImageHideOnError
-({ src, className, ...rest }: PImageHideOnError )
+({ src, className, onError, onLoad, ...rest }: PImageHideOnError )
 {
-    const { visible, onError, onLoad } = useImageHideOnError( src )
+    const { visible, error, loaded } = useImageHideOnError( src, onError, onLoad )
 
     return (
         <img
             {...rest}
             className={cn( className, styles.base, visible && styles.visible )}
             src={src}
-            onError={onError}
-            onLoad={onLoad}
+            onError={error}
+            onLoad={loaded}
         />
     )
 }

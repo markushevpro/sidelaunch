@@ -244,6 +244,7 @@ function getMaxWeight
     return items.reduce(( max, item ) => Math.max( max, item.weight ?? 0 ), -Infinity )
 }
 
+export
 function appendToFolder
 ( library: Library, parent: string, item: Partial<AppItem> | Partial<FolderItem> ): { created: ListItem | undefined, updated: Library }
 {
@@ -368,9 +369,9 @@ async function generateItem
 
 export
 async function createAppItem
-( Library: Library, parent: string, path: string ): Promise<{ item: AppItem | undefined, updated: Library }>
+( library: Library, parent: string, path: string ): Promise<{ item: AppItem | undefined, updated: Library }>
 {
-    const { created, updated } = appendToFolder( Library, parent, await generateItem( path ))
+    const { created, updated } = appendToFolder( library, parent, await generateItem( path ))
 
     return {
         item: created as AppItem,
@@ -380,7 +381,7 @@ async function createAppItem
 
 export
 function getIDs
-( items: ListItem[], deep?: boolean ): string[]
+( items: ListItem[]): string[]
 {
     let res: string[] = []
 
@@ -389,6 +390,29 @@ function getIDs
 
         if ( isFolder( item )) {
             res = [ ...res, ...getIDs( item.children ) ]
+        }
+    })
+
+    return res
+}
+
+export
+function cleanEmptyItems
+( items: ListItem[] | undefined ): ListItem[] | undefined
+{
+    if ( !items ) {
+        return items
+    }
+
+    const res: ListItem[] = []
+
+    items.forEach( item => {
+        if ( isFolder( item )) {
+            const replace    = { ...item }
+            replace.children = cleanEmptyItems( replace.children ) ?? []
+            res.push( replace )
+        } else if (( item as AppItem ).path ) {
+            res.push( item )
         }
     })
 

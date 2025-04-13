@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
-import { useHookResult } from 'src/@/shared/hooks/useHookResult'
-import { EditItem }      from 'wailsjs/go/main/App'
+import { useHookResult }         from 'src/@/shared/hooks/useHookResult'
+import { EditItem, EditURLItem } from 'wailsjs/go/main/App'
 
 import type { AppViewStore } from './store'
 import type { ListItem }     from 'src/@/shared/types/items'
@@ -12,7 +12,7 @@ interface HAppView
 extends
 AppViewStore
 {
-    editMode: ( item: ListItem ) => void
+    editMode: ( item: ListItem, url?: boolean ) => void
 }
 
 export
@@ -22,8 +22,12 @@ function useAppView
     const { update, ...store } = useAppViewStore()
 
     const editMode = useCallback(
-        async ( item: ListItem ) => {
-            await EditItem( item.id )
+        async ( item: ListItem, url?: boolean ) => {
+            if ( url ) {
+                await EditURLItem( item.id )
+            } else {
+                await EditItem( item.id )
+            }
         },
         []
     )

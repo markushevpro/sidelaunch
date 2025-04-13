@@ -131,6 +131,10 @@ func (a *App) EditItem( id string ) {
 	a.rerun( "edit", id )
 }
 
+func (a *App) EditURLItem( id string ) {
+	a.rerun( "editurl", id )
+}
+
 func (a *App) ConfirmFolderRemove( id string ) {
 	a.rerun( "removefolder", id )
 }
@@ -145,6 +149,10 @@ func (a *App) ExtractLink( path string ) string {
 
 func (a *App) ExtractIcon( id string, path string ) string {
 	return system.ExtractIcon( id, path )
+}
+
+func (a *App) ExtractFavicon( id string, uri string ) string {
+	return system.ExtractFavicon( id, uri )
 }
 
 func (a *App ) SaveIcon( id string, path string ) string {

@@ -6,7 +6,7 @@ import { useLibrary }            from 'src/@/services/library/hook'
 import { useHookResult }         from 'src/@/shared/hooks/useHookResult'
 import { asFolder, sortHandler } from 'src/@/shared/utils/items'
 
-import type { FolderItem, Library, ListItem } from 'src/@/shared/types/items'
+import type { AppItem, FolderItem, Library, ListItem } from 'src/@/shared/types/items'
 
 import { useFolderStore } from './store'
 
@@ -17,6 +17,7 @@ interface HCurrentFolder
     refresh: ( lib: Library | undefined ) => Library | undefined
     resort: ( a: ListItem, b: ListItem ) => Promise<Library | undefined>
     append: ( files: string[]) => Promise<Library | undefined>
+    insert: ( item: AppItem ) => Promise<Library | undefined>
     move: ( item: ListItem, target: string ) => Promise<Library | undefined>
     sortLast: ( item: ListItem ) => Promise<Library | undefined>
     create: ( parent: FolderItem ) => Promise<void>
@@ -133,6 +134,13 @@ function useCurrentFolder
         [ folder?.id, handlers, refresh ]
     )
 
+    const insert = useCallback(
+        async ( item: AppItem ) => {
+            return refresh( await handlers.insert( item, folder?.id ?? 'top' ))
+        },
+        [ folder?.id, handlers, refresh ]
+    )
+
     const resort = useCallback(
         async ( a: ListItem, b: ListItem ) => {
             return refresh( await handlers.resort( folder?.id ?? 'top', a, b ))
@@ -200,6 +208,7 @@ function useCurrentFolder
         resort,
         sortLast,
         append,
+        insert,
         move,
         create,
         remove,

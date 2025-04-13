@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from 'react'
 
-import { useHookResult }       from 'src/@/shared/hooks/useHookResult'
-import { isFolder }            from 'src/@/shared/utils/items'
-import { byProtocol }          from 'src/@/shared/utils/protocols'
-import { ExtractIcon, Reload } from 'wailsjs/go/main/App'
+import { useHookResult }               from 'src/@/shared/hooks/useHookResult'
+import { isFolder }                    from 'src/@/shared/utils/items'
+import { byProtocol }                  from 'src/@/shared/utils/protocols'
+import { ExtractFavicon, ExtractIcon } from 'wailsjs/go/main/App'
 
 import type { AppItem, ListItem } from 'src/@/shared/types/items'
 
@@ -29,16 +29,33 @@ function useIcon
     )
 
     const fallback = useMemo(
-        () => ( data && isFolder( data ) ? '/assets/folder.png' : undefined ),
+        () => (
+            data
+                ? (
+                    isFolder( data )
+                        ? '/assets/folder.png'
+                        : (
+                            ( data as AppItem ).path?.includes( '://' )
+                                ? '/assets/web.png'
+                                : undefined
+                        )
+                )
+                : undefined
+        ),
         [ data ]
     )
 
-    const force = useCallback(
-        () => {
-            revalidate()
-            void Reload( 'icon', '' )
+    const faviconExtractor = useCallback(
+        async ( url: string ) => {
+            if ( data?.id ) {
+                const res = await ExtractFavicon( data.id, url )
+
+                if ( !res.includes( 'error' )) {
+                    revalidate()
+                }
+            }
         },
-        [ revalidate ]
+        []
     )
 
     const fix = useCallback(
@@ -59,28 +76,27 @@ function useIcon
                             console.log( 'Steam icon not implemented' )
                         },
 
-                        http: () => {
-                            console.log( 'HTTP icon not implemented' )
-                        },
+                        http:  faviconExtractor,
+                        https: faviconExtractor,
 
                         _: async ( path: string ) => {
                             const res = await ExtractIcon( data.id, path )
 
                             if ( !res.includes( 'error' )) {
-                                force()
+                                revalidate()
                             }
                         }
                     }
                 )
             }
         },
-        [ data, force ]
+        [ data, faviconExtractor ]
     )
 
     return useHookResult({
-        icon: `${icon}?${cache}`,
+        icon:  `${icon}?${cache}`,
         fallback,
         fix,
-        force
+        force: revalidate
     })
 }

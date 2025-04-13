@@ -1,5 +1,6 @@
-import { Center }       from 'src/@/shared/ui-kit/Center'
-import { FileUploader } from 'src/@/shared/ui-kit/FileUploader'
+import { ImageHideOnError } from 'src/@/segments/units/ImageHideOnError'
+import { Center }           from 'src/@/shared/ui-kit/Center'
+import { FileUploader }     from 'src/@/shared/ui-kit/FileUploader'
 
 import type { ReactNode } from 'react'
 
@@ -26,7 +27,7 @@ function ImageUploader
                 <Center>
                     {
                         content ?? (
-                            <img className={styles.icon} src={image} />
+                            <ImageHideOnError className={styles.icon} src={image} />
                         )
                     }
                 </Center>
