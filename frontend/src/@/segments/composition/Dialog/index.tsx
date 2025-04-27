@@ -1,6 +1,7 @@
 import { Center }   from 'src/@/shared/ui-kit/Center'
 import { Content }  from 'src/@/shared/ui-kit/Content'
 import { HDivider } from 'src/@/shared/ui-kit/HDivider'
+import { Visible }  from 'src/@/shared/ui-kit/Visible'
 
 import type { PropsWithChildren, ReactNode } from 'react'
 
@@ -25,17 +26,13 @@ function Dialog
                 </Center>
             </div>
 
-            {
-                footer && (
-                    <>
-                        <HDivider />
+            <Visible If={footer}>
+                <HDivider />
 
-                        <footer>
-                            { footer }
-                        </footer>
-                    </>
-                )
-            }
+                <footer>
+                    { footer }
+                </footer>
+            </Visible>
         </Content>
     )
 }

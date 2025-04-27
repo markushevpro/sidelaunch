@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { Visible }           from 'src/@/shared/ui-kit/Visible'
 import { getValueFromInput } from 'src/@/shared/utils/inputs'
 
 import type { SliderMarker } from './types'
@@ -45,17 +46,15 @@ function SliderInput
                 onChange={getValueFromInput( onChange )}
             />
 
-            {
-                _markers && (
-                    <datalist className={styles.markers} id={id}>
-                        {
-                            _markers.map( m => (
-                                <option key={m.label} label={m.visible ? m.label : undefined} value={m.value} />
-                            ))
-                        }
-                    </datalist>
-                )
-            }
+            <Visible If={_markers}>
+                <datalist className={styles.markers} id={id}>
+                    {
+                        _markers?.map( m => (
+                            <option key={m.label} label={m.visible ? m.label : undefined} value={m.value} />
+                        ))
+                    }
+                </datalist>
+            </Visible>
         </div>
     )
 }

@@ -1,5 +1,6 @@
 import { ItemView }   from 'src/@/segments/units/ItemView'
 import { ListButton } from 'src/@/segments/units/ListButton'
+import { Visible }    from 'src/@/shared/ui-kit/Visible'
 
 import type { FolderItem } from 'src/@/shared/types/items'
 
@@ -26,14 +27,12 @@ function FolderItems
                 ))
             }
 
-            {
-                ( more > 0 ) && (
-                    <ListButton>
-                        +
-                        {more}
-                    </ListButton>
-                )
-            }
+            <Visible If={more > 0}>
+                <ListButton>
+                    +
+                    {more}
+                </ListButton>
+            </Visible>
         </div>
     )
 }

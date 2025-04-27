@@ -2,6 +2,7 @@ import cn from 'classnames'
 
 import { IconButton }     from 'src/@/segments/units/IconButton'
 import { LoadingOverlay } from 'src/@/shared/ui-kit/LoadingOverlay'
+import { Visible }        from 'src/@/shared/ui-kit/Visible'
 
 import type { ComponentProps, ReactNode } from 'react'
 
@@ -28,11 +29,9 @@ function IconWithBadge
                 { badge }
             </div>
 
-            {
-                loading && (
-                    <LoadingOverlay />
-                )
-            }
+            <Visible If={loading}>
+                <LoadingOverlay />
+            </Visible>
         </div>
     )
 }

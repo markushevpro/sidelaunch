@@ -3,22 +3,25 @@ import { Button }            from 'src/@/shared/ui-kit/Button'
 import { ExternalIcon }      from 'src/@/shared/ui-kit/icons/External'
 import { getValueFromInput } from 'src/@/shared/utils/inputs'
 
+import type { ChangedProps } from 'src/@/segments/units/ChangedProvider/types'
+import type { AppItem }      from 'src/@/shared/types/items'
+
 import { ProtocolError }    from './ProtocolError'
 import { useAppItemFields } from './hook'
 
 type SupportedFields = 'path' | 'dir' | 'params'
 
 interface PAppItemFields
+extends
+ChangedProps<AppItem, SupportedFields>
 {
     loading: boolean
     isUrl: boolean
-    values: Record<SupportedFields, string | undefined>
-    onChange: Record<SupportedFields, ( val: string ) => void>
 }
 
 export
 function AppItemFields
-({ loading, isUrl, values, onChange }: PAppItemFields )
+({ loading, isUrl, data, onChange }: PAppItemFields )
 {
     const { pathRef, searchFile, searchDir, showInExplorer } = useAppItemFields( isUrl )
 
@@ -29,16 +32,16 @@ function AppItemFields
                     ref={pathRef}
                     disabled={loading}
                     type="text"
-                    value={values.path}
-                    onChange={getValueFromInput( onChange.path )}
+                    value={data.path}
+                    onChange={getValueFromInput( onChange( 'path' ))}
                 />
 
                 {
                     !isUrl && (
                         <>
-                            <Button onClick={searchFile( onChange.path )}>...</Button>
+                            <Button onClick={searchFile( onChange( 'path' ))}>...</Button>
 
-                            <Button disabled={!values.path} onClick={showInExplorer( values.path ?? '' )}>
+                            <Button disabled={!data.path} onClick={showInExplorer( data.path ?? '' )}>
                                 <ExternalIcon />
                             </Button>
                         </>
@@ -49,7 +52,7 @@ function AppItemFields
 
             {
                 isUrl && (
-                    <ProtocolError value={values.path} />
+                    <ProtocolError value={data.path} />
                 )
             }
 
@@ -60,20 +63,20 @@ function AppItemFields
                             <input
                                 disabled={loading}
                                 type="text"
-                                value={values.dir}
-                                onChange={getValueFromInput( onChange.dir )}
+                                value={data.dir}
+                                onChange={getValueFromInput( onChange( 'dir' ))}
                             />
 
-                            <Button onClick={searchDir( onChange.dir )}>...</Button>
-                            <Button onClick={showInExplorer( values.dir ?? '', true )}><ExternalIcon /></Button>
+                            <Button onClick={searchDir( onChange( 'dir' ))}>...</Button>
+                            <Button onClick={showInExplorer( data.dir ?? '', true )}><ExternalIcon /></Button>
                         </FormField>
 
                         <FormField label="Arguments">
                             <input
                                 disabled={loading}
                                 type="text"
-                                value={values.params}
-                                onChange={getValueFromInput( onChange.params )}
+                                value={data.params}
+                                onChange={getValueFromInput( onChange( 'params' ))}
                             />
                         </FormField>
                     </>

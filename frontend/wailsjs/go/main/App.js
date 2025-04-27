@@ -74,6 +74,10 @@ export function Reload(arg1, arg2) {
   return window['go']['main']['App']['Reload'](arg1, arg2);
 }
 
+export function Restart(arg1) {
+  return window['go']['main']['App']['Restart'](arg1);
+}
+
 export function RunExecutable(arg1, arg2, arg3) {
   return window['go']['main']['App']['RunExecutable'](arg1, arg2, arg3);
 }
