@@ -2,6 +2,9 @@ package main
 
 import (
 	"context"
+	"syscall"
+
+	osRuntime "runtime"
 
 	"os"
 	"os/exec"
@@ -51,6 +54,32 @@ func (a *App) rerun( args ...string ) {
 	// log.Print(self)
 	// log.Print(args)
     exec.Command(self, args... ).Start()
+}
+
+func (a *App) Restart( data options.SecondInstanceData ) {
+	self, err := os.Executable()
+
+	if err != nil {
+		return
+	}
+
+	args := os.Args
+	env := os.Environ()
+
+	if osRuntime.GOOS == "windows" {
+		cmd := exec.Command(self, args[1:]...)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		cmd.Stdin = os.Stdin
+		cmd.Env = env
+		err := cmd.Start()
+		if err == nil {
+
+			os.Exit(0)
+		}
+	}
+
+	syscall.Exec(self, args, env)
 }
 
 func (a *App) GetPageData() *app.PageData {
