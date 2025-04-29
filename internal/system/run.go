@@ -30,9 +30,13 @@ func CheckURL( url string ) string {
 }
 
 func OpenAny( path string, params string ) {
-	var args = []string{ "/c", "start", path, params }	
+	var args = []string{ "/c", "start", path }
 
-	log.Print("[FILE]", args)
+	if ( params != "" ) {
+		args = append( args, params )
+	}
+
+	log.Print("[FILE] ", args)
 
 	instance := exec.Command("cmd", args...)	
 	instance.SysProcAttr = &syscall.SysProcAttr{ HideWindow: true }
@@ -40,7 +44,7 @@ func OpenAny( path string, params string ) {
 }
 
 func OpenExe( path string, cwd string, params string ) {
-	log.Print("[EXE]", path + " " + params )
+	log.Print("[EXE] ", path + " " + params )
 	cmd := exec.Command(path + " " + params)
 
 	if ( cwd != "" ) {
