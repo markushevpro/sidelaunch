@@ -1,9 +1,10 @@
 import { useCallback, useState } from 'react'
 
 import { useConfig }          from 'src/@/services/config/hook'
-import { useHookResult } from 'src/@/shared/hooks/useHookResult'
-import { AppConfig } from 'src/@/shared/types/items'
+import { useHookResult }      from 'src/@/shared/hooks/useHookResult'
 import { Reload, SaveConfig } from 'wailsjs/go/main/App'
+
+import type { AppConfig } from 'src/@/shared/types/items'
 
 interface HSettingsForm
 {
@@ -14,7 +15,7 @@ interface HSettingsForm
 export
 function useSettingsForm
 ( data: AppConfig ): HSettingsForm
-{    
+{
     const { load } = useConfig()
 
     const [ loading, $loading ] = useState<boolean>( false )
@@ -38,5 +39,8 @@ function useSettingsForm
         [ data, load ]
     )
 
-    return useHookResult({ loading, save })
+    return useHookResult({
+        loading,
+        save
+    })
 }

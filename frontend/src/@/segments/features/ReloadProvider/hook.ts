@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 import { useConfig }        from 'src/@/services/config/hook'
 import { useCurrentFolder } from 'src/@/services/folder/hook'
 import { useIconsStore }    from 'src/@/services/icon/store'
-import { cleanEmptyItems }  from 'src/@/services/library/helpers'
 import { useLibrary }       from 'src/@/services/library/hook'
 import { useWindow }        from 'src/@/services/window/hook'
 
@@ -14,7 +13,7 @@ function useReloadProvider
     const config                              = useConfig()
     const wnd                                 = useWindow()
     const { revalidate }                      = useIconsStore()
-    const { loading, load }                   = useLibrary()
+    const { loading, clean }                  = useLibrary()
     const { refresh, stopWaiting, isWaiting } = useCurrentFolder()
 
     useEffect(
@@ -41,8 +40,7 @@ function useReloadProvider
 
                     case 'library':
                         if ( id && !loading && isWaiting( id )) {
-                            const lib = await load()
-                            refresh( cleanEmptyItems( lib ))
+                            refresh( await clean())
                             stopWaiting( id )
                         }
                         break
@@ -59,6 +57,6 @@ function useReloadProvider
                 window.runtime.EventsOff( 'reload' )
             }
         },
-        [ wnd, config, loading, isWaiting, load, refresh, stopWaiting, revalidate ]
+        [ wnd, config, loading, isWaiting, refresh, stopWaiting, revalidate, clean ]
     )
 }

@@ -11,7 +11,7 @@ interface HHideTimeoutSetting
 {
     val: number
     markers: SliderMarker[]
-    change: ( index: string ) => void
+    change: ( index: number ) => void
 }
 
 export
@@ -35,8 +35,8 @@ function useHideTimeoutSetting
     )
 
     const change = useCallback(
-        ( index: string ) => {
-            onChange( parseFloat( values[ +index ]))
+        ( index: number ) => {
+            onChange( parseFloat( values[ index ]))
         },
         [ onChange ]
     )

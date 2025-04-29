@@ -51,23 +51,23 @@
     border-bottom-color: var(--text-faded);
 }
 
-.group input ~ button {
+.group button {
     min-width: 0;
     background-color: var(--bg-semi);
     color: var(--text-faded);
     height: 33px;
 }
 
-.group input ~ button:disabled {
+.group button:disabled {
     background-color: var(--bg-disabled);
 }
 
-.group input ~ button:not(:disabled):hover {
+.group button:not(:disabled):hover {
     background-color: var(--accent);
     color: var(--text-invert);
 }
 
-.group input ~ button:not(:disabled):active {
+.group button:not(:disabled):active {
     background-color: var(--bg-highlight);
     color: var(--text-faded);
 }

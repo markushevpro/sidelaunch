@@ -37,7 +37,7 @@ func main() {
 	if ( len( os.Args ) < 2 ) {
 		// Main window
 		app := NewApp( "", "" )
-		err = wails.Run( windows.MainWindow( getBinds( app, reloadEmpty ), app.Restart ))
+		err = wails.Run( windows.MainWindow( getBinds( app, reloadEmpty ), app.OnReload ))
 	} else {
 		action := os.Args[1]
 

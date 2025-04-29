@@ -8,12 +8,11 @@ interface HIconSizeSetting
     icon: string
     markers: string[]
     update: () => void
-    change: ( value: string ) => void
 }
 
 export
 function useIconSizeSetting
-( onChange:( value: number ) => void ): HIconSizeSetting
+(): HIconSizeSetting
 {
     const { ids }         = useLibrary()
     const [ icon, $icon ] = useState<string>( '/assets/icon.png' )
@@ -34,17 +33,9 @@ function useIconSizeSetting
         [ ids ]
     )
 
-    const change = useCallback(
-        ( value: string ) => {
-            onChange( Number( value ))
-        },
-        [ onChange ]
-    )
-
     return useHookResult({
         icon,
         markers,
-        update: getRandomIcon,
-        change
+        update: getRandomIcon
     })
 }

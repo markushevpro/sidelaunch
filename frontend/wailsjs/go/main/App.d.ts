@@ -41,7 +41,7 @@ export function ReadUrlFile(arg1:string):Promise<system.UrlData>;
 
 export function Reload(arg1:string,arg2:string):Promise<void>;
 
-export function Restart(arg1:options.SecondInstanceData):Promise<void>;
+export function Restart():Promise<void>;
 
 export function RunExecutable(arg1:string,arg2:string,arg3:string):Promise<void>;
 

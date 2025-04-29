@@ -55,7 +55,7 @@ function useIcon
                 }
             }
         },
-        []
+        [ data?.id, revalidate ]
     )
 
     const fix = useCallback(
@@ -90,7 +90,7 @@ function useIcon
                 )
             }
         },
-        [ data, faviconExtractor ]
+        [ data, faviconExtractor, revalidate ]
     )
 
     return useHookResult({

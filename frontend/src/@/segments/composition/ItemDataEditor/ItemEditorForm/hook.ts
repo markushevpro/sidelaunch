@@ -2,13 +2,13 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { useIconsStore }          from 'src/@/services/icon/store'
 import { useLibrary }             from 'src/@/services/library/hook'
+import { useAppView }             from 'src/@/services/view/hook'
 import { useHookResult }          from 'src/@/shared/hooks/useHookResult'
 import { isFolder }               from 'src/@/shared/utils/items'
 import { usePageData }            from 'src/@/shared/utils/routes'
 import { ExtractFavicon, Reload } from 'wailsjs/go/main/App'
 
 import type { AppItem, FolderItem, ListItem } from 'src/@/shared/types/items'
-import { useAppView } from 'src/@/services/view/hook'
 
 interface HItemEditorForm
 {
@@ -25,10 +25,11 @@ function useItemEditorForm
 ( data: ListItem, changed: boolean ): HItemEditorForm
 {
     const { updateItem } = useLibrary()
-    const { item } = useAppView()
+    const { item }       = useAppView()
     const { page }       = usePageData()
     const { revalidate } = useIconsStore()
-    const appItem        = data as AppItem
+
+    const appItem = data as AppItem
 
     const [ loading, $loading ] = useState<boolean>( false )
 
@@ -74,7 +75,7 @@ function useItemEditorForm
                 }
             })
         },
-        [ appItem, changed ]
+        [ appItem.id, appItem.path, revalidate ]
     )
 
     const save = useCallback(
@@ -93,7 +94,7 @@ function useItemEditorForm
                 window.runtime.Quit()
             }
         },
-        [ item, changed, data, updateItem, isUrl, checkIcon ]
+        [ item, changed, data, updateItem, checkIcon ]
     )
 
     const cancel = useCallback(

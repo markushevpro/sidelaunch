@@ -75,6 +75,7 @@ function findInLibrary
     return library.reduce(( found, item ) => found ?? findInFolder( item, id ), undefined )
 }
 
+export
 function fixDelimiter
 ( str: string ): string
 {

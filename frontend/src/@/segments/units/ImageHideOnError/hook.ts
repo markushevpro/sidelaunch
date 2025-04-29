@@ -25,7 +25,7 @@ function useImageHideOnError
             $visible( true )
             onLoad?.( e )
         },
-        []
+        [ onLoad ]
     )
 
     const handleError = useCallback(
@@ -33,7 +33,7 @@ function useImageHideOnError
             $visible( false )
             onError?.( e )
         },
-        []
+        [ onError ]
     )
 
     return useHookResult({

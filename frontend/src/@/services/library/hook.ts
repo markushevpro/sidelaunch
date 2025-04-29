@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import _                                    from 'lodash'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -7,8 +8,24 @@ import { ExtractIcon, LoadLibrary, SaveLibrary } from 'wailsjs/go/main/App'
 
 import type { AppItem, FolderItem, Library, ListItem } from 'src/@/shared/types/items'
 
-import { addToLibrary, appendToFolder, createAppItem, createFolder, findInLibrary, fixPaths, getIDs, mapParents, moveChildrenAndRemove, parseLibrary, removeFromLibrary, removeParents, resortItems, updateLibraryItem } from './helpers'
-import { useLibraryStore }                                                                                                                                                                                               from './store'
+import {
+    addToLibrary,
+    appendToFolder,
+    cleanEmptyItems,
+    createAppItem,
+    createFolder,
+    findInLibrary,
+    fixPaths,
+    getIDs,
+    mapParents,
+    moveChildrenAndRemove,
+    parseLibrary,
+    removeFromLibrary,
+    removeParents,
+    resortItems,
+    updateLibraryItem
+} from './helpers'
+import { useLibraryStore } from './store'
 
 interface HLibrary
 {
@@ -16,6 +33,7 @@ interface HLibrary
     loading: boolean
     ids: () => string[]
     load: () => Promise<Library | undefined>
+    clean: () => Promise<Library | undefined>
     resort: ( parent: string, a: ListItem, b: ListItem ) => Promise<Library | undefined>
     append: ( files: string[], parent: string ) => Promise<Library | undefined>
     insert: ( item: AppItem, parent: string ) => Promise<Library | undefined>
@@ -77,6 +95,16 @@ function useLibrary
             }
         },
         [ library, update ]
+    )
+
+    const clean = useCallback(
+        async () => {
+            return await manipulate( async () => {
+                const fresh = await load()
+                return cleanEmptyItems( fresh ) as Library
+            })
+        },
+        [ load, manipulate ]
     )
 
     const move = useCallback(
@@ -153,7 +181,7 @@ function useLibrary
 
     const insert = useCallback(
         async ( item: AppItem, parent: string ) => {
-            return await manipulate( async ( lib ) => {
+            return await manipulate(( lib ) => {
                 const { updated } = appendToFolder( lib, parent, item )
                 return updated
             })
@@ -201,6 +229,7 @@ function useLibrary
         loading,
         ids,
         load,
+        clean,
         append,
         insert,
         find,

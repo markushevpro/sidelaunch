@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"syscall"
-
 	osRuntime "runtime"
 
 	"os"
@@ -56,7 +55,7 @@ func (a *App) rerun( args ...string ) {
     exec.Command(self, args... ).Start()
 }
 
-func (a *App) Restart( data options.SecondInstanceData ) {
+func (a *App) Restart() {
 	self, err := os.Executable()
 
 	if err != nil {
@@ -73,9 +72,8 @@ func (a *App) Restart( data options.SecondInstanceData ) {
 		cmd.Stdin = os.Stdin
 		cmd.Env = env
 		err := cmd.Start()
-		if err == nil {
-
-			os.Exit(0)
+		if err == nil {			
+			systray.Quit()
 		}
 	}
 
@@ -95,7 +93,11 @@ func (a *App) Focus( data options.SecondInstanceData ) {
 }
 
 func (a *App ) OnReload( data options.SecondInstanceData ) {
-	runtime.EventsEmit( a.ctx, "reload", data.Args )
+	if ( len( data.Args ) == 0 ) {
+		a.Restart()
+	} else {
+		runtime.EventsEmit( a.ctx, "reload", data.Args )
+	}
 }
 
 /* FLAT API */

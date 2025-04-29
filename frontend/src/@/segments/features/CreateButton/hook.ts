@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { useDnDStore }      from 'src/@/services/dnd/store'
 import { useCurrentFolder } from 'src/@/services/folder/hook'
+import { useFolderStore }   from 'src/@/services/folder/store'
 import { useAppView }       from 'src/@/services/view/hook'
 import { useHookResult }    from 'src/@/shared/hooks/useHookResult'
 import { useSystemDialogs } from 'src/@/shared/hooks/useSystemDialogs'
@@ -25,15 +26,17 @@ function useCreateButton
 (): HCreateButton
 {
     const { folder, create, append, insert, waitUpdate } = useCurrentFolder()
-    const { openFile }                                   = useSystemDialogs()
-    const { dragged }                                    = useDnDStore()
-    const { editMode }                                   = useAppView()
+    const { waitUpdate: waitingUpdate }                  = useFolderStore()
+
+    const { openFile } = useSystemDialogs()
+    const { dragged }  = useDnDStore()
+    const { editMode } = useAppView()
 
     const [ list, $list ] = useState<boolean>( false )
 
     const hidden = useMemo(
-        () => !!dragged,
-        [ dragged ]
+        () => !!dragged || waitingUpdate.length > 0,
+        [ dragged, waitingUpdate.length ]
     )
 
     const addFolder = useCallback(
@@ -59,7 +62,7 @@ function useCreateButton
 
             $list( false )
         },
-        [ folder, append ]
+        [ folder, openFile, append ]
     )
 
     const addURL = useCallback(
