@@ -1,4 +1,5 @@
 import { InputField }  from 'src/@/segments/units/InputField'
+import { getPathInfo } from 'src/@/services/library/helpers'
 import { Button }      from 'src/@/shared/ui-kit/Button'
 import { FileButtons } from 'src/@/shared/ui-kit/FileButtons'
 import { ArrowLeft }   from 'src/@/shared/ui-kit/icons/ArrowLeft'
@@ -40,6 +41,7 @@ function FileItemFields
             <InputField
                 disabled={loading}
                 label="Working directory"
+                placeholder={data.dir ? '' : getPathInfo( data.path ).dir.replace( /\//g, '\\' ) }
                 type="text"
                 value={data.dir}
                 onChange={onChange( 'dir' )}

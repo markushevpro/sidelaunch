@@ -44,13 +44,41 @@ func OpenAny( path string, params string ) {
 }
 
 func OpenExe( path string, cwd string, params string ) {
-	log.Print("[EXE] ", path + " " + params )
-	cmd := exec.Command(path + " " + params)
+	// var cmd *exec.Cmd
+
+	log.Print("[EXE] ", path + " " + params, "(working dir: ", cwd, ")" )
+
+	// if ( params != "" ) {
+	// 	cmd = exec.Command( path + " " + params )
+	// } else {
+	// 	cmd = exec.Command( path )
+	// }
+
+	// cmd.Env = os.Environ()
+
+	// cmd.Stdout = os.Stdout
+	// cmd.Stderr = os.Stderr
+	// cmd.Stdin = os.Stdin
+
+	// if ( cwd != "" ) {
+	// 	cmd.Dir = cwd
+	// }
+
+	// cmd.Start()
+
+	var args = []string{ path }
 
 	if ( cwd != "" ) {
-		cmd.Dir = cwd
+		args = append( args, cwd )
+	} else {
+		args = append( args, filepath.Dir( path ))
 	}
 
+	if ( params != "" ) {
+		args = append( args, params )
+	}
+
+	cmd := exec.Command( ".\\utils\\runner.bat", args... )
 	cmd.Start()
 }
 

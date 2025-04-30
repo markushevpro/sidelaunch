@@ -293,6 +293,7 @@ function createFolder
     }
 }
 
+export
 function getPathInfo
 ( rawPath: string ): PathInfo
 {
