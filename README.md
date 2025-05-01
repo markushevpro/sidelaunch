@@ -58,7 +58,10 @@ Intuitive interface (I hope) with mouse control only.
 The app floats on the left edge. By default, to make it appear, simply move the mouse to the left edge of the left-most screen. If the mouse is not hovering over the window, it hides after a configurable timeout. Can be fixed (no hiding). See [Configuration](#configuration) section below.
 
 - **Adding files**<br/>
-Drag a file into the application window.
+Drag a file into the application window. Or click the "+" button at the bottom and then click the "File" icon.
+
+- **Adding URLs**<br/>
+Click the "+" button at the bottom and then click the "Web" icon. An editing window will appear, just paste the URL and save.
 
 - **Sorting files**<br/>
 Drag an added item inside the window.
@@ -73,7 +76,7 @@ While inside a folder, drag an item onto "Back button" at the top of the screen
 Move folders while holding down the "Ctrl" key.
 
 - **Adding a new folder**<br/>
-Click the "+" button at the very bottom of the main window. You will automatically go to the created folder.
+Click the "+" button at the very bottom of the main window and then click the "Directory" icon. You will automatically go to the created folder.
 
 - **Deleting**<br/>
 Drag the item into the "delete zone" at the very bottom of the main window (appears instead of the "Add" button when you start dragging).
@@ -87,13 +90,16 @@ Right-click the item, wait for a separate pop-up window.
 - **Close application**<br/>
 Click on the Sidelaunch icon in system tray, then click "Close".
 
+- **Forced restart**<br/>
+If the application freezes, is not displayed correctly, or the tray menu is missing, just launch it again to close the old version and open the new one. _Does not affect open editing, deleting, and settings windows._
+
 ## Notices
 
 ### Known bugs
-- For some reason, when using sleep/hibernation mode, the tray menu stops showing.
+- For some reason, when using sleep/hibernation mode, the tray menu stops showing. Just restart the application by launching it again.
 
 ### Custom Protocol Support
-While it is possible to launch a link with any protocol, creation is limited to the drag'n'drop interface. So if you want to create a link to a custom protocol, first create a .lnk or .url file and then add it to the application.
+When creating a "Web" link, you can use any link protocol, not just "http" or "https".
 
 ### Configuration
 Click on the Sidelaunch icon in the tray and select "Settings". In the window that opens, you can easily change the supported settings.
@@ -118,6 +124,7 @@ _Default values ​​are specified below_
 - [energye/systray](https://github.com/energye/systray)
 - [dario.cat/mergo](https://github.com/darccio/mergo)
 - [gopkg.in/ini.v1](https://github.com/go-ini/ini/tree/v1.67.0)
+- [biessek/golang-ico](https://github.com/biessek/golang-ico)
 
 <br/>
 <hr />

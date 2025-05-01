@@ -73,7 +73,7 @@ func (a *App) Restart() {
 		cmd.Env = env
 		err := cmd.Start()
 		if err == nil {			
-			systray.Quit()
+			os.Exit(0)
 		}
 	}
 
