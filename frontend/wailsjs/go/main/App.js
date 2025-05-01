@@ -10,6 +10,10 @@ export function CheckURL(arg1) {
   return window['go']['main']['App']['CheckURL'](arg1);
 }
 
+export function CleanUpIcons(arg1) {
+  return window['go']['main']['App']['CleanUpIcons'](arg1);
+}
+
 export function ConfirmFolderRemove(arg1) {
   return window['go']['main']['App']['ConfirmFolderRemove'](arg1);
 }

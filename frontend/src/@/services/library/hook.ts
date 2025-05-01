@@ -2,9 +2,9 @@
 import _                                    from 'lodash'
 import { useCallback, useEffect, useState } from 'react'
 
-import { useHookResult }                         from 'src/@/shared/hooks/useHookResult'
-import { isFolder }                              from 'src/@/shared/utils/items'
-import { ExtractIcon, LoadLibrary, SaveLibrary } from 'wailsjs/go/main/App'
+import { useHookResult }                                       from 'src/@/shared/hooks/useHookResult'
+import { isFolder }                                            from 'src/@/shared/utils/items'
+import { CleanUpIcons, ExtractIcon, LoadLibrary, SaveLibrary } from 'wailsjs/go/main/App'
 
 import type { AppItem, FolderItem, Library, ListItem } from 'src/@/shared/types/items'
 
@@ -53,6 +53,14 @@ function useLibrary
 
     const [ loading, $loading ] = useState<boolean>( false )
 
+    const cleanup = useCallback(
+        ( lib: Library ) => {
+            const ids = getIDs( lib )
+            void CleanUpIcons( ids )
+        },
+        []
+    )
+
     const load = useCallback(
         async () => {
             $loading( true )
@@ -62,13 +70,14 @@ function useLibrary
 
             if ( data ) {
                 update({ library: fixPaths( data ) })
+                cleanup( data )
             }
 
             $loading( false )
 
             return data
         },
-        [ update ]
+        [ cleanup, update ]
     )
 
     const find = useCallback(

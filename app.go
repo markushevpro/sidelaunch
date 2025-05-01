@@ -186,6 +186,10 @@ func (a *App) ExtractFavicon( id string, uri string ) string {
 	return system.ExtractFavicon( id, uri )
 }
 
-func (a *App ) SaveIcon( id string, path string ) string {
+func (a *App) SaveIcon( id string, path string ) string {
 	return system.SaveIcon( id, path )
+}
+
+func (a *App) CleanUpIcons( ids []string ) {
+	system.CleanUpIcons( ids )
 }

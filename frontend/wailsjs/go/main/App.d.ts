@@ -9,6 +9,8 @@ export function CheckFile(arg1:string):Promise<string>;
 
 export function CheckURL(arg1:string):Promise<string>;
 
+export function CleanUpIcons(arg1:Array<string>):Promise<void>;
+
 export function ConfirmFolderRemove(arg1:string):Promise<void>;
 
 export function EditItem(arg1:string):Promise<void>;

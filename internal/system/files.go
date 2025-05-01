@@ -12,6 +12,42 @@ import (
 	"path/filepath"
 )
 
+func CleanUpIcons( ids []string ) {
+	var path = "./data/icons"
+	var cwd, _ = os.Getwd()
+
+	idMap := make(map[string]bool)
+	for _, id := range ids {
+		idMap[id] = true
+	}
+
+	files, err := os.ReadDir(path)
+	if err != nil {
+		log.Print( err )
+		return
+	}
+
+	for _, file := range files {
+		if file.IsDir() {
+			continue
+		}
+
+		fileName := file.Name()
+		ext := filepath.Ext( fileName )
+		id := strings.TrimSuffix( fileName, ext )
+
+		if !idMap[id] {
+			filePath := filepath.Join( cwd, path, fileName )
+			err := os.Remove(filePath)
+			if err != nil {
+				log.Print( err )
+			} else {
+				log.Printf("Removed unused icon: %s\n", filePath)
+			}
+		}
+	}
+}
+
 func ShowInExplorer( path string, dir bool ) {	
 	if ( dir ) {
 		exec.Command( "explorer", path ).Run()
